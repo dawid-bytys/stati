@@ -5,6 +5,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { AuthStack } from './AuthStack';
 import { Tabs } from './Tabs';
+import { useErrorContext } from '@/hooks/useErrorContext';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -16,7 +18,8 @@ const MyTheme = {
 };
 
 export function Router() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isAuthenticating } = useAuthContext();
+  const { errorMessage } = useErrorContext();
   const insets = useSafeAreaInsets();
 
   return (
@@ -26,8 +29,9 @@ export function Router() {
         paddingTop: insets.top,
       }}
     >
+      {errorMessage && <ErrorAlert message={errorMessage} />}
       <NavigationContainer theme={MyTheme}>
-        {isAuthenticated ? <Tabs /> : <AuthStack />}
+        {!isAuthenticating && isAuthenticated ? <Tabs /> : <AuthStack />}
       </NavigationContainer>
     </View>
   );

@@ -1,6 +1,6 @@
-import { authContext } from '../context/authContext';
+import { AuthContext } from '../context/AuthContext';
 import { useSafeContext } from './useSafeContext';
 
 export function useAuthContext() {
-  return useSafeContext(authContext);
+  return useSafeContext(AuthContext);
 }

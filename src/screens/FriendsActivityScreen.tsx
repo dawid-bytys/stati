@@ -9,10 +9,12 @@ import { filterFriendsActivity } from '@/utils';
 import { Loading } from '@/components/Loading';
 import { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { useErrorContext } from '@/hooks/useErrorContext';
 
 export function FriendsActivityScreen() {
   const { setWebAccessToken, webAccessToken, spDcCookie, setSpDcCookie } = useAuthContext();
   const [friendsActivity, setFriendsActivity] = useState<FilteredFriendActivity[] | null>(null);
+  const { setErrorMessage } = useErrorContext();
 
   useEffect(() => {
     async function obtainWebAccessToken(spDcCookie: string) {
@@ -21,12 +23,17 @@ export function FriendsActivityScreen() {
 
         if (isAnonymous) {
           setSpDcCookie(null);
+          await AsyncStorage.removeItem('spDcCookie');
+          setErrorMessage('Invalid sp_dc cookie');
+          return;
         }
 
         await AsyncStorage.setItem('webAccessToken', accessToken);
         setWebAccessToken(accessToken);
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        }
       }
     }
 
@@ -42,14 +49,16 @@ export function FriendsActivityScreen() {
         const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
         setFriendsActivity(filteredFriendsActivity);
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        }
       }
     }
 
-    if (webAccessToken && !friendsActivity) {
+    if (spDcCookie && webAccessToken && !friendsActivity) {
       obtainFriendsActivity(webAccessToken);
     }
-  }, [webAccessToken, friendsActivity]);
+  }, [spDcCookie, webAccessToken, friendsActivity]);
 
   if (!spDcCookie && !webAccessToken) {
     return <SetCookieMain />;

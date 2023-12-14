@@ -5,7 +5,7 @@ import { getSpotifyAuthorizationURL, getTokens } from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { isTokenExpired, parseTokens } from '@/utils';
-import { authContext } from '@/context/authContext';
+import { AuthContext } from '@/context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL } from 'react-native-url-polyfill';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
@@ -31,6 +31,8 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         if (!isTokenExpired(parsedTokens.expiresIn, parsedTokens.creationDate)) {
           setTokens(parsedTokens);
           setIsAuthenticated(true);
+        } else {
+          logout();
         }
       }
 
@@ -109,7 +111,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   }
 
   return (
-    <authContext.Provider
+    <AuthContext.Provider
       value={{
         obtainAccessToken,
         setWebAccessToken,
@@ -123,6 +125,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       }}
     >
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
 }

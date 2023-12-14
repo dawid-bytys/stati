@@ -14,7 +14,7 @@ interface TopData {
 }
 
 export function HomeScreen() {
-  const { tokens } = useAuthContext();
+  const { tokens, logout } = useAuthContext();
   const [data, setData] = useState<TopData | null>(null);
 
   useEffect(() => {
@@ -34,7 +34,9 @@ export function HomeScreen() {
           topTracks: filteredTracks,
         });
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error && err.message === 'Unauthorized') {
+          logout();
+        }
       }
     }
 

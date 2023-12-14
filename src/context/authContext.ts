@@ -17,4 +17,4 @@ interface AuthContext {
   isAuthenticated: boolean;
 }
 
-export const authContext = createContext<AuthContext | undefined>(undefined);
+export const AuthContext = createContext<AuthContext | undefined>(undefined);

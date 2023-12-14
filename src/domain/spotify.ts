@@ -13,6 +13,7 @@ export async function fetchWrapper<T>({ headers, method, url }: FetchWrapperOpti
   const response = await fetch(url, {
     headers,
     method,
+    credentials: 'include',
   });
 
   if (response.status === 401) {
@@ -117,9 +118,8 @@ export async function getWebAccessToken(spDcCookie: string) {
   const data = await fetchWrapper<{ isAnonymous: boolean; accessToken: string }>({
     headers: {
       Cookie: `sp_dc=${spDcCookie}`,
-      credentials: 'include',
     },
-    url: 'https://open.spotify.com/get_access_token',
+    url: 'https://open.spotify.com/get_access_token?reason=transport&productType=web_player',
     method: 'GET',
   });
 
