@@ -1,7 +1,7 @@
 import type { Tokens } from '@/types';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
 
-import { getSpotifyAuthorizationURL, getTokens } from '@/domain/spotify';
+import { generateSpotifyAuthURL, getTokens } from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { isTokenExpired, parseTokens } from '@/utils';
@@ -54,7 +54,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     try {
       setIsAuthenticating(true);
       const { codeChallenge, codeVerifier } = pkceChallenge();
-      const spotifyAuthUrl = await getSpotifyAuthorizationURL(codeChallenge);
+      const spotifyAuthUrl = await generateSpotifyAuthURL(codeChallenge);
       const isBrowserAvailable = await InAppBrowser.isAvailable();
 
       if (!isBrowserAvailable) {

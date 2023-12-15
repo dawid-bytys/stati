@@ -39,7 +39,7 @@ export async function fetchWrapper<T>({ headers, method, url }: FetchWrapperOpti
   return response.json();
 }
 
-export async function getSpotifyAuthorizationURL(codeChallenge: string) {
+export async function generateSpotifyAuthURL(codeChallenge: string) {
   const url = new URL('https://accounts.spotify.com/authorize');
 
   url.searchParams.append('client_id', '8d59d667427a435a8fdb10eb53f77501');
@@ -52,7 +52,7 @@ export async function getSpotifyAuthorizationURL(codeChallenge: string) {
   return url.toString();
 }
 
-export async function getTokens(code: string, codeVerifier: string) {
+export async function fetchTokens(code: string, codeVerifier: string) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     body: new URLSearchParams({
       client_id: '8d59d667427a435a8fdb10eb53f77501',
@@ -70,7 +70,7 @@ export async function getTokens(code: string, codeVerifier: string) {
   return response.json();
 }
 
-export async function getTopArtists(
+export async function fetchTopArtists(
   accessToken: string,
   count = 4,
   timeRange: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
@@ -86,7 +86,7 @@ export async function getTopArtists(
   return data;
 }
 
-export async function getTopTracks(
+export async function fetchTopTracks(
   accessToken: string,
   count = 4,
   timeRange: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
@@ -102,7 +102,7 @@ export async function getTopTracks(
   return data;
 }
 
-export async function getRecentlyPlayed(accessToken: string, count = 10) {
+export async function fetchRecentlyPlayed(accessToken: string, count = 10) {
   const data = await fetchWrapper<RecentlyPlayed>({
     url: `https://api.spotify.com/v1/me/player/recently-played?limit=${count}`,
     headers: {
@@ -114,7 +114,7 @@ export async function getRecentlyPlayed(accessToken: string, count = 10) {
   return data;
 }
 
-export async function getWebAccessToken(spDcCookie: string) {
+export async function fetchWebAccessToken(spDcCookie: string) {
   const data = await fetchWrapper<{ isAnonymous: boolean; accessToken: string }>({
     headers: {
       Cookie: `sp_dc=${spDcCookie}`,
@@ -126,7 +126,7 @@ export async function getWebAccessToken(spDcCookie: string) {
   return data;
 }
 
-export async function getFriendsActivity(webAccessToken: string) {
+export async function fetchFriendsActivity(webAccessToken: string) {
   const data = await fetchWrapper<FriendsActivity>({
     url: 'https://spclient.wg.spotify.com/presence-view/v1/buddylist',
     headers: {

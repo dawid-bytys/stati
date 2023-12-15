@@ -1,7 +1,7 @@
 import type { FilteredFriendActivity } from '@/types';
 
 import { FriendsActivityMain } from '@/components/FriendActivityMain/FriendsActivityMain';
-import { getFriendsActivity, getWebAccessToken } from '@/domain/spotify';
+import { fetchFriendsActivity, fetchWebAccessToken } from '@/domain/spotify';
 import { SetCookieMain } from '@/components/SetCookieMain';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +19,7 @@ export function FriendsActivityScreen() {
   useEffect(() => {
     async function obtainWebAccessToken(spDcCookie: string) {
       try {
-        const { accessToken, isAnonymous } = await getWebAccessToken(spDcCookie);
+        const { accessToken, isAnonymous } = await fetchWebAccessToken(spDcCookie);
 
         if (isAnonymous) {
           setSpDcCookie(null);
@@ -45,7 +45,7 @@ export function FriendsActivityScreen() {
   useEffect(() => {
     async function obtainFriendsActivity(webAccessToken: string) {
       try {
-        const friendsActivity = await getFriendsActivity(webAccessToken);
+        const friendsActivity = await fetchFriendsActivity(webAccessToken);
         const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
         setFriendsActivity(filteredFriendsActivity);
       } catch (err) {
