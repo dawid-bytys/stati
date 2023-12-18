@@ -1,3 +1,6 @@
+import { TopStackParamList } from '@/types';
+import { mapContentToScreen } from '@/utils';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 
 interface NavigationProps {
@@ -6,9 +9,13 @@ interface NavigationProps {
   type: 'content' | 'period';
   currentTab: string;
   tabs: string[];
+  currentPeriod?: string;
+  currentContent?: string;
 }
 
 export function Navigation({ currentTab, onClick, tabs }: NavigationProps) {
+  const navigation = useNavigation<NavigationProp<TopStackParamList>>();
+
   return (
     <View style={styles.container}>
       {tabs.map((tab) => (

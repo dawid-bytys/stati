@@ -16,7 +16,7 @@ interface HomeMainProps {
   };
 }
 
-export function HomeMain({ data }: HomeMainProps) {
+export function HomeMain({ data: { recentlyPlayed, topArtists, topTracks } }: HomeMainProps) {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -27,7 +27,7 @@ export function HomeMain({ data }: HomeMainProps) {
         title="Top artists"
         delay={100}
       >
-        {data.topArtists.map(({ artist, image }, i) => (
+        {topArtists.map(({ artist, image }, i) => (
           <TopTile
             delay={i * 100}
             title={artist}
@@ -40,7 +40,7 @@ export function HomeMain({ data }: HomeMainProps) {
         title="Top tracks"
         delay={200}
       >
-        {data.topTracks.map(({ image, track }, i) => (
+        {topTracks.map(({ track, image }, i) => (
           <TopTile
             delay={i * 100}
             image={image}
@@ -50,18 +50,16 @@ export function HomeMain({ data }: HomeMainProps) {
         ))}
       </TopContainer>
       <LatestActivity>
-        {data.recentlyPlayed.map(({ artist, image, track, time }, i) => {
-          return (
-            <ActivityTile
-              imageSrc={image}
-              artist={artist}
-              delay={i * 100}
-              title={track}
-              time={time}
-              key={i}
-            />
-          );
-        })}
+        {recentlyPlayed.map(({ artist, image, track, time }, i) => (
+          <ActivityTile
+            image={image}
+            artist={artist}
+            delay={i * 100}
+            title={track}
+            time={time}
+            key={i}
+          />
+        ))}
       </LatestActivity>
     </ScrollView>
   );

@@ -9,6 +9,15 @@ export type TabNavigatorParamList = {
   Top: undefined;
 };
 
+export type TopStackParamList = {
+  TopTracks: {
+    period: string;
+  };
+  TopArtists: {
+    period: string;
+  };
+};
+
 export type CustomParamList = AuthStackParamList & TabNavigatorParamList;
 
 export interface FriendsActivity {

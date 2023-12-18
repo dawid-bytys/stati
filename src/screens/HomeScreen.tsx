@@ -1,6 +1,9 @@
 import type { FilteredRecentlyPlayed, FilteredArtist, FilteredTrack } from '@/types';
 
-import { fetchRecentlyPlayed, fetchTopArtists, fetchTopTracks } from '@/domain/spotify';
+import type { TopArtists } from '@/types/artists';
+import type { TopTracks } from '@/types/tracks';
+
+import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify';
 import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils';
 import { HomeMain } from '@/components/HomeMain/HomeMain';
 import { useAuthContext } from '@/hooks/useAuthContext';
@@ -20,8 +23,8 @@ export function HomeScreen() {
   useEffect(() => {
     async function loadTopContent(accessToken: string) {
       try {
-        const topArtists = await fetchTopArtists(accessToken);
-        const topTracks = await fetchTopTracks(accessToken);
+        const topArtists = await fetchTopItems<TopArtists>(accessToken, 'artists', 'short_term');
+        const topTracks = await fetchTopItems<TopTracks>(accessToken, 'tracks', 'short_term');
         const recentlyPlayed = await fetchRecentlyPlayed(accessToken);
 
         const filteredArtists = filterArtists(topArtists);

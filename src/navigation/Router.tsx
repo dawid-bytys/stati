@@ -7,6 +7,7 @@ import { AuthStack } from './AuthStack';
 import { Tabs } from './Tabs';
 import { useErrorContext } from '@/hooks/useErrorContext';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { Loading } from '@/components/Loading';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -22,6 +23,10 @@ export function Router() {
   const { errorMessage } = useErrorContext();
   const insets = useSafeAreaInsets();
 
+  if (isAuthenticating) {
+    return <Loading />;
+  }
+
   return (
     <View
       style={{
@@ -31,7 +36,7 @@ export function Router() {
     >
       {errorMessage && <ErrorAlert message={errorMessage} />}
       <NavigationContainer theme={MyTheme}>
-        {!isAuthenticating && isAuthenticated ? <Tabs /> : <AuthStack />}
+        {isAuthenticated ? <Tabs /> : <AuthStack />}
       </NavigationContainer>
     </View>
   );

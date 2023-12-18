@@ -1,7 +1,7 @@
 import type { Tokens } from '@/types';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
 
-import { generateSpotifyAuthURL, getTokens } from '@/domain/spotify';
+import { generateSpotifyAuthURL, fetchTokens } from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { isTokenExpired, parseTokens } from '@/utils';
@@ -73,7 +73,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
           throw new Error('No code in callback URL');
         }
 
-        const { access_token, refresh_token, expires_in } = await getTokens(code, codeVerifier);
+        const { access_token, refresh_token, expires_in } = await fetchTokens(code, codeVerifier);
         await AsyncStorage.setItem(
           'tokens',
           JSON.stringify({

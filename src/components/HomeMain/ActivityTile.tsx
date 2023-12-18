@@ -4,14 +4,14 @@ import ClockIcon from '@/assets/svg/clock.svg';
 import GraphIcon from '@/assets/svg/graph.svg';
 
 interface ActivityTileProps {
-  imageSrc: string;
+  image: string;
   artist: string;
   title: string;
   delay: number;
   time: string;
 }
 
-export function ActivityTile({ imageSrc, artist, title, delay, time }: ActivityTileProps) {
+export function ActivityTile({ image, artist, title, delay, time }: ActivityTileProps) {
   return (
     <Animated.View
       style={{
@@ -20,7 +20,7 @@ export function ActivityTile({ imageSrc, artist, title, delay, time }: ActivityT
       entering={FadeInUp.delay(delay)}
     >
       <Image
-        source={{ uri: imageSrc }}
+        source={{ uri: image }}
         style={styles.image}
       />
       <View style={styles.song}>

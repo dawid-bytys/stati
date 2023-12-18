@@ -1,6 +1,5 @@
 import type { RecentlyPlayed } from '@/types/activity';
-import type { TopArtists } from '@/types/artists';
-import type { TopTracks } from '@/types/tracks';
+
 import type { FriendsActivity } from '@/types';
 
 interface FetchWrapperOptions {
@@ -70,29 +69,14 @@ export async function fetchTokens(code: string, codeVerifier: string) {
   return response.json();
 }
 
-export async function fetchTopArtists(
+export async function fetchTopItems<T>(
   accessToken: string,
+  type: 'tracks' | 'artists',
+  period: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
   count = 4,
-  timeRange: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
 ) {
-  const data = await fetchWrapper<TopArtists>({
-    url: `https://api.spotify.com/v1/me/top/artists?limit=${count}&time_range=${timeRange}`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    method: 'GET',
-  });
-
-  return data;
-}
-
-export async function fetchTopTracks(
-  accessToken: string,
-  count = 4,
-  timeRange: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
-) {
-  const data = await fetchWrapper<TopTracks>({
-    url: `https://api.spotify.com/v1/me/top/tracks?limit=${count}&time_range=${timeRange}`,
+  const data = await fetchWrapper<T>({
+    url: `https://api.spotify.com/v1/me/top/${type}?limit=${count}&time_range=${period}`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

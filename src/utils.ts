@@ -109,3 +109,27 @@ export function filterFriendsActivity(friendsActivity: FriendsActivity): Filtere
     name: friend.user.name,
   }));
 }
+
+export function mapPeriodToSpotifyPeriod(period: string) {
+  switch (period) {
+    case '4 weeks':
+      return 'short_term';
+    case '6 months':
+      return 'medium_term';
+    case 'all time':
+      return 'long_term';
+    default:
+      return 'short_term';
+  }
+}
+
+export function mapContentToScreen(content: string) {
+  switch (content) {
+    case 'tracks':
+      return 'TopTracks';
+    case 'artists':
+      return 'TopArtists';
+    default:
+      return 'TopTracks';
+  }
+}
