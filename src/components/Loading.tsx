@@ -1,6 +1,6 @@
 import Animated, { FadeOut } from 'react-native-reanimated';
 import { StyleSheet, Text } from 'react-native';
-import LoadingIcon from '@/assets/svg/loading.svg';
+import { AnimatedLogo } from './AnimatedLogo';
 
 export function Loading() {
   return (
@@ -8,7 +8,10 @@ export function Loading() {
       exiting={FadeOut.duration(300)}
       style={styles.container}
     >
-      <Text style={styles.text}>Loading...</Text>
+      <AnimatedLogo
+        width={64}
+        height={64}
+      />
     </Animated.View>
   );
 }
