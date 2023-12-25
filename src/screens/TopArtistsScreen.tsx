@@ -52,7 +52,6 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
       {data.map(({ artist, image }, i) => (
         <ArtistTile
           delay={i * 100}
-          plays={i + 1}
           artist={artist}
           image={image}
           rank={i + 1}

@@ -30,12 +30,13 @@ export function FriendTile({ context, artist, image, track, delay, name, time }:
           style={styles.image}
         />
         {time === 'now' && (
-          <DotIcon
-            style={styles.activityDot}
-            fill="#0076CB"
-            height={12}
-            width={12}
-          />
+          <View style={styles.activityDot}>
+            <DotIcon
+              fill="#0076CB"
+              height={12}
+              width={12}
+            />
+          </View>
         )}
       </View>
       <View style={styles.innerRight}>
@@ -145,8 +146,11 @@ const styles = StyleSheet.create({
   },
   activityDot: {
     position: 'absolute',
-    right: 2,
-    top: 2,
+    right: 0,
+    top: 0,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#121212',
   },
   image: {
     borderRadius: 50,

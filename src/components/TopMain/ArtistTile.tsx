@@ -4,12 +4,11 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 interface ArtistTileProps {
   artist: string;
   image: string;
-  plays: number;
   delay: number;
   rank: number;
 }
 
-export function ArtistTile({ artist, image, plays, delay, rank }: ArtistTileProps) {
+export function ArtistTile({ artist, image, delay, rank }: ArtistTileProps) {
   return (
     <Animated.View
       entering={FadeInUp.delay(delay)}
@@ -23,7 +22,6 @@ export function ArtistTile({ artist, image, plays, delay, rank }: ArtistTileProp
       </View>
       <View style={styles.innerMiddle}>
         <Text style={styles.artist}>{artist}</Text>
-        <Text style={styles.plays}>{plays} plays</Text>
       </View>
       <View style={styles.innerRight}>
         <Text
@@ -49,8 +47,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   innerMiddle: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
+    justifyContent: 'center',
     flex: 1,
   },
   plays: {

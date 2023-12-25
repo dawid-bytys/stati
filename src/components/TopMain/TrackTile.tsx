@@ -5,12 +5,11 @@ interface TrackTileProps {
   artist: string;
   title: string;
   image: string;
-  plays: number;
   delay: number;
   rank: number;
 }
 
-export function TrackTile({ artist, title, image, plays, delay, rank }: TrackTileProps) {
+export function TrackTile({ artist, title, image, delay, rank }: TrackTileProps) {
   return (
     <Animated.View
       entering={FadeInUp.delay(delay)}
@@ -32,16 +31,15 @@ export function TrackTile({ artist, title, image, plays, delay, rank }: TrackTil
                 rank === 1
                   ? '#FFD700'
                   : rank === 2
-                    ? '#C0C0C0'
-                    : rank === 3
-                      ? '#CD7F32'
-                      : '#6A6A6A',
+                  ? '#C0C0C0'
+                  : rank === 3
+                  ? '#CD7F32'
+                  : '#6A6A6A',
             }}
           >{`#${rank}`}</Text>
         </View>
         <View style={styles.innerRightLower}>
           <Text style={styles.artist}>{artist}</Text>
-          <Text style={styles.plays}>{plays} plays</Text>
         </View>
       </View>
     </Animated.View>
