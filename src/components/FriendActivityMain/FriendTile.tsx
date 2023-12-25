@@ -4,6 +4,7 @@ import PlaylistIcon from '@/assets/svg/playlist.svg';
 import AlbumIcon from '@/assets/svg/album.svg';
 import GraphIcon from '@/assets/svg/graph.svg';
 import DotIcon from '@/assets/svg/dot.svg';
+import { AnimatedIcon } from '../AnimatedIcon';
 
 interface FriendTileProps {
   context: {
@@ -43,7 +44,12 @@ export function FriendTile({ context, artist, image, track, delay, name, time }:
         <View style={styles.innerRightUpper}>
           <Text style={styles.username}>{name}</Text>
           {time === 'now' ? (
-            <GraphIcon fill="#6A6A6A" />
+            <AnimatedIcon
+              width={20}
+              height={20}
+              duration={1400}
+              source={require('@/assets/lottie/chart-animation.json')}
+            />
           ) : (
             <Text style={styles.whenText}>{time}</Text>
           )}
@@ -77,7 +83,12 @@ export function FriendTile({ context, artist, image, track, delay, name, time }:
               height={14}
             />
           )}
-          <Text style={styles.fromText}>{context.name}</Text>
+          <Text
+            style={styles.fromText}
+            numberOfLines={1}
+          >
+            {context.name}
+          </Text>
         </View>
       </View>
     </Animated.View>
@@ -129,6 +140,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     color: '#6A6A6A',
     fontSize: 12,
+    flexShrink: 1,
   },
   innerLeft: {
     justifyContent: 'center',

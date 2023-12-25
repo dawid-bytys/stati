@@ -1,21 +1,23 @@
 import LottieView from 'lottie-react-native';
 
-interface AnimatedLogoProps {
+interface AnimatedIconProps {
   width: number;
   height: number;
+  duration: number;
+  source: any;
 }
 
-export function AnimatedLogo({ width, height }: AnimatedLogoProps) {
+export function AnimatedIcon({ width, height, duration, source }: AnimatedIconProps) {
   return (
     <LottieView
-      source={require('@/assets/animations/logo-animation.json')}
+      source={source}
       autoPlay
       loop
       style={{
         width,
         height,
       }}
-      duration={800}
+      duration={duration}
     />
   );
 }
