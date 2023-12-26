@@ -4,4 +4,4 @@ https://www.figma.com/file/jQQ6F4as97CozaddAxHajc/Stati?type=design&t=HbZBjWtO6k
 
 ## Demo
 
-https://i.imgur.com/CthY1aB.mp4
+https://i.imgur.com/XMsHOeg.mp4
