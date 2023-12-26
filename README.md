@@ -1,9 +1,9 @@
-<h1 style="display: flex; justify-content: center; align-items: center; gap: 20px">
-    <img src="https://i.imgur.com/rMQSM2p.png" width="15%" style="border-radius: 20%;">
-    <p style="font-size: 36px; margin-top: 10px">stati</p>
+<h1 align="center">
+    <img src="https://i.imgur.com/rMQSM2p.png" style="border-radius: 20%" width="30%" />
+    <p style="margin-top: 10px">stati</p>
 </h1>
 
-<img src="https://i.imgur.com/9Bhw5Fv.png" />
+<img src="https://i.imgur.com/9Bhw5Fv.png" align="center" />
 
 ## Figma design for this app
 
