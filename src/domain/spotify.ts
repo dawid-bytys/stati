@@ -86,7 +86,7 @@ export async function fetchTopItems<T>(
   return data;
 }
 
-export async function fetchRecentlyPlayed(accessToken: string, count = 10) {
+export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
   const data = await fetchWrapper<RecentlyPlayed>({
     url: `https://api.spotify.com/v1/me/player/recently-played?limit=${count}`,
     headers: {

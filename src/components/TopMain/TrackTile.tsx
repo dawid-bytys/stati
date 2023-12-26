@@ -3,13 +3,13 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 
 interface TrackTileProps {
   artist: string;
-  title: string;
+  track: string;
   image: string;
   delay: number;
   rank: number;
 }
 
-export function TrackTile({ artist, title, image, delay, rank }: TrackTileProps) {
+export function TrackTile({ artist, track, image, delay, rank }: TrackTileProps) {
   return (
     <Animated.View
       entering={FadeInUp.delay(delay)}
@@ -21,26 +21,28 @@ export function TrackTile({ artist, title, image, delay, rank }: TrackTileProps)
           style={styles.image}
         />
       </View>
+      <View style={styles.innerMiddle}>
+        <Text
+          style={styles.track}
+          numberOfLines={1}
+        >
+          {track}
+        </Text>
+        <Text
+          style={styles.artist}
+          numberOfLines={1}
+        >
+          {artist}
+        </Text>
+      </View>
       <View style={styles.innerRight}>
-        <View style={styles.innerRightUpper}>
-          <Text style={styles.title}>{title}</Text>
-          <Text
-            style={{
-              ...styles.rank,
-              color:
-                rank === 1
-                  ? '#FFD700'
-                  : rank === 2
-                  ? '#C0C0C0'
-                  : rank === 3
-                  ? '#CD7F32'
-                  : '#6A6A6A',
-            }}
-          >{`#${rank}`}</Text>
-        </View>
-        <View style={styles.innerRightLower}>
-          <Text style={styles.artist}>{artist}</Text>
-        </View>
+        <Text
+          style={{
+            ...styles.rank,
+            color:
+              rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : rank === 3 ? '#CD7F32' : '#6A6A6A',
+          }}
+        >{`#${rank}`}</Text>
       </View>
     </Animated.View>
   );
@@ -57,10 +59,9 @@ const styles = StyleSheet.create({
     height: 60,
   },
   innerRight: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    marginRight: 5,
-    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   artist: {
     fontFamily: 'Poppins-SemiBold',
@@ -72,20 +73,13 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 16,
   },
-  plays: {
-    fontFamily: 'Poppins-SemiBold',
-    color: '#6A6A6A',
-    fontSize: 12,
-  },
-  innerRightUpper: {
+  innerMiddle: {
     justifyContent: 'space-between',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    flexShrink: 1,
+    flexGrow: 1,
   },
-  innerRightLower: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  title: {
+  track: {
     fontFamily: 'Poppins-SemiBold',
     color: '#fff',
     fontSize: 14,

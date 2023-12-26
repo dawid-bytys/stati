@@ -6,12 +6,12 @@ import GraphIcon from '@/assets/svg/graph.svg';
 interface ActivityTileProps {
   image: string;
   artist: string;
-  title: string;
+  track: string;
   delay: number;
   time: string;
 }
 
-export function ActivityTile({ image, artist, title, delay, time }: ActivityTileProps) {
+export function ActivityTile({ image, artist, track, delay, time }: ActivityTileProps) {
   return (
     <Animated.View
       style={{
@@ -28,7 +28,7 @@ export function ActivityTile({ image, artist, title, delay, time }: ActivityTile
           style={styles.titleText}
           numberOfLines={1}
         >
-          {title}
+          {track}
         </Text>
         <Text
           style={styles.artistText}

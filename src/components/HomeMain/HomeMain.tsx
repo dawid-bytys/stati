@@ -50,13 +50,10 @@ export function HomeMain({ data: { recentlyPlayed, topArtists, topTracks } }: Ho
         ))}
       </TopContainer>
       <LatestActivity>
-        {recentlyPlayed.map(({ artist, image, track, time }, i) => (
+        {recentlyPlayed.map((item, i) => (
           <ActivityTile
-            image={image}
-            artist={artist}
+            {...item}
             delay={i * 100}
-            title={track}
-            time={time}
             key={i}
           />
         ))}
