@@ -1,8 +1,3 @@
-<h1 align="center">
-    <img src="https://i.imgur.com/rMQSM2p.png" width="30%" />
-    <p>stati</p>
-</h1>
-
 <img src="https://i.imgur.com/9Bhw5Fv.png" align="center" />
 
 ## Figma design for this app
