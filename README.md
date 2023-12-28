@@ -19,6 +19,6 @@ You need to log in to the web version of the Spotify app and copy a cookie value
 
 ## Demo
 
-<a href="https://i.imgur.com/uuKbfjU.mp4" alt="Demo">
+<a href="https://i.imgur.com/vg3Mrda.mp4" alt="Demo">
     Demo
 </a>
