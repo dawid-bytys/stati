@@ -9,11 +9,12 @@
 
 ## Figma design for this app
 
-https://www.figma.com/file/jQQ6F4as97CozaddAxHajc/Stati?type=design&t=HbZBjWtO6kgfTSFb-6
+<a href="https://www.figma.com/file/jQQ6F4as97CozaddAxHajc/Stati?type=design&t=HbZBjWtO6kgfTSFb-6" alt="Figma design">
+    Figma design
+</a>
 
 ## Demo
 
-<div align="center">
-    <video src="https://i.imgur.com/XMsHOeg.mp4" width="50%" controls="controls">
-    </video>
-</div>
+<a href="https://i.imgur.com/XMsHOeg.mp4" alt="Demo">
+    Demo
+</a>
