@@ -2,12 +2,14 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { StyleSheet, View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 import { AuthStack } from './AuthStack';
 import { Tabs } from './Tabs';
 import { useErrorContext } from '@/hooks/useErrorContext';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { Loading } from '@/components/Loading';
+import { useEffect } from 'react';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -23,9 +25,11 @@ export function Router() {
   const { errorMessage } = useErrorContext();
   const insets = useSafeAreaInsets();
 
-  if (isAuthenticating) {
-    return <Loading />;
-  }
+  useEffect(() => {
+    if (!isAuthenticating) {
+      SplashScreen.hide();
+    }
+  }, [isAuthenticating]);
 
   return (
     <View

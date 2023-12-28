@@ -15,6 +15,6 @@
 
 ## Demo
 
-<a href="https://i.imgur.com/XMsHOeg.mp4" alt="Demo">
+<a href="https://i.imgur.com/uuKbfjU.mp4" alt="Demo">
     Demo
 </a>
