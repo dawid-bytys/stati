@@ -1,5 +1,6 @@
 import Animated, { FadeInLeft } from 'react-native-reanimated';
 import { StyleSheet, Image, View, Text } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 interface TopTileProps {
   image: string;
@@ -10,8 +11,8 @@ interface TopTileProps {
 export function TopTile({ image, title, delay }: TopTileProps) {
   return (
     <Animated.View entering={FadeInLeft.delay(delay)}>
-      <Image
-        source={{ uri: image }}
+      <FastImage
+        source={{ uri: image, priority: FastImage.priority.high }}
         style={styles.image}
       />
       <View style={styles.titleContainer}>
