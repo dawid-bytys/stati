@@ -26,3 +26,7 @@ You need to log in to the web version of the Spotify app and copy a cookie value
 <a href="https://i.imgur.com/vg3Mrda.mp4" alt="Demo">
     Demo
 </a>
+
+## License
+
+<a href="https://github.com/dawid-bytys/stati/LICENSE">MIT</a>
