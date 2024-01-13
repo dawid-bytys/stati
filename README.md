@@ -7,6 +7,10 @@
     <img src="https://i.imgur.com/9Bhw5Fv.png" width="70%">
 </div>
 
+## About
+
+The app was created mostly for me to track Spotify data, but I think it's cool enough that it's worth publishing if anyone would like to build this client for themselves and sideload the app to their iPhone.
+
 ## How to access friends' activity data?
 
 You need to log in to the web version of the Spotify app and copy a cookie value called `sp_dc`. This is necessary because the app uses a non-public endpoint to retrieve this data, which requires this cookie. This is a one-time action. The next time you open the app, we will remember this value.
