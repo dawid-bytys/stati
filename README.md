@@ -29,4 +29,4 @@ You need to log in to the web version of the Spotify app and copy a cookie value
 
 ## License
 
-<a href="https://github.com/dawid-bytys/stati/LICENSE">MIT</a>
+<a href="https://github.com/dawid-bytys/stati/blob/main/LICENSE">MIT</a>
