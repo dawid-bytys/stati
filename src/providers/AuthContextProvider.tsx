@@ -1,7 +1,6 @@
 import type { Tokens } from '@/types';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
-
-import { generateSpotifyAuthURL, fetchTokens } from '@/domain/spotify';
+import { generateSpotifyAuthURL, fetchTokens, refreshTokens } from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { isTokenExpired, parseTokens } from '@/utils';
@@ -26,22 +25,34 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       ]);
 
       if (storedTokens) {
-        const parsedTokens = parseTokens(storedTokens);
+        const { accessToken, refreshToken } = parseTokens(storedTokens);
 
-        if (!isTokenExpired(parsedTokens.expiresIn, parsedTokens.creationDate)) {
-          setTokens(parsedTokens);
+        if (!isTokenExpired(accessToken.expiresIn, accessToken.creationTimestamp)) {
+          setTokens({ accessToken, refreshToken });
           setIsAuthenticated(true);
         } else {
-          logout();
+          const { access_token, refresh_token, expires_in } = await refreshTokens(refreshToken);
+
+          const newTokens = {
+            accessToken: {
+              token: access_token,
+              expiresIn: expires_in,
+              creationTimestamp: Date.now(),
+            },
+            refreshToken: refresh_token,
+          };
+
+          await AsyncStorage.setItem('tokens', JSON.stringify(newTokens));
+          setTokens(newTokens);
         }
-      }
 
-      if (storedSpDcCookie) {
-        setSpDcCookie(storedSpDcCookie);
-      }
+        if (storedSpDcCookie) {
+          setSpDcCookie(storedSpDcCookie);
+        }
 
-      if (webAccessToken) {
-        setWebAccessToken(webAccessToken);
+        if (webAccessToken) {
+          setWebAccessToken(webAccessToken);
+        }
       }
 
       setIsAuthenticating(false);
@@ -74,21 +85,18 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         }
 
         const { access_token, refresh_token, expires_in } = await fetchTokens(code, codeVerifier);
-        await AsyncStorage.setItem(
-          'tokens',
-          JSON.stringify({
-            accessToken: access_token,
-            refreshToken: refresh_token,
+
+        const newTokens = {
+          accessToken: {
+            token: access_token,
             expiresIn: expires_in,
-            creationDate: Date.now(),
-          }),
-        );
-        setTokens({
-          accessToken: access_token,
+            creationTimestamp: Date.now(),
+          },
           refreshToken: refresh_token,
-          expiresIn: expires_in,
-          creationDate: Date.now(),
-        });
+        };
+
+        await AsyncStorage.setItem('tokens', JSON.stringify(newTokens));
+        setTokens(newTokens);
         setIsAuthenticated(true);
       }
     } catch (err) {

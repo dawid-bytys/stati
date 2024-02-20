@@ -6,7 +6,7 @@ import { FilteredArtist } from '@/types';
 import { TopArtists } from '@/types/artists';
 import { filterArtists, mapPeriodToSpotifyPeriod } from '@/utils';
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
 interface TopArtistsScreenProps {
   route: any;
@@ -33,7 +33,7 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
 
     if (tokens) {
       setData(null);
-      loadData(tokens.accessToken);
+      loadData(tokens.accessToken.token);
     }
   }, [period]);
 
@@ -42,23 +42,22 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
   }
 
   return (
-    <ScrollView
+    <FlatList
+      data={data}
+      keyExtractor={(item) => item.artist}
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         rowGap: 20,
       }}
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-    >
-      {data.map(({ artist, image }, i) => (
+      renderItem={({ item, index }) => (
         <ArtistTile
-          delay={i * 100}
-          artist={artist}
-          image={image}
-          rank={i + 1}
-          key={i}
+          {...item}
+          delay={index * 100}
+          rank={index + 1}
         />
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 }
 

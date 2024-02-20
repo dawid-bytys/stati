@@ -3,27 +3,24 @@ import { ActivityTile } from './ActivityTile';
 import { FilteredRecentlyPlayed } from '@/types';
 
 interface LatestActivityProps {
-  recentlyPlayed: FilteredRecentlyPlayed[];
+  data: FilteredRecentlyPlayed[];
 }
 
-export function LatestActivitySection({ recentlyPlayed }: LatestActivityProps) {
+export function LatestActivitySection({ data }: LatestActivityProps) {
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.titleText}>Latest activity</Text>
       </View>
-      <FlatList
-        data={recentlyPlayed}
-        contentContainerStyle={{ gap: 20 }}
-        style={styles.innerLower}
-        keyExtractor={({ image, time }) => image + time}
-        renderItem={({ item, index }) => (
+      <View style={styles.innerLower}>
+        {data.map((item, idx) => (
           <ActivityTile
             {...item}
-            delay={index * 100}
+            key={item.track + idx}
+            delay={idx * 100}
           />
-        )}
-      />
+        ))}
+      </View>
     </View>
   );
 }
@@ -48,5 +45,7 @@ const styles = StyleSheet.create({
   },
   innerLower: {
     marginTop: 20,
+    flexDirection: 'column',
+    gap: 14,
   },
 });

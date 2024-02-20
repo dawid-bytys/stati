@@ -1,16 +1,16 @@
 import type { NavigationProp } from '@react-navigation/native';
 import type { FilteredArtist, FilteredTrack, TabNavigatorParamList } from '@/types';
-
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TopTile } from './TopTile';
 
 interface TopProps {
-  data: FilteredTrack[] | FilteredArtist[];
   title: string;
+  tracks?: FilteredTrack[];
+  artists?: FilteredArtist[];
 }
 
-export function TopSection({ title, data }: TopProps) {
+export function TopSection({ title, tracks, artists }: TopProps) {
   const navigation = useNavigation<NavigationProp<TabNavigatorParamList>>();
 
   function handleNavigation() {
@@ -28,18 +28,35 @@ export function TopSection({ title, data }: TopProps) {
           <Text style={styles.redirectBtnText}>see more</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.innerLower}>
-        {data.map(({ image, artist }, idx) => (
-          <TopTile
-            key={image}
-            image={image}
-            title={artist}
-            delay={idx * 100}
-          />
-        ))}
-      </View>
+      <View style={styles.innerLower}>{renderTiles(tracks, artists)}</View>
     </View>
   );
+}
+
+function renderTiles(tracks?: FilteredTrack[], artists?: FilteredArtist[]) {
+  if (tracks) {
+    return tracks.map((item, idx) => (
+      <TopTile
+        title={item.track}
+        image={item.image}
+        key={item.image + idx}
+        delay={idx * 100}
+      />
+    ));
+  }
+
+  if (artists) {
+    return artists.map((item, idx) => (
+      <TopTile
+        title={item.artist}
+        image={item.image}
+        key={item.image + idx}
+        delay={idx * 100}
+      />
+    ));
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({

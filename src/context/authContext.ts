@@ -2,10 +2,12 @@ import { createContext } from 'react';
 
 interface AuthContext {
   tokens: {
+    accessToken: {
+      token: string;
+      expiresIn: number;
+      creationTimestamp: number;
+    };
     refreshToken: string;
-    accessToken: string;
-    creationDate: number;
-    expiresIn: number;
   } | null;
   setWebAccessToken: (token: string | null) => void;
   setSpDcCookie: (cookie: string | null) => void;

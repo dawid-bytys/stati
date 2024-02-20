@@ -34,7 +34,7 @@ export function TopTracksScreen({ route }: TopTracksScreenProps) {
 
     if (tokens) {
       setData(null);
-      loadData(tokens.accessToken);
+      loadData(tokens.accessToken.token);
     }
   }, [period]);
 

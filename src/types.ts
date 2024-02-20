@@ -64,10 +64,12 @@ export interface FilteredFriendActivity {
 }
 
 export interface Tokens {
+  accessToken: {
+    token: string;
+    expiresIn: number;
+    creationTimestamp: number;
+  };
   refreshToken: string;
-  accessToken: string;
-  creationDate: number;
-  expiresIn: number;
 }
 
 export interface TopTracks {

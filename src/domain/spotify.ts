@@ -69,6 +69,22 @@ export async function fetchTokens(code: string, codeVerifier: string) {
   return response.json();
 }
 
+export async function refreshTokens(refreshToken: string) {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    body: new URLSearchParams({
+      client_id: '8d59d667427a435a8fdb10eb53f77501',
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }).toString(),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+  });
+
+  return response.json();
+}
+
 export async function fetchTopItems<T>(
   accessToken: string,
   type: 'tracks' | 'artists',

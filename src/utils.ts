@@ -16,15 +16,15 @@ export function generateBasicAuthHeader(clientId: string, clientSecret: string) 
   return Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 }
 
-export function isTokenExpired(expiresIn: number, creationDate: number) {
-  const expirationDate = new Date(creationDate + expiresIn * 1000);
+export function isTokenExpired(expiresIn: number, creationTimestamp: number) {
+  const expirationDate = new Date(creationTimestamp + expiresIn * 1000);
   return expirationDate.getTime() < Date.now();
 }
 
-export function parseTokens(tokensString: string): Tokens {
-  const tokens = JSON.parse(tokensString);
-  tokens.creationDate = Number(tokens.creationDate);
-  tokens.expiresIn = Number(tokens.expiresIn);
+export function parseTokens(tokensString: string) {
+  const tokens: Tokens = JSON.parse(tokensString);
+  tokens.accessToken.creationTimestamp = Number(tokens.accessToken.creationTimestamp);
+  tokens.accessToken.expiresIn = Number(tokens.accessToken.expiresIn);
   return tokens;
 }
 

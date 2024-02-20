@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { filterFriendsActivity } from '@/utils';
 import { Loading } from '@/components/Loading';
 import { useEffect, useState } from 'react';
-import { RefreshControl, StyleSheet, FlatList, View } from 'react-native';
+import { RefreshControl, StyleSheet, FlatList } from 'react-native';
 import { useErrorContext } from '@/hooks/useErrorContext';
 import { FriendTile } from '@/components/FriendTile';
 

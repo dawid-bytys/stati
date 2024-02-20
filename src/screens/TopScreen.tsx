@@ -48,7 +48,7 @@ export function TopScreen() {
       />
       <TopStack />
       <Navigation
-        tabs={['artists', 'tracks', 'albums']}
+        tabs={['artists', 'tracks']}
         currentTab={params.currentContent}
         onClick={handleContentChange}
         type="content"

@@ -1,14 +1,15 @@
 import type { FilteredRecentlyPlayed, FilteredArtist, FilteredTrack } from '@/types';
-
 import type { TopArtists } from '@/types/artists';
 import type { TopTracks } from '@/types/tracks';
-
 import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify';
 import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils';
-import { HomeMain } from '@/components/HomeMain/HomeMain';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { Loading } from '@/components/Loading';
 import { useEffect, useState } from 'react';
+import { GreetingSection } from '@/components/HomeMain/GreetingSection';
+import { LatestActivitySection } from '@/components/HomeMain/LatestActivitySection';
+import { TopSection } from '@/components/HomeMain/TopSection';
+import { ScrollView, StyleSheet } from 'react-native';
 
 interface TopData {
   recentlyPlayed: FilteredRecentlyPlayed[];
@@ -29,10 +30,10 @@ export function HomeScreen() {
 
         const filteredArtists = filterArtists(topArtists);
         const filteredTracks = filterTracks(topTracks);
-        const FilteredRecentlyPlayed = filterRecentlyPlayed(recentlyPlayed);
+        const filteredRecentlyPlayed = filterRecentlyPlayed(recentlyPlayed);
 
         setData({
-          recentlyPlayed: FilteredRecentlyPlayed,
+          recentlyPlayed: filteredRecentlyPlayed,
           topArtists: filteredArtists,
           topTracks: filteredTracks,
         });
@@ -44,13 +45,36 @@ export function HomeScreen() {
     }
 
     if (tokens) {
-      loadTopContent(tokens.accessToken);
+      loadTopContent(tokens.accessToken.token);
     }
-  }, [tokens]);
+  }, []);
 
   if (!data) {
     return <Loading />;
   }
 
-  return <HomeMain data={data} />;
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={styles.container}
+    >
+      <GreetingSection />
+      <TopSection
+        title="Top artists"
+        artists={data.topArtists}
+      />
+      <TopSection
+        title="Top tracks"
+        tracks={data.topTracks}
+      />
+      <LatestActivitySection data={data.recentlyPlayed} />
+    </ScrollView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 25,
+    flex: 1,
+  },
+});
