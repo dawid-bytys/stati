@@ -10,7 +10,7 @@ interface TopProps {
   title: string;
 }
 
-export function TopContainer({ title, data }: TopProps) {
+export function TopSection({ title, data }: TopProps) {
   const navigation = useNavigation<NavigationProp<TabNavigatorParamList>>();
 
   function handleNavigation() {

@@ -1,8 +1,8 @@
 import type { FilteredRecentlyPlayed, FilteredArtist, FilteredTrack } from '@/types';
 import { ScrollView, StyleSheet } from 'react-native';
-import { GreetingMessage } from './GreetingMessage';
-import { LatestActivity } from './LatestActivity';
-import { TopContainer } from './TopContainer';
+import { GreetingSection } from './GreetingSection';
+import { LatestActivitySection } from './LatestActivitySection';
+import { TopSection } from './TopSection';
 
 interface HomeMainProps {
   data: {
@@ -18,16 +18,16 @@ export function HomeMain({ data: { recentlyPlayed, topArtists, topTracks } }: Ho
       showsVerticalScrollIndicator={false}
       style={styles.container}
     >
-      <GreetingMessage />
-      <TopContainer
+      <GreetingSection />
+      <TopSection
         title="Top artists"
         data={topArtists}
       />
-      <TopContainer
+      <TopSection
         title="Top tracks"
         data={topTracks}
       />
-      <LatestActivity recentlyPlayed={recentlyPlayed} />
+      <LatestActivitySection recentlyPlayed={recentlyPlayed} />
     </ScrollView>
   );
 }

@@ -2,7 +2,7 @@ import Animated, { FadeInLeft } from 'react-native-reanimated';
 import { StyleSheet, Text } from 'react-native';
 import { getGreetingMessages } from '@/utils';
 
-export function GreetingMessage() {
+export function GreetingSection() {
   const [greeting, message] = getGreetingMessages();
 
   return (

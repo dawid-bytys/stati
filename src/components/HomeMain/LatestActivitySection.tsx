@@ -6,7 +6,7 @@ interface LatestActivityProps {
   recentlyPlayed: FilteredRecentlyPlayed[];
 }
 
-export function LatestActivity({ recentlyPlayed }: LatestActivityProps) {
+export function LatestActivitySection({ recentlyPlayed }: LatestActivityProps) {
   return (
     <View style={styles.container}>
       <View>
