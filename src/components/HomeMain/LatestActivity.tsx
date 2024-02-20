@@ -1,24 +1,29 @@
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { ActivityTile } from './ActivityTile';
+import { FilteredRecentlyPlayed } from '@/types';
 
 interface LatestActivityProps {
-  children: React.ReactNode;
+  recentlyPlayed: FilteredRecentlyPlayed[];
 }
 
-export function LatestActivity({ children }: LatestActivityProps) {
+export function LatestActivity({ recentlyPlayed }: LatestActivityProps) {
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.titleText}>Latest activity</Text>
       </View>
-      <ScrollView
-        contentContainerStyle={{
-          gap: 20,
-        }}
-        nestedScrollEnabled={true}
+      <FlatList
+        data={recentlyPlayed}
+        contentContainerStyle={{ gap: 20 }}
         style={styles.innerLower}
-      >
-        {children}
-      </ScrollView>
+        keyExtractor={({ image, time }) => image + time}
+        renderItem={({ item, index }) => (
+          <ActivityTile
+            {...item}
+            delay={index * 100}
+          />
+        )}
+      />
     </View>
   );
 }

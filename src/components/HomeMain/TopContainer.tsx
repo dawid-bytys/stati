@@ -1,16 +1,16 @@
 import type { NavigationProp } from '@react-navigation/native';
-import type { TabNavigatorParamList } from '@/types';
+import type { FilteredArtist, FilteredTrack, TabNavigatorParamList } from '@/types';
 
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { TopTile } from './TopTile';
 
 interface TopProps {
-  children: React.ReactNode;
-  delay?: number;
+  data: FilteredTrack[] | FilteredArtist[];
   title: string;
 }
 
-export function TopContainer({ children, title }: TopProps) {
+export function TopContainer({ title, data }: TopProps) {
   const navigation = useNavigation<NavigationProp<TabNavigatorParamList>>();
 
   function handleNavigation() {
@@ -28,7 +28,16 @@ export function TopContainer({ children, title }: TopProps) {
           <Text style={styles.redirectBtnText}>see more</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.innerLower}>{children}</View>
+      <View style={styles.innerLower}>
+        {data.map(({ image, artist }, idx) => (
+          <TopTile
+            key={image}
+            image={image}
+            title={artist}
+            delay={idx * 100}
+          />
+        ))}
+      </View>
     </View>
   );
 }

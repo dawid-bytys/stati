@@ -4,7 +4,7 @@ import PlaylistIcon from '@/assets/svg/playlist.svg';
 import AlbumIcon from '@/assets/svg/album.svg';
 import GraphIcon from '@/assets/svg/graph.svg';
 import DotIcon from '@/assets/svg/dot.svg';
-import { AnimatedIcon } from '../AnimatedIcon';
+import { AnimatedIcon } from './AnimatedIcon';
 
 interface FriendTileProps {
   context: {
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     columnGap: 15,
-    marginBottom: 50,
     height: 60,
   },
   innerRightMiddle: {
