@@ -22,7 +22,7 @@ You need to log in to the web version of the Spotify app and copy a cookie value
 3. Use Command + Option + I (Mac) or Control + Shift + I or F12 to open the browser's developer tools.
 4. Access the "Storage" section within the developer tools menu.
 5. Locate and copy the value of "sp_dc" cookie.
-6. Ensure to close the window without logging out to keep the cookies valid.
+6. Ensure to close the window without logging out to keep the cookie valid.
 
 ## Figma design for this app
 
