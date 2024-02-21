@@ -9,15 +9,17 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 
 interface TopArtistsScreenProps {
-  route: any;
+  route: {
+    params: {
+      period: 'short_term' | 'medium_term' | 'long_term';
+    };
+  };
 }
 
 export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
   const [data, setData] = useState<FilteredArtist[] | null>(null);
   const { tokens } = useAuthContext();
-  const {
-    params: { period },
-  } = route;
+  const { period } = route.params;
 
   useEffect(() => {
     async function loadData(accessToken: string) {
@@ -32,7 +34,6 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
     }
 
     if (tokens) {
-      setData(null);
       loadData(tokens.accessToken.token);
     }
   }, [period]);
@@ -63,7 +64,6 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
+    paddingHorizontal: 25,
   },
 });

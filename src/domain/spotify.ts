@@ -1,6 +1,6 @@
 import type { RecentlyPlayed } from '@/types/activity';
 
-import type { FriendsActivity } from '@/types';
+import type { FriendsActivity, WebAccessTokenResponse } from '@/types';
 
 interface FetchWrapperOptions {
   headers?: Record<string, string>;
@@ -115,9 +115,11 @@ export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
 }
 
 export async function fetchWebAccessToken(spDcCookie: string) {
-  const data = await fetchWrapper<{ isAnonymous: boolean; accessToken: string }>({
+  const data = await fetchWrapper<WebAccessTokenResponse>({
     headers: {
       Cookie: `sp_dc=${spDcCookie}`,
+      'User-Agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0',
     },
     url: 'https://open.spotify.com/get_access_token?reason=transport&productType=web_player',
     method: 'GET',

@@ -10,11 +10,21 @@ interface TopProps {
   artists?: FilteredArtist[];
 }
 
+type NavigationTabsParamList = {
+  Top: {
+    screen: 'artists' | 'tracks';
+  };
+};
+
 export function TopSection({ title, tracks, artists }: TopProps) {
-  const navigation = useNavigation<NavigationProp<TabNavigatorParamList>>();
+  const navigation = useNavigation<NavigationProp<NavigationTabsParamList>>();
 
   function handleNavigation() {
-    navigation.navigate('Top');
+    if (title === 'Top tracks') {
+      navigation.navigate('Top', { screen: 'tracks' });
+    } else {
+      navigation.navigate('Top', { screen: 'artists' });
+    }
   }
 
   return (

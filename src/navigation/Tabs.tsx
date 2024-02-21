@@ -1,6 +1,4 @@
-import type { TabNavigatorParamList } from '@/types';
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen';
 import { StyleSheet, View, Text } from 'react-native';
 import { SearchScreen } from '@/screens/SearchScreen';
@@ -10,53 +8,46 @@ import SearchIcon from '@/assets/svg/search.svg';
 import { TopScreen } from '@/screens/TopScreen';
 import ChartIcon from '@/assets/svg/chart.svg';
 import HomeIcon from '@/assets/svg/home.svg';
+import { TabNavigatorParamList } from '@/types';
 
-const Tab = createBottomTabNavigator<TabNavigatorParamList>();
-
-interface TabButtonProps {
-  screenName: string;
-  isFocused: boolean;
-  iconName: string;
-}
-
-function TabButton({ screenName, isFocused, iconName }: TabButtonProps) {
-  return (
-    <View style={styles.container}>
-      {getTabIcon(isFocused, iconName)}
-      <Text
-        style={{
-          ...styles.screenNameText,
-          color: isFocused ? '#8B8888' : '#2A2A2A',
-        }}
-      >
-        {screenName}
-      </Text>
-    </View>
-  );
-}
+const Tab = createMaterialTopTabNavigator<TabNavigatorParamList>();
 
 export function Tabs() {
   return (
     <Tab.Navigator
+      tabBarPosition="bottom"
       screenOptions={{
+        lazy: true,
+        swipeEnabled: false,
         tabBarStyle: {
+          padding: 0,
           backgroundColor: '#121212',
           borderTopColor: '#2A2A2A',
-          paddingTop: 10,
+          borderTopWidth: 1,
+          height: 60,
         },
-        tabBarShowLabel: false,
-        headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: 'none',
+          fontFamily: 'Poppins-Medium',
+          fontSize: 10,
+          marginTop: 5,
+          width: '100%',
+          alignSelf: 'center',
+        },
+        tabBarInactiveTintColor: '#2A2A2A',
+        tabBarActiveTintColor: '#8B8888',
+        tabBarIndicatorStyle: {
+          display: 'none',
+        },
       }}
       initialRouteName="Home"
     >
       <Tab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabButton
-              isFocused={focused}
-              screenName="Home"
-              iconName="Home"
-            />
+          tabBarIcon: ({ color }) => (
+            <IconContainer>
+              <HomeIcon fill={color} />
+            </IconContainer>
           ),
         }}
         component={HomeScreen}
@@ -64,12 +55,10 @@ export function Tabs() {
       />
       <Tab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabButton
-              isFocused={focused}
-              screenName="Top"
-              iconName="Chart"
-            />
+          tabBarIcon: ({ color }) => (
+            <IconContainer>
+              <ChartIcon fill={color} />
+            </IconContainer>
           ),
         }}
         component={TopScreen}
@@ -77,25 +66,21 @@ export function Tabs() {
       />
       <Tab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabButton
-              screenName="Friends activity"
-              isFocused={focused}
-              iconName="Friends"
-            />
+          tabBarIcon: ({ color }) => (
+            <IconContainer>
+              <FriendIcon fill={color} />
+            </IconContainer>
           ),
         }}
         component={FriendsActivityScreen}
-        name="Friends"
+        name="Friends' activity"
       />
       <Tab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabButton
-              screenName="Search"
-              isFocused={focused}
-              iconName="Search"
-            />
+          tabBarIcon: ({ color }) => (
+            <IconContainer>
+              <SearchIcon fill={color} />
+            </IconContainer>
           ),
         }}
         component={SearchScreen}
@@ -105,32 +90,13 @@ export function Tabs() {
   );
 }
 
+function IconContainer({ children }: { children: React.ReactNode }) {
+  return <View style={styles.iconContainer}>{children}</View>;
+}
+
 const styles = StyleSheet.create({
-  screenNameText: {
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-    marginTop: 3,
-    fontSize: 8,
-  },
-  container: {
-    flexDirection: 'column',
+  iconContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });
-
-function getTabIcon(isFocused: boolean, iconName: string) {
-  const color = isFocused ? '#8B8888' : '#2A2A2A';
-
-  switch (iconName) {
-    case 'Home':
-      return <HomeIcon fill={color} />;
-    case 'Chart':
-      return <ChartIcon fill={color} />;
-    case 'Friends':
-      return <FriendIcon fill={color} />;
-    case 'Search':
-      return <SearchIcon fill={color} />;
-    default:
-      return null;
-  }
-}

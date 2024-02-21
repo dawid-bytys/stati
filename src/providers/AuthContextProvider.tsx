@@ -1,9 +1,14 @@
-import type { Tokens } from '@/types';
+import type { Tokens, WebAccessToken } from '@/types';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
-import { generateSpotifyAuthURL, fetchTokens, refreshTokens } from '@/domain/spotify';
+import {
+  generateSpotifyAuthURL,
+  fetchTokens,
+  refreshTokens,
+  fetchWebAccessToken,
+} from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
-import { isTokenExpired, parseTokens } from '@/utils';
+import { isTokenExpired, isWebAccessTokenExpired, parseTokens, parseWebAccessToken } from '@/utils';
 import { AuthContext } from '@/context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL } from 'react-native-url-polyfill';
@@ -14,11 +19,11 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [spDcCookie, setSpDcCookie] = useState<string | null>(null);
-  const [webAccessToken, setWebAccessToken] = useState<string | null>(null);
+  const [webAccessToken, setWebAccessToken] = useState<WebAccessToken | null>(null);
 
   useEffect(() => {
     async function loadStore() {
-      const [storedTokens, storedSpDcCookie, webAccessToken] = await Promise.all([
+      const [storedTokens, storedSpDcCookie, storedWebAccessToken] = await Promise.all([
         AsyncStorage.getItem('tokens'),
         AsyncStorage.getItem('spDcCookie'),
         AsyncStorage.getItem('webAccessToken'),
@@ -29,7 +34,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
         if (!isTokenExpired(accessToken.expiresIn, accessToken.creationTimestamp)) {
           setTokens({ accessToken, refreshToken });
-          setIsAuthenticated(true);
         } else {
           const { access_token, refresh_token, expires_in } = await refreshTokens(refreshToken);
 
@@ -46,13 +50,27 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
           setTokens(newTokens);
         }
 
-        if (storedSpDcCookie) {
-          setSpDcCookie(storedSpDcCookie);
+        if (storedSpDcCookie && storedWebAccessToken) {
+          const { token, expirationTimestamp } = parseWebAccessToken(storedWebAccessToken);
+
+          if (!isWebAccessTokenExpired(expirationTimestamp)) {
+            setWebAccessToken({ token, expirationTimestamp });
+          } else {
+            const { accessToken, isAnonymous, accessTokenExpirationTimestampMs } =
+              await fetchWebAccessToken(storedSpDcCookie);
+
+            if (!isAnonymous) {
+              await AsyncStorage.setItem('webAccessToken', accessToken);
+              setSpDcCookie(storedSpDcCookie);
+              setWebAccessToken({
+                token: accessToken,
+                expirationTimestamp: accessTokenExpirationTimestampMs,
+              });
+            }
+          }
         }
 
-        if (webAccessToken) {
-          setWebAccessToken(webAccessToken);
-        }
+        setIsAuthenticated(true);
       }
 
       setIsAuthenticating(false);

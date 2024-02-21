@@ -7,6 +7,7 @@ import type {
   FilteredArtist,
   FilteredTrack,
   Tokens,
+  WebAccessToken,
 } from './types';
 import type { RecentlyPlayed } from './types/activity';
 import type { TopArtists } from './types/artists';
@@ -21,11 +22,21 @@ export function isTokenExpired(expiresIn: number, creationTimestamp: number) {
   return expirationDate.getTime() < Date.now();
 }
 
-export function parseTokens(tokensString: string) {
+export function isWebAccessTokenExpired(expirationTimestamp: number) {
+  return expirationTimestamp < Date.now();
+}
+
+export function parseTokens(tokensString: string): Tokens {
   const tokens: Tokens = JSON.parse(tokensString);
   tokens.accessToken.creationTimestamp = Number(tokens.accessToken.creationTimestamp);
   tokens.accessToken.expiresIn = Number(tokens.accessToken.expiresIn);
   return tokens;
+}
+
+export function parseWebAccessToken(webAccessTokenString: string): WebAccessToken {
+  const webAccessToken = JSON.parse(webAccessTokenString);
+  webAccessToken.expirationTimestamp = Number(webAccessToken.accessTokenExpirationTimestampMs);
+  return webAccessToken;
 }
 
 export function getGreetingMessages() {

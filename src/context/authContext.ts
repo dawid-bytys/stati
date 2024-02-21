@@ -1,3 +1,4 @@
+import { WebAccessToken } from '@/types';
 import { createContext } from 'react';
 
 interface AuthContext {
@@ -9,10 +10,10 @@ interface AuthContext {
     };
     refreshToken: string;
   } | null;
-  setWebAccessToken: (token: string | null) => void;
+  setWebAccessToken: (webAccessToken: WebAccessToken) => void;
   setSpDcCookie: (cookie: string | null) => void;
   obtainAccessToken: () => Promise<void>;
-  webAccessToken: string | null;
+  webAccessToken: WebAccessToken | null;
   logout: () => Promise<void>;
   isAuthenticating: boolean;
   spDcCookie: string | null;

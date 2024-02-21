@@ -2,23 +2,25 @@ export type AuthStackParamList = {
   Welcome: undefined;
 };
 
+export interface WebAccessToken {
+  token: string;
+  expirationTimestamp: number;
+}
+
 export type TabNavigatorParamList = {
-  Friends: undefined;
+  "Friends' activity": undefined;
   Search: undefined;
   Home: undefined;
-  Top: undefined;
-};
-
-export type TopStackParamList = {
-  TopTracks: {
-    period: string;
-  };
-  TopArtists: {
-    period: string;
+  Top: {
+    content: 'artists' | 'tracks';
   };
 };
 
-export type CustomParamList = AuthStackParamList & TabNavigatorParamList;
+export interface WebAccessTokenResponse {
+  accessToken: string;
+  isAnonymous: boolean;
+  accessTokenExpirationTimestampMs: number;
+}
 
 export interface FriendsActivity {
   friends: Friend[];

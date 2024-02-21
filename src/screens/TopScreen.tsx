@@ -1,68 +1,54 @@
-import { Navigation } from '@/components/TopMain/Navigation';
-import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
-import { TopStack } from '@/navigation/TopStack';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { TopStackParamList } from '@/types';
-import { mapContentToScreen, mapPeriodToSpotifyPeriod } from '@/utils';
+import { TopScreenPeriod } from './TopScreenPeriod';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-interface TopScreenParams {
-  currentContent: string;
-  currentPeriod: string;
-}
+type ContentTabsParamList = {
+  artists: { content: 'artists' };
+  tracks: { content: 'tracks' };
+};
+
+const ContentTabs = createMaterialTopTabNavigator<ContentTabsParamList>();
 
 export function TopScreen() {
-  const [params, setParams] = useState<TopScreenParams>({
-    currentPeriod: '4 weeks',
-    currentContent: 'artists',
-  });
-  const navigation = useNavigation<NavigationProp<TopStackParamList>>();
-
-  function handlePeriodChange(period: string) {
-    setParams({ ...params, currentPeriod: period });
-
-    const screenName = mapContentToScreen(params.currentContent);
-
-    navigation.navigate(screenName, {
-      period: mapPeriodToSpotifyPeriod(period),
-    });
-  }
-
-  function handleContentChange(content: string) {
-    setParams({ ...params, currentContent: content });
-
-    const screenName = mapContentToScreen(content);
-
-    navigation.navigate(screenName, {
-      period: mapPeriodToSpotifyPeriod(params.currentPeriod),
-    });
-  }
-
   return (
-    <View style={styles.container}>
-      <Navigation
-        tabs={['4 weeks', '6 months', 'all time']}
-        currentTab={params.currentPeriod}
-        onClick={handlePeriodChange}
-        type="period"
+    <ContentTabs.Navigator
+      initialRouteName="artists"
+      tabBarPosition="bottom"
+      screenOptions={{
+        swipeEnabled: false,
+        lazy: true,
+        tabBarIconStyle: { display: 'none' },
+        tabBarStyle: {
+          backgroundColor: '#121212',
+          marginHorizontal: 25,
+          marginVertical: 20,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Poppins-Medium',
+          textTransform: 'none',
+        },
+        tabBarIndicatorStyle: {
+          borderRadius: 100,
+          backgroundColor: '#2D2D2D',
+          height: '100%',
+        },
+        tabBarItemStyle: {
+          alignContent: 'center',
+          justifyContent: 'center',
+          padding: 0,
+          minHeight: 30,
+        },
+      }}
+    >
+      <ContentTabs.Screen
+        name="artists"
+        component={TopScreenPeriod}
+        initialParams={{ content: 'artists' }}
       />
-      <TopStack />
-      <Navigation
-        tabs={['artists', 'tracks']}
-        currentTab={params.currentContent}
-        onClick={handleContentChange}
-        type="content"
-        currentPeriod={params.currentPeriod}
+      <ContentTabs.Screen
+        name="tracks"
+        component={TopScreenPeriod}
+        initialParams={{ content: 'tracks' }}
       />
-    </View>
+    </ContentTabs.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    paddingHorizontal: 25,
-    flex: 1,
-  },
-});
