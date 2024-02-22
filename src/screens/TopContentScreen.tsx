@@ -66,6 +66,11 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
     }
   }, [offset, isLoading]);
 
+  const handleRefresh = useCallback(() => {
+    setOffset(0);
+    setData(null);
+  }, []);
+
   const loadData = useCallback(async (offset = 0) => {
     setIsLoading(true);
 
@@ -112,9 +117,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
         refreshControl={
           <RefreshControl
             refreshing={data === null}
-            onRefresh={() => {
-              setData(null);
-            }}
+            onRefresh={handleRefresh}
           />
         }
         onEndReached={handleLoadMore}
@@ -136,9 +139,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
       refreshControl={
         <RefreshControl
           refreshing={data === null}
-          onRefresh={() => {
-            setData(null);
-          }}
+          onRefresh={handleRefresh}
         />
       }
       onEndReached={handleLoadMore}
