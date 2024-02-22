@@ -1,6 +1,14 @@
 import type { RecentlyPlayed } from '@/types/activity';
 
-import type { FriendsActivity, WebAccessTokenResponse } from '@/types';
+import type {
+  FilteredArtist,
+  FilteredTrack,
+  FriendsActivity,
+  WebAccessTokenResponse,
+} from '@/types';
+import type { TopTracks } from '@/types/tracks';
+import type { TopArtists } from '@/types/artists';
+import { filterArtists, filterRecentlyPlayed, filterTracks } from '@/utils';
 
 interface FetchWrapperOptions {
   headers?: Record<string, string>;
@@ -92,7 +100,7 @@ export async function fetchTopItems<T>(
   offset = 0,
   limit = 4,
 ) {
-  const data = await fetchWrapper<T>({
+  const data = await fetchWrapper<TopArtists | TopTracks>({
     url: `https://api.spotify.com/v1/me/top/${type}?limit=${limit}&time_range=${period}&offset=${offset}`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -100,7 +108,11 @@ export async function fetchTopItems<T>(
     method: 'GET',
   });
 
-  return data;
+  if (type === 'tracks') {
+    return filterTracks(data as TopTracks) as T;
+  }
+
+  return filterArtists(data as TopArtists) as T;
 }
 
 export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
@@ -112,7 +124,7 @@ export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
     method: 'GET',
   });
 
-  return data;
+  return filterRecentlyPlayed(data);
 }
 
 export async function fetchWebAccessToken(spDcCookie: string) {

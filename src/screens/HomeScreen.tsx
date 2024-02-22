@@ -24,18 +24,18 @@ export function HomeScreen() {
   useEffect(() => {
     async function loadTopContent() {
       try {
-        const topArtists = await fetchTopItems<TopArtists>(accessToken, 'artists', 'short_term');
-        const topTracks = await fetchTopItems<TopTracks>(accessToken, 'tracks', 'short_term');
+        const topArtists = await fetchTopItems<FilteredArtist[]>(
+          accessToken,
+          'artists',
+          'short_term',
+        );
+        const topTracks = await fetchTopItems<FilteredTrack[]>(accessToken, 'tracks', 'short_term');
         const recentlyPlayed = await fetchRecentlyPlayed(accessToken);
 
-        const filteredArtists = filterArtists(topArtists);
-        const filteredTracks = filterTracks(topTracks);
-        const filteredRecentlyPlayed = filterRecentlyPlayed(recentlyPlayed);
-
         setData({
-          recentlyPlayed: filteredRecentlyPlayed,
-          topArtists: filteredArtists,
-          topTracks: filteredTracks,
+          recentlyPlayed,
+          topArtists,
+          topTracks,
         });
       } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorized') {

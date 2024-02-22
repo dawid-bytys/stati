@@ -19,11 +19,9 @@ interface TopContentScreenProps {
   };
 }
 
-export function TopContentScreen<T extends FilteredArtist | FilteredTrack>({
-  route,
-}: TopContentScreenProps) {
+export function TopContentScreen({ route }: TopContentScreenProps) {
   const { content, period } = route.params;
-  const [data, setData] = useState<T[] | null>(null);
+  const [data, setData] = useState<(FilteredArtist | FilteredTrack)[] | null>(null);
   const { accessToken } = useAuthContext();
   const { setErrorMessage } = useErrorContext();
   const [offset, setOffset] = useState(0);
@@ -32,22 +30,25 @@ export function TopContentScreen<T extends FilteredArtist | FilteredTrack>({
   const loadData = useCallback(
     async (offset = 0) => {
       setIsLoading(true);
+
       try {
-        const topContent = await fetchTopItems<T>(accessToken, content, period, offset, 10);
+        const topContent = await fetchTopItems<FilteredArtist[] | FilteredTrack[]>(
+          accessToken,
+          content,
+          period,
+          offset,
+          10,
+        );
 
-        if (content === 'artists') {
-          const filteredArtists = filterArtists(topContent as unknown as TopArtists);
-          setData((prevData) =>
-            prevData ? [...prevData, ...(filteredArtists as T[])] : (filteredArtists as T[]),
-          );
-        } else {
-          const filteredTracks = filterTracks(topContent as unknown as TopTracks);
-          setData((prevData) =>
-            prevData ? [...prevData, ...(filteredTracks as T[])] : (filteredTracks as T[]),
-          );
-        }
+        setData((prevData) => {
+          if (prevData) {
+            return [...prevData, ...topContent];
+          }
 
-        setOffset(offset + 10);
+          return topContent;
+        });
+
+        setOffset((prevOffset) => prevOffset + 10);
       } catch (err) {
         if (err instanceof Error) {
           setErrorMessage(err.message);
@@ -96,7 +97,7 @@ export function TopContentScreen<T extends FilteredArtist | FilteredTrack>({
         renderItem={({ item, index }) => (
           <TrackTile
             {...item}
-            delay={index * 100}
+            delay={(index - offset) * 100}
             rank={index + 1}
           />
         )}
@@ -130,7 +131,7 @@ export function TopContentScreen<T extends FilteredArtist | FilteredTrack>({
       renderItem={({ item, index }) => (
         <ArtistTile
           {...item}
-          delay={index * 100}
+          delay={(index - offset) * 100}
           rank={index + 1}
         />
       )}
