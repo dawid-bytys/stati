@@ -2,21 +2,14 @@ import { WebAccessToken } from '@/types';
 import { createContext } from 'react';
 
 interface AuthContext {
-  tokens: {
-    accessToken: {
-      token: string;
-      expiresIn: number;
-      creationTimestamp: number;
-    };
-    refreshToken: string;
-  } | null;
+  accessToken: string;
   setWebAccessToken: (webAccessToken: WebAccessToken) => void;
-  setSpDcCookie: (cookie: string | null) => void;
+  setSpDcCookie: (cookie: string) => void;
   obtainAccessToken: () => Promise<void>;
-  webAccessToken: WebAccessToken | null;
+  webAccessToken: string;
   logout: () => Promise<void>;
   isAuthenticating: boolean;
-  spDcCookie: string | null;
+  spDcCookie: string;
   isAuthenticated: boolean;
 }
 

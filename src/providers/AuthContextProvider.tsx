@@ -8,53 +8,76 @@ import {
 } from '@/domain/spotify';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
-import { isTokenExpired, isWebAccessTokenExpired, parseTokens, parseWebAccessToken } from '@/utils';
+import {
+  isTokenExpired,
+  isWebAccessTokenExpired,
+  parseAccessToken,
+  parseWebAccessToken,
+} from '@/utils';
 import { AuthContext } from '@/context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL } from 'react-native-url-polyfill';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import { useErrorContext } from '@/hooks/useErrorContext';
+
+const accessTokenInitialState = {
+  value: '',
+  expiresIn: 0,
+  creationTimestamp: 0,
+};
+
+const webAccessTokenInitialState = {
+  value: '',
+  expirationTimestamp: 0,
+};
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [tokens, setTokens] = useState<Tokens | null>(null);
+  const [accessToken, setAccessToken] = useState(accessTokenInitialState);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [spDcCookie, setSpDcCookie] = useState<string | null>(null);
-  const [webAccessToken, setWebAccessToken] = useState<WebAccessToken | null>(null);
+  const [spDcCookie, setSpDcCookie] = useState('');
+  const [webAccessToken, setWebAccessToken] = useState(webAccessTokenInitialState);
+  const { setErrorMessage } = useErrorContext();
 
   useEffect(() => {
     async function loadStore() {
-      const [storedTokens, storedSpDcCookie, storedWebAccessToken] = await Promise.all([
-        AsyncStorage.getItem('tokens'),
-        AsyncStorage.getItem('spDcCookie'),
-        AsyncStorage.getItem('webAccessToken'),
-      ]);
+      const [storedAccessToken, storedSpDcCookie, storedWebAccessToken, storedRefreshToken] =
+        await Promise.all([
+          AsyncStorage.getItem('accessToken'),
+          AsyncStorage.getItem('spDcCookie'),
+          AsyncStorage.getItem('webAccessToken'),
+          AsyncStorage.getItem('refreshToken'),
+        ]);
 
-      if (storedTokens) {
-        const { accessToken, refreshToken } = parseTokens(storedTokens);
+      if (storedAccessToken && storedRefreshToken) {
+        const parsedAccessToken = parseAccessToken(storedAccessToken);
 
-        if (!isTokenExpired(accessToken.expiresIn, accessToken.creationTimestamp)) {
-          setTokens({ accessToken, refreshToken });
+        if (!isTokenExpired(parsedAccessToken.expiresIn, parsedAccessToken.creationTimestamp)) {
+          setAccessToken(parsedAccessToken);
+          setIsAuthenticated(true);
         } else {
-          const { access_token, refresh_token, expires_in } = await refreshTokens(refreshToken);
+          const { access_token, refresh_token, expires_in } = await refreshTokens(
+            storedRefreshToken,
+          );
 
-          const newTokens = {
-            accessToken: {
-              token: access_token,
-              expiresIn: expires_in,
-              creationTimestamp: Date.now(),
-            },
-            refreshToken: refresh_token,
+          const newAccessToken = {
+            value: access_token,
+            expiresIn: expires_in,
+            creationTimestamp: Date.now(),
           };
 
-          await AsyncStorage.setItem('tokens', JSON.stringify(newTokens));
-          setTokens(newTokens);
+          await Promise.all([
+            AsyncStorage.setItem('accessToken', JSON.stringify(newAccessToken)),
+            AsyncStorage.setItem('refreshToken', refresh_token),
+          ]);
+          setAccessToken(newAccessToken);
         }
 
         if (storedSpDcCookie && storedWebAccessToken) {
-          const { token, expirationTimestamp } = parseWebAccessToken(storedWebAccessToken);
+          const parsedWebAccessToken = parseWebAccessToken(storedWebAccessToken);
 
-          if (!isWebAccessTokenExpired(expirationTimestamp)) {
-            setWebAccessToken({ token, expirationTimestamp });
+          if (!isWebAccessTokenExpired(parsedWebAccessToken.expirationTimestamp)) {
+            setWebAccessToken(parsedWebAccessToken);
           } else {
             const { accessToken, isAnonymous, accessTokenExpirationTimestampMs } =
               await fetchWebAccessToken(storedSpDcCookie);
@@ -63,7 +86,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
               await AsyncStorage.setItem('webAccessToken', accessToken);
               setSpDcCookie(storedSpDcCookie);
               setWebAccessToken({
-                token: accessToken,
+                value: accessToken,
                 expirationTimestamp: accessTokenExpirationTimestampMs,
               });
             }
@@ -104,21 +127,23 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
         const { access_token, refresh_token, expires_in } = await fetchTokens(code, codeVerifier);
 
-        const newTokens = {
-          accessToken: {
-            token: access_token,
-            expiresIn: expires_in,
-            creationTimestamp: Date.now(),
-          },
-          refreshToken: refresh_token,
+        const newAccessToken = {
+          value: access_token,
+          expiresIn: expires_in,
+          creationTimestamp: Date.now(),
         };
 
-        await AsyncStorage.setItem('tokens', JSON.stringify(newTokens));
-        setTokens(newTokens);
+        await Promise.all([
+          AsyncStorage.setItem('accessToken', JSON.stringify(newAccessToken)),
+          AsyncStorage.setItem('refreshToken', refresh_token),
+        ]);
+        setAccessToken(newAccessToken);
         setIsAuthenticated(true);
       }
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      }
     } finally {
       setIsAuthenticating(false);
     }
@@ -126,14 +151,15 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   async function logout() {
     await Promise.all([
-      AsyncStorage.removeItem('tokens'),
+      AsyncStorage.removeItem('accessToken'),
+      AsyncStorage.removeItem('refreshToken'),
       AsyncStorage.removeItem('spDcCookie'),
       AsyncStorage.removeItem('webAccessToken'),
     ]);
-    setTokens(null);
+    setAccessToken(accessTokenInitialState);
     setIsAuthenticated(false);
-    setSpDcCookie(null);
-    setWebAccessToken(null);
+    setSpDcCookie('');
+    setWebAccessToken(webAccessTokenInitialState);
   }
 
   return (
@@ -143,10 +169,10 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         setWebAccessToken,
         isAuthenticating,
         isAuthenticated,
-        webAccessToken,
+        webAccessToken: webAccessToken.value,
         setSpDcCookie,
         spDcCookie,
-        tokens,
+        accessToken: accessToken.value,
         logout,
       }}
     >

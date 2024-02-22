@@ -89,10 +89,11 @@ export async function fetchTopItems<T>(
   accessToken: string,
   type: 'tracks' | 'artists',
   period: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
-  count = 4,
+  offset = 0,
+  limit = 4,
 ) {
   const data = await fetchWrapper<T>({
-    url: `https://api.spotify.com/v1/me/top/${type}?limit=${count}&time_range=${period}`,
+    url: `https://api.spotify.com/v1/me/top/${type}?limit=${limit}&time_range=${period}&offset=${offset}`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

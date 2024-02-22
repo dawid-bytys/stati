@@ -1,11 +1,10 @@
-import { TopArtistsScreen } from './TopArtistsScreen';
-import { TopTracksScreen } from './TopTracksScreen';
+import { TopContentScreen } from './TopContentScreen';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 type TabNavigatorParamList = {
-  '4 weeks': { period: 'short_term' };
-  '6 months': { period: 'medium_term' };
-  'all time': { period: 'long_term' };
+  '4 weeks': { period: 'short_term'; content: 'artists' | 'tracks' };
+  '6 months': { period: 'medium_term'; content: 'artists' | 'tracks' };
+  'all time': { period: 'long_term'; content: 'artists' | 'tracks' };
 };
 
 const ContentTabs = createMaterialTopTabNavigator<TabNavigatorParamList>();
@@ -52,18 +51,18 @@ export function TopScreenPeriod({ route }: TopScreenPeriodProps) {
     >
       <ContentTabs.Screen
         name="4 weeks"
-        component={content === 'artists' ? TopArtistsScreen : TopTracksScreen}
-        initialParams={{ period: 'short_term' }}
+        component={TopContentScreen}
+        initialParams={{ content, period: 'short_term' }}
       />
       <ContentTabs.Screen
         name="6 months"
-        component={content === 'artists' ? TopArtistsScreen : TopTracksScreen}
-        initialParams={{ period: 'medium_term' }}
+        component={TopContentScreen}
+        initialParams={{ content, period: 'medium_term' }}
       />
       <ContentTabs.Screen
         name="all time"
-        component={content === 'artists' ? TopArtistsScreen : TopTracksScreen}
-        initialParams={{ period: 'long_term' }}
+        component={TopContentScreen}
+        initialParams={{ content, period: 'long_term' }}
       />
     </ContentTabs.Navigator>
   );

@@ -16,19 +16,19 @@ export function FriendsActivityScreen() {
   const { setErrorMessage } = useErrorContext();
 
   useEffect(() => {
-    async function obtainWebAccessToken(spDcCookie: string) {
+    async function obtainWebAccessToken() {
       try {
         const response = await fetchWebAccessToken(spDcCookie);
 
         if (response.isAnonymous) {
-          setSpDcCookie(null);
+          setSpDcCookie('');
           await AsyncStorage.removeItem('spDcCookie');
           setErrorMessage('Invalid sp_dc cookie');
           return;
         }
 
         const newWebAccessToken = {
-          token: response.accessToken,
+          value: response.accessToken,
           expirationTimestamp: response.accessTokenExpirationTimestampMs,
         };
 
@@ -42,12 +42,12 @@ export function FriendsActivityScreen() {
     }
 
     if (spDcCookie && !webAccessToken) {
-      obtainWebAccessToken(spDcCookie);
+      obtainWebAccessToken();
     }
   }, [spDcCookie, webAccessToken]);
 
   useEffect(() => {
-    async function obtainFriendsActivity(webAccessToken: string) {
+    async function obtainFriendsActivity() {
       try {
         const friendsActivity = await fetchFriendsActivity(webAccessToken);
         const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
@@ -60,7 +60,7 @@ export function FriendsActivityScreen() {
     }
 
     if (spDcCookie && webAccessToken && !friendsActivity) {
-      obtainFriendsActivity(webAccessToken.token);
+      obtainFriendsActivity();
     }
   }, [spDcCookie, webAccessToken, friendsActivity]);
 

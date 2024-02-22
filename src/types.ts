@@ -3,8 +3,14 @@ export type AuthStackParamList = {
 };
 
 export interface WebAccessToken {
-  token: string;
+  value: string;
   expirationTimestamp: number;
+}
+
+export interface AccessToken {
+  value: string;
+  creationTimestamp: number;
+  expiresIn: number;
 }
 
 export type TabNavigatorParamList = {

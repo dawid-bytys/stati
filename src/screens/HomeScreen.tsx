@@ -18,11 +18,11 @@ interface TopData {
 }
 
 export function HomeScreen() {
-  const { tokens, logout } = useAuthContext();
+  const { accessToken, logout } = useAuthContext();
   const [data, setData] = useState<TopData | null>(null);
 
   useEffect(() => {
-    async function loadTopContent(accessToken: string) {
+    async function loadTopContent() {
       try {
         const topArtists = await fetchTopItems<TopArtists>(accessToken, 'artists', 'short_term');
         const topTracks = await fetchTopItems<TopTracks>(accessToken, 'tracks', 'short_term');
@@ -44,10 +44,10 @@ export function HomeScreen() {
       }
     }
 
-    if (tokens) {
-      loadTopContent(tokens.accessToken.token);
+    if (!data) {
+      loadTopContent();
     }
-  }, []);
+  }, [data, accessToken, logout]);
 
   if (!data) {
     return <Loading />;

@@ -8,6 +8,7 @@ import type {
   FilteredTrack,
   Tokens,
   WebAccessToken,
+  AccessToken,
 } from './types';
 import type { RecentlyPlayed } from './types/activity';
 import type { TopArtists } from './types/artists';
@@ -26,11 +27,11 @@ export function isWebAccessTokenExpired(expirationTimestamp: number) {
   return expirationTimestamp < Date.now();
 }
 
-export function parseTokens(tokensString: string): Tokens {
-  const tokens: Tokens = JSON.parse(tokensString);
-  tokens.accessToken.creationTimestamp = Number(tokens.accessToken.creationTimestamp);
-  tokens.accessToken.expiresIn = Number(tokens.accessToken.expiresIn);
-  return tokens;
+export function parseAccessToken(accessTokenString: string): AccessToken {
+  const accessToken = JSON.parse(accessTokenString);
+  accessToken.creationTimestamp = Number(accessToken.creationTimestamp);
+  accessToken.expiresIn = Number(accessToken.expiresIn);
+  return accessToken;
 }
 
 export function parseWebAccessToken(webAccessTokenString: string): WebAccessToken {
@@ -143,4 +144,8 @@ export function mapContentToScreen(content: string) {
     default:
       return 'TopTracks';
   }
+}
+
+export function dataIsTracks(data: unknown): data is FilteredTrack[] {
+  return (data as FilteredTrack[])[0].track !== undefined;
 }

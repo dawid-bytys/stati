@@ -15,7 +15,6 @@ export function SetCookieMain() {
 
   function handleChange(e: NativeSyntheticEvent<TextInputChangeEventData>) {
     setValue(e.nativeEvent.text);
-    console.log(e.nativeEvent.text);
   }
 
   async function handleClick() {
