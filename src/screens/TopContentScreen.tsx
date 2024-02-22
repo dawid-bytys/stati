@@ -4,11 +4,16 @@ import { TrackTile } from '@/components/TopMain/TrackTile';
 import { fetchTopItems } from '@/domain/spotify';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { useErrorContext } from '@/hooks/useErrorContext';
-import { FilteredArtist, FilteredTrack, TopTracks } from '@/types';
-import { TopArtists } from '@/types/artists';
-import { dataIsTracks, filterArtists, filterTracks } from '@/utils';
-import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import { FilteredArtist, FilteredTrack } from '@/types';
+import { dataIsTracks } from '@/utils';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  ListRenderItemInfo,
+} from 'react-native';
 
 interface TopContentScreenProps {
   route: {
@@ -27,38 +32,69 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadData = useCallback(
-    async (offset = 0) => {
-      setIsLoading(true);
-
-      try {
-        const topContent = await fetchTopItems<FilteredArtist[] | FilteredTrack[]>(
-          accessToken,
-          content,
-          period,
-          offset,
-          10,
-        );
-
-        setData((prevData) => {
-          if (prevData) {
-            return [...prevData, ...topContent];
-          }
-
-          return topContent;
-        });
-
-        setOffset((prevOffset) => prevOffset + 10);
-      } catch (err) {
-        if (err instanceof Error) {
-          setErrorMessage(err.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
+  const renderTrackTile = useCallback(
+    ({ item, index }: ListRenderItemInfo<FilteredTrack>) => {
+      return (
+        <TrackTile
+          {...item}
+          key={item.id}
+          rank={index + 1}
+          delay={(index - offset) * 100}
+        />
+      );
     },
-    [accessToken, content, period],
+    [offset],
   );
+
+  const renderArtistTile = useCallback(
+    ({ item, index }: ListRenderItemInfo<FilteredArtist>) => {
+      return (
+        <ArtistTile
+          {...item}
+          key={item.id}
+          rank={index + 1}
+          delay={(index - offset) * 100}
+        />
+      );
+    },
+    [offset],
+  );
+
+  const handleLoadMore = useCallback(() => {
+    if (data && data.length < 50 && !isLoading) {
+      loadData(offset);
+    }
+  }, [offset, isLoading]);
+
+  const loadData = useCallback(async (offset = 0) => {
+    setIsLoading(true);
+
+    try {
+      const topContent = await fetchTopItems<FilteredArtist[] | FilteredTrack[]>(
+        accessToken,
+        content,
+        period,
+        offset,
+        10,
+      );
+
+      setData((prevData) => {
+        if (prevData) {
+          return [...prevData, ...topContent];
+        }
+
+        return topContent;
+      });
+
+      setOffset((prevOffset) => prevOffset + 10);
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!data) {
@@ -81,11 +117,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
             }}
           />
         }
-        onEndReached={() => {
-          if (data.length < 50) {
-            loadData(offset);
-          }
-        }}
+        onEndReached={handleLoadMore}
         ListFooterComponent={() => renderListFooter(isLoading)}
         data={data}
         keyExtractor={(item, index) => item.track + index}
@@ -94,13 +126,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
         contentContainerStyle={{
           rowGap: 20,
         }}
-        renderItem={({ item, index }) => (
-          <TrackTile
-            {...item}
-            delay={(index - offset) * 100}
-            rank={index + 1}
-          />
-        )}
+        renderItem={renderTrackTile}
       />
     );
   }
@@ -115,11 +141,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
           }}
         />
       }
-      onEndReached={() => {
-        if (data.length < 50) {
-          loadData(offset);
-        }
-      }}
+      onEndReached={handleLoadMore}
       ListFooterComponent={() => renderListFooter(isLoading)}
       data={data}
       keyExtractor={(item, index) => item.artist + index}
@@ -128,13 +150,7 @@ export function TopContentScreen({ route }: TopContentScreenProps) {
       contentContainerStyle={{
         rowGap: 20,
       }}
-      renderItem={({ item, index }) => (
-        <ArtistTile
-          {...item}
-          delay={(index - offset) * 100}
-          rank={index + 1}
-        />
-      )}
+      renderItem={renderArtistTile}
     />
   );
 }

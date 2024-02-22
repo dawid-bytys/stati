@@ -84,6 +84,7 @@ function formatDateString(dateString: string, forFriends: boolean = false) {
 
 export function filterArtists(artists: TopArtists): FilteredArtist[] {
   return artists.items.map((artist) => ({
+    id: artist.id,
     image: artist.images.length > 0 ? artist.images[0].url : '',
     artist: artist.name,
   }));
@@ -91,6 +92,7 @@ export function filterArtists(artists: TopArtists): FilteredArtist[] {
 
 export function filterTracks(tracks: TopTracks): FilteredTrack[] {
   return tracks.items.map((track) => ({
+    id: track.id,
     image: track.album.images.length > 0 ? track.album.images[0].url : '',
     artist: track.artists[0].name,
     track: track.name,

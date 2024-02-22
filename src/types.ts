@@ -178,12 +178,14 @@ export interface Followers {
 }
 
 export interface FilteredTrack {
+  id: string;
   artist: string;
   track: string;
   image: string;
 }
 
 export interface FilteredArtist {
+  id: string;
   artist: string;
   image: string;
 }
