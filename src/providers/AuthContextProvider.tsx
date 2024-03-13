@@ -1,114 +1,78 @@
-import type { Tokens, WebAccessToken } from '@/types';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
+import type { PropsWithChildren } from 'react';
 import {
   generateSpotifyAuthURL,
   fetchTokens,
   refreshTokens,
   fetchWebAccessToken,
 } from '@/domain/spotify';
-import { type PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import pkceChallenge from 'react-native-pkce-challenge';
-import {
-  isTokenExpired,
-  isWebAccessTokenExpired,
-  parseAccessToken,
-  parseWebAccessToken,
-} from '@/utils';
+import { isTokenExpired, isWebAccessTokenExpired } from '@/utils';
 import { AuthContext } from '@/context/AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL } from 'react-native-url-polyfill';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
-import { useErrorContext } from '@/hooks/useErrorContext';
-
-const accessTokenInitialState = {
-  value: '',
-  expiresIn: 0,
-  creationTimestamp: 0,
-};
-
-const webAccessTokenInitialState = {
-  value: '',
-  expirationTimestamp: 0,
-};
+import { useAuthStore } from '@/store/auth';
+import { useNotificationContext } from '@/hooks/useNotificationContext';
+import { useAuthHydration } from '@/hooks/useAuthHydration';
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [accessToken, setAccessToken] = useState(accessTokenInitialState);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [spDcCookie, setSpDcCookie] = useState('');
-  const [webAccessToken, setWebAccessToken] = useState(webAccessTokenInitialState);
-  const { setErrorMessage } = useErrorContext();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setNotification } = useNotificationContext();
+  const { accessToken, refreshToken, spDcCookie, webAccessToken, setValue } = useAuthStore();
+  const hasHydrated = useAuthHydration();
 
   useEffect(() => {
-    async function loadStore() {
-      const [storedAccessToken, storedSpDcCookie, storedWebAccessToken, storedRefreshToken] =
-        await Promise.all([
-          AsyncStorage.getItem('accessToken'),
-          AsyncStorage.getItem('spDcCookie'),
-          AsyncStorage.getItem('webAccessToken'),
-          AsyncStorage.getItem('refreshToken'),
-        ]);
+    async function authenticate() {
+      setIsAuthenticating(true);
 
-      if (storedAccessToken && storedRefreshToken) {
-        const parsedAccessToken = parseAccessToken(storedAccessToken);
-
-        if (!isTokenExpired(parsedAccessToken.expiresIn, parsedAccessToken.creationTimestamp)) {
-          setAccessToken(parsedAccessToken);
+      try {
+        if (accessToken.value && refreshToken && !isTokenExpired(accessToken.createdAt)) {
           setIsAuthenticated(true);
-        } else {
-          const { access_token, refresh_token, expires_in } = await refreshTokens(
-            storedRefreshToken,
-          );
-
-          const newAccessToken = {
+        } else if (accessToken.value && refreshToken && isTokenExpired(accessToken.createdAt)) {
+          const { access_token, refresh_token } = await refreshTokens(refreshToken);
+          setValue('accessToken', {
             value: access_token,
-            expiresIn: expires_in,
-            creationTimestamp: Date.now(),
-          };
-
-          await Promise.all([
-            AsyncStorage.setItem('accessToken', JSON.stringify(newAccessToken)),
-            AsyncStorage.setItem('refreshToken', refresh_token),
-          ]);
-          setAccessToken(newAccessToken);
+            createdAt: Date.now(),
+          });
+          setValue('refreshToken', refresh_token);
+          setIsAuthenticated(true);
         }
 
-        if (storedSpDcCookie && storedWebAccessToken) {
-          const parsedWebAccessToken = parseWebAccessToken(storedWebAccessToken);
+        if (
+          webAccessToken.value &&
+          spDcCookie &&
+          isWebAccessTokenExpired(webAccessToken.expiresAt)
+        ) {
+          const response = await fetchWebAccessToken(spDcCookie);
 
-          if (!isWebAccessTokenExpired(parsedWebAccessToken.expirationTimestamp)) {
-            setWebAccessToken(parsedWebAccessToken);
-          } else {
-            const { accessToken, isAnonymous, accessTokenExpirationTimestampMs } =
-              await fetchWebAccessToken(storedSpDcCookie);
-
-            if (!isAnonymous) {
-              await AsyncStorage.setItem('webAccessToken', accessToken);
-              setSpDcCookie(storedSpDcCookie);
-              setWebAccessToken({
-                value: accessToken,
-                expirationTimestamp: accessTokenExpirationTimestampMs,
-              });
-            }
-          }
+          setValue('webAccessToken', {
+            value: response.accessToken,
+            createdAt: Date.now(),
+          });
         }
-
-        setIsAuthenticated(true);
+      } catch (_err) {
+        logout();
+        setNotification('Something went wrong, try reloading the app.', true);
+      } finally {
+        setIsAuthenticating(false);
       }
-
-      setIsAuthenticating(false);
     }
 
-    loadStore();
-  }, []);
+    if (hasHydrated) {
+      authenticate();
+    }
+  }, [hasHydrated]);
 
-  async function obtainAccessToken() {
+  const getTokens = useCallback(async () => {
+    setIsAuthenticating(true);
+
     try {
-      setIsAuthenticating(true);
       const { codeChallenge, codeVerifier } = pkceChallenge();
       const spotifyAuthUrl = await generateSpotifyAuthURL(codeChallenge);
-      const isBrowserAvailable = await InAppBrowser.isAvailable();
 
+      const isBrowserAvailable = await InAppBrowser.isAvailable();
       if (!isBrowserAvailable) {
         throw new Error('InAppBrowser is not available');
       }
@@ -125,54 +89,44 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
           throw new Error('No code in callback URL');
         }
 
-        const { access_token, refresh_token, expires_in } = await fetchTokens(code, codeVerifier);
+        const { access_token, refresh_token } = await fetchTokens(code, codeVerifier);
 
-        const newAccessToken = {
+        setValue('accessToken', {
           value: access_token,
-          expiresIn: expires_in,
-          creationTimestamp: Date.now(),
-        };
-
-        await Promise.all([
-          AsyncStorage.setItem('accessToken', JSON.stringify(newAccessToken)),
-          AsyncStorage.setItem('refreshToken', refresh_token),
-        ]);
-        setAccessToken(newAccessToken);
+          createdAt: Date.now(),
+        });
+        setValue('refreshToken', refresh_token);
         setIsAuthenticated(true);
+        setNotification('You have logged in successfully.', false);
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        setErrorMessage(err.message);
-      }
+    } catch (_err) {
+      setNotification('Something went wrong, try reloading the app.', true);
     } finally {
       setIsAuthenticating(false);
     }
-  }
+  }, [setValue, setNotification]);
 
-  async function logout() {
-    await Promise.all([
-      AsyncStorage.removeItem('accessToken'),
-      AsyncStorage.removeItem('refreshToken'),
-      AsyncStorage.removeItem('spDcCookie'),
-      AsyncStorage.removeItem('webAccessToken'),
-    ]);
-    setAccessToken(accessTokenInitialState);
-    setIsAuthenticated(false);
-    setSpDcCookie('');
-    setWebAccessToken(webAccessTokenInitialState);
-  }
+  const logout = useCallback(
+    (withNotification: boolean = false) => {
+      setValue('accessToken', { value: '', createdAt: 0 });
+      setValue('webAccessToken', { value: '', expiresAt: 0 });
+      setValue('refreshToken', '');
+      setValue('spDcCookie', '');
+      setIsAuthenticated(false);
+
+      if (withNotification) {
+        setNotification('You have logged out successfully.', false);
+      }
+    },
+    [setValue, setNotification],
+  );
 
   return (
     <AuthContext.Provider
       value={{
-        obtainAccessToken,
-        setWebAccessToken,
-        isAuthenticating,
         isAuthenticated,
-        webAccessToken: webAccessToken.value,
-        setSpDcCookie,
-        spDcCookie,
-        accessToken: accessToken.value,
+        isAuthenticating,
+        getTokens,
         logout,
       }}
     >

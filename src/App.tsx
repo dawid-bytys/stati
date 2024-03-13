@@ -1,16 +1,16 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Router } from '@/navigation/Router';
-import { AuthContextProvider } from './providers/AuthContextProvider';
-import { ErrorContextProvider } from './providers/ErrorContextProvider';
+import { AuthContextProvider } from '@/providers/AuthContextProvider';
+import { NotificationContextProvider } from '@/providers/NotificationContextProvider';
 
 export function App() {
   return (
     <SafeAreaProvider>
-      <ErrorContextProvider>
+      <NotificationContextProvider>
         <AuthContextProvider>
           <Router />
         </AuthContextProvider>
-      </ErrorContextProvider>
+      </NotificationContextProvider>
     </SafeAreaProvider>
   );
 }

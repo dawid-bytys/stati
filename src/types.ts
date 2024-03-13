@@ -15,7 +15,6 @@ export interface AccessToken {
 
 export type TabNavigatorParamList = {
   "Friends' activity": undefined;
-  Search: undefined;
   Home: undefined;
   Top: {
     content: 'artists' | 'tracks';

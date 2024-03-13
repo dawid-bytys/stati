@@ -5,8 +5,6 @@ import { StyleSheet } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { AuthStack } from './AuthStack';
 import { Tabs } from './Tabs';
-import { useErrorContext } from '@/hooks/useErrorContext';
-import { ErrorAlert } from '@/components/ErrorAlert';
 import { useEffect } from 'react';
 
 const MyTheme = {
@@ -20,7 +18,6 @@ const MyTheme = {
 
 export function Router() {
   const { isAuthenticated, isAuthenticating } = useAuthContext();
-  const { errorMessage } = useErrorContext();
 
   useEffect(() => {
     if (!isAuthenticating) {
@@ -30,7 +27,6 @@ export function Router() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {errorMessage && <ErrorAlert message={errorMessage} />}
       <NavigationContainer theme={MyTheme}>
         {isAuthenticated ? <Tabs /> : <AuthStack />}
       </NavigationContainer>

@@ -1,14 +1,9 @@
 import type { RecentlyPlayed } from '@/types/activity';
-
-import type {
-  FilteredArtist,
-  FilteredTrack,
-  FriendsActivity,
-  WebAccessTokenResponse,
-} from '@/types';
+import type { FriendsActivity, WebAccessTokenResponse } from '@/types';
 import type { TopTracks } from '@/types/tracks';
 import type { TopArtists } from '@/types/artists';
 import { filterArtists, filterRecentlyPlayed, filterTracks } from '@/utils';
+import env from 'react-native-config';
 
 interface FetchWrapperOptions {
   headers?: Record<string, string>;
@@ -20,7 +15,7 @@ export async function fetchWrapper<T>({ headers, method, url }: FetchWrapperOpti
   const response = await fetch(url, {
     headers,
     method,
-    credentials: 'include',
+    credentials: 'omit',
   });
 
   if (response.status === 401) {
@@ -131,8 +126,6 @@ export async function fetchWebAccessToken(spDcCookie: string) {
   const data = await fetchWrapper<WebAccessTokenResponse>({
     headers: {
       Cookie: `sp_dc=${spDcCookie}`,
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0',
     },
     url: 'https://open.spotify.com/get_access_token?reason=transport&productType=web_player',
     method: 'GET',

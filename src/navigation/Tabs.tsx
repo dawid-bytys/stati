@@ -1,10 +1,8 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen';
-import { StyleSheet, View, Text } from 'react-native';
-import { SearchScreen } from '@/screens/SearchScreen';
-import { HomeScreen } from '@/screens/HomeScreen';
+import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen/FriendsActivityScreen';
+import { StyleSheet, View } from 'react-native';
+import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
 import FriendIcon from '@/assets/svg/friends.svg';
-import SearchIcon from '@/assets/svg/search.svg';
 import { TopScreen } from '@/screens/TopScreen';
 import ChartIcon from '@/assets/svg/chart.svg';
 import HomeIcon from '@/assets/svg/home.svg';
@@ -74,17 +72,6 @@ export function Tabs() {
         }}
         component={FriendsActivityScreen}
         name="Friends' activity"
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: ({ color }) => (
-            <IconContainer>
-              <SearchIcon fill={color} />
-            </IconContainer>
-          ),
-        }}
-        component={SearchScreen}
-        name="Search"
       />
     </Tab.Navigator>
   );

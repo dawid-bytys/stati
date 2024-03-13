@@ -14,17 +14,22 @@ import type { RecentlyPlayed } from './types/activity';
 import type { TopArtists } from './types/artists';
 import type { TopTracks } from './types/tracks';
 
+interface DecodedToken {
+  exp: number;
+}
+
 export function generateBasicAuthHeader(clientId: string, clientSecret: string) {
   return Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 }
 
-export function isTokenExpired(expiresIn: number, creationTimestamp: number) {
-  const expirationDate = new Date(creationTimestamp + expiresIn * 1000);
-  return expirationDate.getTime() < Date.now();
+export function isTokenExpired(createdAt: number) {
+  const currentTime = Date.now();
+  const tokenExpirationTime = createdAt + 3600;
+  return currentTime > tokenExpirationTime;
 }
 
-export function isWebAccessTokenExpired(expirationTimestamp: number) {
-  return expirationTimestamp < Date.now();
+export function isWebAccessTokenExpired(expiresAt: number) {
+  return expiresAt < Date.now();
 }
 
 export function parseAccessToken(accessTokenString: string): AccessToken {

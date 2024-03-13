@@ -1,4 +1,4 @@
-import { TopContentScreen } from './TopContentScreen';
+import { TopContentScreen } from './TopContentScreen/TopContentScreen';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 type TabNavigatorParamList = {
