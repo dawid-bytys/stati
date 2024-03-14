@@ -1,6 +1,6 @@
-import Animated, { FadeInLeft } from 'react-native-reanimated';
 import { View, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Animated, { FadeInLeft } from 'react-native-reanimated';
 import { styles } from './TopTile.styles';
 
 interface TopTileProps {

@@ -1,12 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen/FriendsActivityScreen';
 import { StyleSheet, View } from 'react-native';
-import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
-import FriendIcon from '@/assets/svg/friends.svg';
-import { TopScreen } from '@/screens/TopScreen';
 import ChartIcon from '@/assets/svg/chart.svg';
+import FriendIcon from '@/assets/svg/friends.svg';
 import HomeIcon from '@/assets/svg/home.svg';
-import { TabNavigatorParamList } from '@/types';
+import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen/FriendsActivityScreen';
+import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
+import { TopScreen } from '@/screens/TopScreen';
+import type { TabNavigatorParamList } from '@/types/types';
+import type { PropsWithChildren } from 'react';
 
 const Tab = createMaterialTopTabNavigator<TabNavigatorParamList>();
 
@@ -77,7 +78,7 @@ export function Tabs() {
   );
 }
 
-function IconContainer({ children }: { children: React.ReactNode }) {
+function IconContainer({ children }: PropsWithChildren) {
   return <View style={styles.iconContainer}>{children}</View>;
 }
 

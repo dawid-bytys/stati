@@ -1,5 +1,5 @@
-import { TopScreenPeriod } from './TopScreenPeriod';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { TopScreenPeriod } from './TopScreenPeriod';
 
 type ContentTabsParamList = {
   artists: { content: 'artists' };

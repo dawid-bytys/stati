@@ -1,10 +1,11 @@
 import LottieView from 'lottie-react-native';
+import type { AnimationObject } from 'lottie-react-native';
 
 interface AnimatedIconProps {
   width: number;
   height: number;
   duration: number;
-  source: any;
+  source: AnimationObject;
 }
 
 export function AnimatedIcon({ width, height, duration, source }: AnimatedIconProps) {

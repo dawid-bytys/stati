@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import WelcomeImage from '@/assets/svg/welcome.svg';
-import { styles } from './WelcomeScreen.styles';
 import { useAuthContext } from '@/hooks/useAuthContext';
+import { styles } from './WelcomeScreen.styles';
 
 export function WelcomeScreen() {
   const { getTokens } = useAuthContext();

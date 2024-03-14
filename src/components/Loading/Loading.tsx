@@ -1,6 +1,6 @@
 import Animated, { FadeOut } from 'react-native-reanimated';
-import { AnimatedIcon } from '../AnimatedIcon';
 import { styles } from './Loading.styles';
+import { AnimatedIcon } from '../AnimatedIcon';
 
 export function Loading() {
   return (

@@ -1,20 +1,20 @@
-import type { RedirectResult } from 'react-native-inappbrowser-reborn';
-import type { PropsWithChildren } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import pkceChallenge from 'react-native-pkce-challenge';
+import { URL } from 'react-native-url-polyfill';
+import { AuthContext } from '@/context/AuthContext';
 import {
   generateSpotifyAuthURL,
   fetchTokens,
   refreshTokens,
   fetchWebAccessToken,
 } from '@/domain/spotify';
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import pkceChallenge from 'react-native-pkce-challenge';
-import { isTokenExpired, isWebAccessTokenExpired } from '@/utils';
-import { AuthContext } from '@/context/AuthContext';
-import { URL } from 'react-native-url-polyfill';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn';
-import { useAuthStore } from '@/store/auth';
-import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthHydration } from '@/hooks/useAuthHydration';
+import { useNotificationContext } from '@/hooks/useNotificationContext';
+import { useAuthStore } from '@/store/auth';
+import { isTokenExpired, isWebAccessTokenExpired } from '@/utils';
+import type { PropsWithChildren } from 'react';
+import type { RedirectResult } from 'react-native-inappbrowser-reborn';
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -47,9 +47,16 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         ) {
           const response = await fetchWebAccessToken(spDcCookie);
 
+          if (response.isAnonymous) {
+            setValue('spDcCookie', '');
+            setValue('webAccessToken', { value: '', expiresAt: 0 });
+            setNotification('sp_dc cookie has expired, get a new one.', true);
+            return;
+          }
+
           setValue('webAccessToken', {
             value: response.accessToken,
-            createdAt: Date.now(),
+            expiresAt: response.accessTokenExpirationTimestampMs,
           });
         }
       } catch (_err) {
@@ -70,7 +77,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
     try {
       const { codeChallenge, codeVerifier } = pkceChallenge();
-      const spotifyAuthUrl = await generateSpotifyAuthURL(codeChallenge);
+      const spotifyAuthUrl = generateSpotifyAuthURL(codeChallenge);
 
       const isBrowserAvailable = await InAppBrowser.isAvailable();
       if (!isBrowserAvailable) {

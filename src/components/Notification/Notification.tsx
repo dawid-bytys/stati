@@ -1,5 +1,5 @@
-import Animated, { FadeInUp, FadeOutUp, SlideInDown, SlideInUp } from 'react-native-reanimated';
 import { Text } from 'react-native';
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { styles } from './Notification.styles';
 
 interface NotificationProps {

@@ -1,10 +1,10 @@
-import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Image, View, Text } from 'react-native';
-import PlaylistIcon from '@/assets/svg/playlist.svg';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import AlbumIcon from '@/assets/svg/album.svg';
 import DotIcon from '@/assets/svg/dot.svg';
-import { AnimatedIcon } from '../AnimatedIcon';
+import PlaylistIcon from '@/assets/svg/playlist.svg';
 import { styles } from './FriendTile.styles';
+import { AnimatedIcon } from '../AnimatedIcon';
 
 interface FriendTileProps {
   context: {

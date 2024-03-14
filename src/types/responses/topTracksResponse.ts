@@ -1,56 +1,56 @@
-export interface TopTracks {
+export interface TopTracksResponse {
+  href: string;
+  limit: number;
+  next: string;
   offset: number;
   previous: null;
-  limit: number;
   total: number;
   items: Item[];
-  href: string;
-  next: string;
 }
 
 interface Item {
+  album: Album;
+  artists: Artist[];
   available_markets: string[];
-  external_urls: ExternalUrls;
-  external_ids: ExternalIDS;
-  track_number: number;
   disc_number: number;
   duration_ms: number;
-  preview_url: string;
-  popularity: number;
-  artists: Artist[];
   explicit: boolean;
-  is_local: boolean;
-  album: Album;
+  external_ids: Externalids;
+  external_urls: ExternalUrls;
   href: string;
+  id: string;
   name: string;
+  popularity: number;
+  preview_url: string;
+  track_number: number;
   type: string;
   uri: string;
-  id: string;
+  is_local: boolean;
 }
 
 interface Album {
-  release_date_precision: string;
+  album_type: string;
+  total_tracks: number;
   available_markets: string[];
   external_urls: ExternalUrls;
-  total_tracks: number;
-  album_type: string;
-  release_date: Date;
-  artists: Artist[];
-  images: Image[];
   href: string;
+  id: string;
+  images: Image[];
   name: string;
+  release_date: Date;
+  release_date_precision: string;
   type: string;
   uri: string;
-  id: string;
+  artists: Artist[];
 }
 
 interface Artist {
   external_urls: ExternalUrls;
   href: string;
+  id: string;
   name: string;
   type: string;
   uri: string;
-  id: string;
 }
 
 interface ExternalUrls {
@@ -58,11 +58,11 @@ interface ExternalUrls {
 }
 
 interface Image {
+  url: string;
   height: number;
   width: number;
-  url: string;
 }
 
-interface ExternalIDS {
+interface Externalids {
   isrc: string;
 }

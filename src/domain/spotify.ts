@@ -1,47 +1,11 @@
-import type { RecentlyPlayed } from '@/types/activity';
-import type { FriendsActivity, WebAccessTokenResponse } from '@/types';
-import type { TopTracks } from '@/types/tracks';
-import type { TopArtists } from '@/types/artists';
-import { filterArtists, filterRecentlyPlayed, filterTracks } from '@/utils';
-import env from 'react-native-config';
+import type {
+  AccessTokenResponse,
+  WebAccessTokenResponse,
+  RecentlyPlayedResponse,
+  FriendsActivityResponse,
+} from '@/types/responses';
 
-interface FetchWrapperOptions {
-  headers?: Record<string, string>;
-  method: 'POST' | 'GET';
-  url: string;
-}
-
-export async function fetchWrapper<T>({ headers, method, url }: FetchWrapperOptions): Promise<T> {
-  const response = await fetch(url, {
-    headers,
-    method,
-    credentials: 'omit',
-  });
-
-  if (response.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (response.status === 403) {
-    throw new Error('Forbidden');
-  }
-
-  if (response.status === 429) {
-    throw new Error('Too many requests');
-  }
-
-  if (response.status === 500) {
-    throw new Error('Internal server error');
-  }
-
-  if (response.status === 502) {
-    throw new Error('Bad gateway');
-  }
-
-  return response.json();
-}
-
-export async function generateSpotifyAuthURL(codeChallenge: string) {
+export function generateSpotifyAuthURL(codeChallenge: string) {
   const url = new URL('https://accounts.spotify.com/authorize');
 
   url.searchParams.append('client_id', '8d59d667427a435a8fdb10eb53f77501');
@@ -56,6 +20,7 @@ export async function generateSpotifyAuthURL(codeChallenge: string) {
 
 export async function fetchTokens(code: string, codeVerifier: string) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     body: new URLSearchParams({
       client_id: '8d59d667427a435a8fdb10eb53f77501',
       grant_type: 'authorization_code',
@@ -66,14 +31,14 @@ export async function fetchTokens(code: string, codeVerifier: string) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    method: 'POST',
   });
 
   return response.json();
 }
 
-export async function refreshTokens(refreshToken: string) {
+export async function refreshTokens(refreshToken: string): Promise<AccessTokenResponse> {
   const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     body: new URLSearchParams({
       client_id: '8d59d667427a435a8fdb10eb53f77501',
       grant_type: 'refresh_token',
@@ -82,7 +47,6 @@ export async function refreshTokens(refreshToken: string) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    method: 'POST',
   });
 
   return response.json();
@@ -94,54 +58,58 @@ export async function fetchTopItems<T>(
   period: 'medium_term' | 'short_term' | 'long_term' = 'short_term',
   offset = 0,
   limit = 4,
-) {
-  const data = await fetchWrapper<TopArtists | TopTracks>({
-    url: `https://api.spotify.com/v1/me/top/${type}?limit=${limit}&time_range=${period}&offset=${offset}`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+): Promise<T> {
+  const response = await fetch(
+    `https://api.spotify.com/v1/me/top/${type}?limit=${limit}&time_range=${period}&offset=${offset}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-    method: 'GET',
-  });
+  );
 
-  if (type === 'tracks') {
-    return filterTracks(data as TopTracks) as T;
-  }
-
-  return filterArtists(data as TopArtists) as T;
+  return response.json();
 }
 
-export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
-  const data = await fetchWrapper<RecentlyPlayed>({
-    url: `https://api.spotify.com/v1/me/player/recently-played?limit=${count}`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+export async function fetchRecentlyPlayed(
+  accessToken: string,
+  count = 5,
+): Promise<RecentlyPlayedResponse> {
+  const response = await fetch(
+    `https://api.spotify.com/v1/me/player/recently-played?limit=${count}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-    method: 'GET',
-  });
+  );
 
-  return filterRecentlyPlayed(data);
+  return response.json();
 }
 
-export async function fetchWebAccessToken(spDcCookie: string) {
-  const data = await fetchWrapper<WebAccessTokenResponse>({
+export async function fetchWebAccessToken(spDcCookie: string): Promise<WebAccessTokenResponse> {
+  const response = await fetch('https://open.spotify.com/get_access_token', {
+    method: 'GET',
+    credentials: 'omit',
     headers: {
       Cookie: `sp_dc=${spDcCookie}`,
     },
-    url: 'https://open.spotify.com/get_access_token?reason=transport&productType=web_player',
-    method: 'GET',
   });
 
-  return data;
+  return response.json();
 }
 
-export async function fetchFriendsActivity(webAccessToken: string) {
-  const data = await fetchWrapper<FriendsActivity>({
-    url: 'https://spclient.wg.spotify.com/presence-view/v1/buddylist',
+export async function fetchFriendsActivity(
+  webAccessToken: string,
+): Promise<FriendsActivityResponse> {
+  const response = await fetch('https://spclient.wg.spotify.com/presence-view/v1/buddylist', {
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${webAccessToken}`,
     },
-    method: 'GET',
   });
 
-  return data;
+  return response.json();
 }

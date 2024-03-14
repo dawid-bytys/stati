@@ -1,22 +1,16 @@
 import { Buffer } from 'buffer';
-
 import type {
-  FilteredRecentlyPlayed,
-  FilteredFriendActivity,
-  FriendsActivity,
+  TopArtistsResponse,
+  TopTracksResponse,
+  RecentlyPlayedResponse,
+  FriendsActivityResponse,
+} from './types/responses';
+import type {
   FilteredArtist,
+  FilteredFriendActivity,
+  FilteredRecentlyPlayed,
   FilteredTrack,
-  Tokens,
-  WebAccessToken,
-  AccessToken,
-} from './types';
-import type { RecentlyPlayed } from './types/activity';
-import type { TopArtists } from './types/artists';
-import type { TopTracks } from './types/tracks';
-
-interface DecodedToken {
-  exp: number;
-}
+} from './types/types';
 
 export function generateBasicAuthHeader(clientId: string, clientSecret: string) {
   return Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
@@ -30,19 +24,6 @@ export function isTokenExpired(createdAt: number) {
 
 export function isWebAccessTokenExpired(expiresAt: number) {
   return expiresAt < Date.now();
-}
-
-export function parseAccessToken(accessTokenString: string): AccessToken {
-  const accessToken = JSON.parse(accessTokenString);
-  accessToken.creationTimestamp = Number(accessToken.creationTimestamp);
-  accessToken.expiresIn = Number(accessToken.expiresIn);
-  return accessToken;
-}
-
-export function parseWebAccessToken(webAccessTokenString: string): WebAccessToken {
-  const webAccessToken = JSON.parse(webAccessTokenString);
-  webAccessToken.expirationTimestamp = Number(webAccessToken.accessTokenExpirationTimestampMs);
-  return webAccessToken;
 }
 
 export function getGreetingMessages() {
@@ -87,7 +68,7 @@ function formatDateString(dateString: string, forFriends: boolean = false) {
   return `${days} day${days > 1 ? 's' : ''} ago`;
 }
 
-export function filterArtists(artists: TopArtists): FilteredArtist[] {
+export function filterArtists(artists: TopArtistsResponse): FilteredArtist[] {
   return artists.items.map((artist) => ({
     id: artist.id,
     image: artist.images.length > 0 ? artist.images[0].url : '',
@@ -95,7 +76,7 @@ export function filterArtists(artists: TopArtists): FilteredArtist[] {
   }));
 }
 
-export function filterTracks(tracks: TopTracks): FilteredTrack[] {
+export function filterTracks(tracks: TopTracksResponse): FilteredTrack[] {
   return tracks.items.map((track) => ({
     id: track.id,
     image: track.album.images.length > 0 ? track.album.images[0].url : '',
@@ -104,7 +85,9 @@ export function filterTracks(tracks: TopTracks): FilteredTrack[] {
   }));
 }
 
-export function filterRecentlyPlayed(recentlyPlayed: RecentlyPlayed): FilteredRecentlyPlayed[] {
+export function filterRecentlyPlayed(
+  recentlyPlayed: RecentlyPlayedResponse,
+): FilteredRecentlyPlayed[] {
   return recentlyPlayed.items.map((item) => ({
     image: item.track.album.images.length > 0 ? item.track.album.images[0].url : '',
     time: formatDateString(item.played_at),
@@ -113,7 +96,9 @@ export function filterRecentlyPlayed(recentlyPlayed: RecentlyPlayed): FilteredRe
   }));
 }
 
-export function filterFriendsActivity(friendsActivity: FriendsActivity): FilteredFriendActivity[] {
+export function filterFriendsActivity(
+  friendsActivity: FriendsActivityResponse,
+): FilteredFriendActivity[] {
   const sortedFriendsActivity = friendsActivity.friends.sort((a, b) => b.timestamp - a.timestamp);
 
   return sortedFriendsActivity.map((friend) => ({
@@ -151,8 +136,4 @@ export function mapContentToScreen(content: string) {
     default:
       return 'TopTracks';
   }
-}
-
-export function dataIsTracks(data: unknown): data is FilteredTrack[] {
-  return (data as FilteredTrack[])[0].track !== undefined;
 }

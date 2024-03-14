@@ -1,0 +1,108 @@
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetSectionList,
+} from '@gorhom/bottom-sheet';
+import { forwardRef, useCallback, useMemo } from 'react';
+import { Text, Dimensions } from 'react-native';
+import { styles } from './InstructionsBottomSheet.styles';
+import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import type { SectionListData, SectionListRenderItemInfo } from 'react-native';
+
+type Item = string;
+
+interface Section {
+  title: string;
+  data: Item[];
+}
+
+interface SectionHeader {
+  section: SectionListData<Item, Section>;
+}
+
+const instructions = [
+  {
+    title: 'Safari',
+    data: [
+      '1. Open a Private window and navigate to https://open.spotify.com.',
+      '2. Log in to your Spotify account.',
+      '3. Use Command + Option + C to open the browser’s developer tools.',
+      '4. Access the "Storage" section within the developer tools menu.',
+      '5. Locate and copy the value of sp_dc cookie.',
+      '6. Ensure to close the window without logging out to keep the cookie valid.',
+    ],
+  },
+  {
+    title: 'Chrome',
+    data: [
+      '1. Open an Incognito window and navigate to https://open.spotify.com.',
+      '2. Log in to your Spotify account.',
+      '3. Use Command + Option + I (Mac) or Control + Shift + I or F12 to open the browser’s developer tools.',
+      '4. Access the "Application" section within the developer tools menu.',
+      '5. Locate and copy the value of sp_dc cookie.',
+      '6. Ensure to close the window without logging out to keep the cookie valid.',
+    ],
+  },
+  {
+    title: 'Firefox',
+    data: [
+      '1. Open an Incognito window and navigate to https://open.spotify.com.',
+      '2. Log in to your Spotify account.',
+      "3. Use Command + Option + I (Mac) or Control + Shift + I or F12 to open the browser's developer tools.",
+      '4. Access the "Storage" section within the developer tools menu.',
+      '5. Locate and copy the value of sp_dc cookie.',
+      '6. Ensure to close the window without logging out to keep the cookie valid.',
+    ],
+  },
+];
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
+export const InstructionsBottomSheet = forwardRef<BottomSheetModal>((_, ref) => {
+  const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], []);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        opacity={0.7}
+      />
+    ),
+    [],
+  );
+
+  const renderSectionItem = useCallback(
+    ({ item }: SectionListRenderItemInfo<Item>) => <Text style={styles.sectionItem}>{item}</Text>,
+    [],
+  );
+
+  const renderSectionHeader = useCallback(
+    ({ section: { title } }: SectionHeader) => <Text style={styles.sectionHeader}>{title}</Text>,
+    [],
+  );
+
+  return (
+    <BottomSheetModal
+      ref={ref}
+      index={0}
+      snapPoints={snapPoints}
+      enablePanDownToClose
+      handleStyle={styles.header}
+      handleIndicatorStyle={styles.handle}
+      backgroundStyle={styles.container}
+      backdropComponent={renderBackdrop}
+    >
+      <BottomSheetSectionList
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.sectionList}
+        keyExtractor={(item, index) => item + index}
+        sections={instructions}
+        renderItem={renderSectionItem}
+        renderSectionHeader={renderSectionHeader}
+        stickySectionHeadersEnabled={false}
+      />
+    </BottomSheetModal>
+  );
+});

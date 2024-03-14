@@ -1,6 +1,4 @@
-import type { Context } from 'react';
-
-import { useContext } from 'react';
+import { useContext, type Context } from 'react';
 
 export function useSafeContext<T>(context: Context<T>) {
   const ctx = useContext(context);

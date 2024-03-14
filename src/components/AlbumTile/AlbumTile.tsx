@@ -33,10 +33,10 @@ export function AlbumTile({ artist, album, image, plays, delay, rank }: AlbumTil
                 rank === 1
                   ? '#FFD700'
                   : rank === 2
-                  ? '#C0C0C0'
-                  : rank === 3
-                  ? '#CD7F32'
-                  : '#6A6A6A',
+                    ? '#C0C0C0'
+                    : rank === 3
+                      ? '#CD7F32'
+                      : '#6A6A6A',
             }}
           >{`#${rank}`}</Text>
         </View>

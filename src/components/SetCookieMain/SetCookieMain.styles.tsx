@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   info: {
     fontFamily: 'Poppins-SemiBold',
-    textAlign: 'center',
     color: '#fff',
     fontSize: 12,
   },
@@ -54,5 +53,11 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: -1,
     top: 10,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
   },
 });

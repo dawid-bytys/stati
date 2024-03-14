@@ -1,6 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import { Notification } from '@/components/Notification/Notification';
 import { NotificationContext } from '@/context/NotificationContext';
-import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
 
 export function NotificationContextProvider({ children }: PropsWithChildren) {
   const [message, setMessage] = useState('');

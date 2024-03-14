@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
-import { ActivityTile } from '../ActivityTile/ActivityTile';
-import { FilteredRecentlyPlayed } from '@/types';
 import { styles } from './LatestActivitySection.styles';
+import { ActivityTile } from '../ActivityTile/ActivityTile';
+import type { FilteredRecentlyPlayed } from '@/types/types';
 
 interface LatestActivityProps {
   data: FilteredRecentlyPlayed[];

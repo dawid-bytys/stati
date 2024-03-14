@@ -1,27 +1,27 @@
-export interface RecentlyPlayed {
-  cursors: Cursors;
+export interface RecentlyPlayedResponse {
+  href: string;
   limit: number;
+  next: string;
+  cursors: Cursors;
   total: number;
   items: Item[];
-  href: string;
-  next: string;
 }
 
 interface Cursors {
-  before: string;
   after: string;
+  before: string;
 }
 
 interface Item {
+  track: Track;
   played_at: string;
   context: Context;
-  track: Track;
 }
 
 interface Context {
-  external_urls: ExternalUrls;
   type: string;
   href: string;
+  external_urls: ExternalUrls;
   uri: string;
 }
 
@@ -30,58 +30,58 @@ interface ExternalUrls {
 }
 
 interface Track {
-  available_markets: string[];
-  external_urls: ExternalUrls;
-  restrictions: Restrictions;
-  external_ids: ExternalIDS;
-  linked_from: LinkedFrom;
+  album: Album;
   artists: TrackArtist[];
-  is_playable: boolean;
-  track_number: number;
+  available_markets: string[];
   disc_number: number;
   duration_ms: number;
-  preview_url: string;
-  popularity: number;
   explicit: boolean;
-  is_local: boolean;
-  album: Album;
+  external_ids: Externalids;
+  external_urls: ExternalUrls;
   href: string;
+  id: string;
+  is_playable: boolean;
+  linked_from: LinkedFrom;
+  restrictions: Restrictions;
   name: string;
+  popularity: number;
+  preview_url: string;
+  track_number: number;
   type: string;
   uri: string;
-  id: string;
+  is_local: boolean;
 }
 
 interface Album {
-  release_date_precision: string;
+  album_type: string;
+  total_tracks: number;
   available_markets: string[];
   external_urls: ExternalUrls;
-  restrictions: Restrictions;
-  artists: AlbumArtist[];
-  total_tracks: number;
-  release_date: string;
-  album_type: string;
-  images: Image[];
   href: string;
+  id: string;
+  images: Image[];
   name: string;
+  release_date: string;
+  release_date_precision: string;
+  restrictions: Restrictions;
   type: string;
   uri: string;
-  id: string;
+  artists: AlbumArtist[];
 }
 
 interface AlbumArtist {
   external_urls: ExternalUrls;
   href: string;
+  id: string;
   name: string;
   type: string;
   uri: string;
-  id: string;
 }
 
 interface Image {
+  url: string;
   height: number;
   width: number;
-  url: string;
 }
 
 interface Restrictions {
@@ -91,22 +91,22 @@ interface Restrictions {
 interface TrackArtist {
   external_urls: ExternalUrls;
   followers: Followers;
-  popularity: number;
   genres: string[];
-  images: Image[];
   href: string;
+  id: string;
+  images: Image[];
   name: string;
+  popularity: number;
   type: string;
   uri: string;
-  id: string;
 }
 
 interface Followers {
-  total: number;
   href: string;
+  total: number;
 }
 
-interface ExternalIDS {
+interface Externalids {
   isrc: string;
   ean: string;
   upc: string;

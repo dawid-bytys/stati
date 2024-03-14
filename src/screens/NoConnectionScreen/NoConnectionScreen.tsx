@@ -1,6 +1,8 @@
 import { View, Text } from 'react-native';
+
 import LinesDown from '@/assets/svg/lines-down.svg';
 import LinesUp from '@/assets/svg/lines-up.svg';
+
 import { styles } from './NoConnectionScreen.styles';
 
 export function NoConnectionScreen() {

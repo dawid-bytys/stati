@@ -1,9 +1,10 @@
-import type { NavigationProp } from '@react-navigation/native';
-import type { FilteredArtist, FilteredTrack } from '@/types';
-import { TouchableOpacity, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { TopTile } from '../TopTile/TopTile';
+import { useCallback } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { styles } from './TopSection.styles';
+import { TopTile } from '../TopTile/TopTile';
+import type { FilteredArtist, FilteredTrack } from '@/types/types';
+import type { NavigationProp } from '@react-navigation/native';
 
 interface TopProps {
   title: string;
@@ -20,13 +21,42 @@ type NavigationTabsParamList = {
 export function TopSection({ title, tracks, artists }: TopProps) {
   const navigation = useNavigation<NavigationProp<NavigationTabsParamList>>();
 
-  function handleNavigation() {
-    if (title === 'Top tracks') {
+  const handleNavigation = useCallback(() => {
+    if (tracks) {
       navigation.navigate('Top', { screen: 'tracks' });
-    } else {
+    } else if (artists) {
       navigation.navigate('Top', { screen: 'artists' });
     }
-  }
+  }, [navigation, tracks, artists]);
+
+  const renderTiles = useCallback(
+    (tracks?: FilteredTrack[], artists?: FilteredArtist[]) => {
+      if (tracks) {
+        return tracks.map((item, idx) => (
+          <TopTile
+            title={item.track}
+            image={item.image}
+            key={item.image + idx}
+            delay={idx * 100}
+          />
+        ));
+      }
+
+      if (artists) {
+        return artists.map((item, idx) => (
+          <TopTile
+            title={item.artist}
+            image={item.image}
+            key={item.image + idx}
+            delay={idx * 100}
+          />
+        ));
+      }
+
+      return null;
+    },
+    [tracks, artists],
+  );
 
   return (
     <View style={styles.container}>
@@ -42,30 +72,4 @@ export function TopSection({ title, tracks, artists }: TopProps) {
       <View style={styles.innerLower}>{renderTiles(tracks, artists)}</View>
     </View>
   );
-}
-
-function renderTiles(tracks?: FilteredTrack[], artists?: FilteredArtist[]) {
-  if (tracks) {
-    return tracks.map((item, idx) => (
-      <TopTile
-        title={item.track}
-        image={item.image}
-        key={item.image + idx}
-        delay={idx * 100}
-      />
-    ));
-  }
-
-  if (artists) {
-    return artists.map((item, idx) => (
-      <TopTile
-        title={item.artist}
-        image={item.image}
-        key={item.image + idx}
-        delay={idx * 100}
-      />
-    ));
-  }
-
-  return null;
 }
