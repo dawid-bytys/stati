@@ -5,6 +5,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { forwardRef, useCallback, useMemo } from 'react';
 import { Text, Dimensions } from 'react-native';
+import { Hyperlink } from 'react-native-hyperlink';
 import { styles } from './InstructionsBottomSheet.styles';
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import type { SectionListData, SectionListRenderItemInfo } from 'react-native';
@@ -61,27 +62,31 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 export const InstructionsBottomSheet = forwardRef<BottomSheetModal>((_, ref) => {
   const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], []);
 
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
+  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
+    return (
       <BottomSheetBackdrop
         {...props}
         appearsOnIndex={0}
         disappearsOnIndex={-1}
         opacity={0.7}
       />
-    ),
-    [],
-  );
+    );
+  }, []);
 
-  const renderSectionItem = useCallback(
-    ({ item }: SectionListRenderItemInfo<Item>) => <Text style={styles.sectionItem}>{item}</Text>,
-    [],
-  );
+  const renderSectionItem = useCallback(({ item }: SectionListRenderItemInfo<Item>) => {
+    return (
+      <Hyperlink
+        linkDefault={true}
+        linkStyle={styles.link}
+      >
+        <Text style={styles.sectionItem}>{item}</Text>
+      </Hyperlink>
+    );
+  }, []);
 
-  const renderSectionHeader = useCallback(
-    ({ section: { title } }: SectionHeader) => <Text style={styles.sectionHeader}>{title}</Text>,
-    [],
-  );
+  const renderSectionHeader = useCallback(({ section: { title } }: SectionHeader) => {
+    return <Text style={styles.sectionHeader}>{title}</Text>;
+  }, []);
 
   return (
     <BottomSheetModal

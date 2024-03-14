@@ -34,4 +34,7 @@ export const styles = StyleSheet.create({
     color: '#f0f0f0',
     textAlign: 'justify',
   },
+  link: {
+    color: '#1DB954',
+  },
 });
