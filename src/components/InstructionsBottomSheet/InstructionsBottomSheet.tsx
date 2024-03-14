@@ -95,7 +95,6 @@ export const InstructionsBottomSheet = forwardRef<BottomSheetModal>((_, ref) => 
       backdropComponent={renderBackdrop}
     >
       <BottomSheetSectionList
-        showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.sectionList}
         keyExtractor={(item, index) => item + index}
         sections={instructions}
