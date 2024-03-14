@@ -44,6 +44,7 @@ export function HomeScreen() {
           recentlyPlayed: filterRecentlyPlayed(recentlyPlayed),
         });
       } catch (_err) {
+        console.error(_err);
         setNotification('Something went wrong, try reloading the app.', true);
       }
     }

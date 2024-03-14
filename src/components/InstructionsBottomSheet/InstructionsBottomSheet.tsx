@@ -8,18 +8,8 @@ import { Text, Dimensions } from 'react-native';
 import { Hyperlink } from 'react-native-hyperlink';
 import { styles } from './InstructionsBottomSheet.styles';
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import type { Dispatch, SetStateAction } from 'react';
 import type { SectionListData, SectionListRenderItemInfo } from 'react-native';
-
-type Item = string;
-
-interface Section {
-  title: string;
-  data: Item[];
-}
-
-interface SectionHeader {
-  section: SectionListData<Item, Section>;
-}
 
 const instructions = [
   {
@@ -59,54 +49,72 @@ const instructions = [
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-export const InstructionsBottomSheet = forwardRef<BottomSheetModal>((_, ref) => {
-  const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], []);
+type Item = string;
 
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        opacity={0.7}
-      />
-    );
-  }, []);
+interface Section {
+  title: string;
+  data: Item[];
+}
 
-  const renderSectionItem = useCallback(({ item }: SectionListRenderItemInfo<Item>) => {
+interface SectionHeader {
+  section: SectionListData<Item, Section>;
+}
+
+interface InstructionsBottomSheetProps {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export const InstructionsBottomSheet = forwardRef<BottomSheetModal, InstructionsBottomSheetProps>(
+  ({ setIsOpen }, ref) => {
+    const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], []);
+
+    const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
+      return (
+        <BottomSheetBackdrop
+          {...props}
+          appearsOnIndex={0}
+          disappearsOnIndex={-1}
+          opacity={0.7}
+        />
+      );
+    }, []);
+
+    const renderSectionItem = useCallback(({ item }: SectionListRenderItemInfo<Item>) => {
+      return (
+        <Hyperlink
+          linkDefault={true}
+          linkStyle={styles.link}
+        >
+          <Text style={styles.sectionItem}>{item}</Text>
+        </Hyperlink>
+      );
+    }, []);
+
+    const renderSectionHeader = useCallback(({ section: { title } }: SectionHeader) => {
+      return <Text style={styles.sectionHeader}>{title}</Text>;
+    }, []);
+
     return (
-      <Hyperlink
-        linkDefault={true}
-        linkStyle={styles.link}
+      <BottomSheetModal
+        ref={ref}
+        index={0}
+        snapPoints={snapPoints}
+        enablePanDownToClose
+        handleStyle={styles.header}
+        handleIndicatorStyle={styles.handle}
+        backgroundStyle={styles.container}
+        backdropComponent={renderBackdrop}
+        onDismiss={() => setIsOpen(false)}
       >
-        <Text style={styles.sectionItem}>{item}</Text>
-      </Hyperlink>
+        <BottomSheetSectionList
+          contentContainerStyle={styles.sectionList}
+          keyExtractor={(item, index) => item + index}
+          sections={instructions}
+          renderItem={renderSectionItem}
+          renderSectionHeader={renderSectionHeader}
+          stickySectionHeadersEnabled={false}
+        />
+      </BottomSheetModal>
     );
-  }, []);
-
-  const renderSectionHeader = useCallback(({ section: { title } }: SectionHeader) => {
-    return <Text style={styles.sectionHeader}>{title}</Text>;
-  }, []);
-
-  return (
-    <BottomSheetModal
-      ref={ref}
-      index={0}
-      snapPoints={snapPoints}
-      enablePanDownToClose
-      handleStyle={styles.header}
-      handleIndicatorStyle={styles.handle}
-      backgroundStyle={styles.container}
-      backdropComponent={renderBackdrop}
-    >
-      <BottomSheetSectionList
-        contentContainerStyle={styles.sectionList}
-        keyExtractor={(item, index) => item + index}
-        sections={instructions}
-        renderItem={renderSectionItem}
-        renderSectionHeader={renderSectionHeader}
-        stickySectionHeadersEnabled={false}
-      />
-    </BottomSheetModal>
-  );
-});
+  },
+);

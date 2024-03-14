@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { IS_ANDROID } from '@/config';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,14 +19,13 @@ export const styles = StyleSheet.create({
   },
   sectionList: {
     paddingHorizontal: 25,
-    paddingBottom: 25,
-    gap: 10,
+    paddingBottom: IS_ANDROID ? 15 : 25,
+    gap: 5,
   },
   sectionHeader: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
     color: '#f0f0f0',
-    paddingBottom: 10,
   },
   sectionItem: {
     fontSize: 14,

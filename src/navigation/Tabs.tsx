@@ -15,6 +15,7 @@ export function Tabs() {
   return (
     <Tab.Navigator
       tabBarPosition="bottom"
+      backBehavior="history"
       screenOptions={{
         lazy: true,
         swipeEnabled: false,
@@ -23,13 +24,12 @@ export function Tabs() {
           backgroundColor: '#121212',
           borderTopColor: '#2A2A2A',
           borderTopWidth: 1,
-          height: 60,
+          height: 65,
         },
         tabBarLabelStyle: {
           textTransform: 'none',
           fontFamily: 'Poppins-Medium',
           fontSize: 10,
-          marginTop: 5,
           width: '100%',
           alignSelf: 'center',
         },

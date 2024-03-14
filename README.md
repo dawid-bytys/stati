@@ -9,7 +9,7 @@
 
 ## About
 
-The app was created mostly for me to track Spotify data, but I think it's cool enough that it's worth publishing if anyone would like to build this client for themselves and sideload the app to their iPhone.
+The app was created mostly for me to track Spotify data, but I think it's cool enough that it's worth publishing if anyone would like to build this client for themselves and sideload the app to their phone.
 
 ## How to access friends' activity data?
 

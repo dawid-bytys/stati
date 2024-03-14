@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer';
 import type {
   TopArtistsResponse,
   TopTracksResponse,
@@ -11,10 +10,6 @@ import type {
   FilteredRecentlyPlayed,
   FilteredTrack,
 } from './types/types';
-
-export function generateBasicAuthHeader(clientId: string, clientSecret: string) {
-  return Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-}
 
 export function isTokenExpired(createdAt: number) {
   const currentTime = Date.now();

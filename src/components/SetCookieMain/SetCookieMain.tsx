@@ -1,9 +1,19 @@
-import { useCallback, useRef, useState } from 'react';
-import { TouchableOpacity, TextInput, View, Text } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  TouchableOpacity,
+  TextInput,
+  View,
+  TouchableWithoutFeedback,
+  Text,
+  Keyboard,
+  BackHandler,
+  KeyboardAvoidingView,
+} from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import InstructionsIcon from '@/assets/svg/instructions.svg';
 import LinesDown from '@/assets/svg/lines-down.svg';
 import LinesUp from '@/assets/svg/lines-up.svg';
+import { IS_ANDROID } from '@/config';
 import { useAuthStore } from '@/store/auth';
 import { styles } from './SetCookieMain.styles';
 import { InstructionsBottomSheet } from '../InstructionsBottomSheet/InstructionsBottomSheet';
@@ -11,6 +21,7 @@ import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
 export function SetCookieMain() {
+  const [isOpen, setIsOpen] = useState(false);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [text, setText] = useState('');
   const { setValue } = useAuthStore();
@@ -21,44 +32,72 @@ export function SetCookieMain() {
 
   function handleSubmit() {
     setValue('spDcCookie', text.trim());
+    Keyboard.dismiss();
   }
 
   const handleOpenBottomSheet = useCallback(() => {
     bottomSheetRef.current?.present();
+    setIsOpen(true);
   }, []);
 
+  useEffect(() => {
+    const backHandlerListener = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (isOpen) {
+        bottomSheetRef.current?.dismiss();
+        return true;
+      }
+
+      return false;
+    });
+
+    return () => {
+      backHandlerListener.remove();
+    };
+  }, [isOpen]);
+
   return (
-    <Animated.View
-      entering={FadeIn.duration(300)}
-      style={styles.container}
-    >
-      <InstructionsBottomSheet ref={bottomSheetRef} />
-      <LinesUp style={styles.linesUp} />
-      <LinesDown style={styles.linesDown} />
-      <View style={styles.inner}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.info}>You must set a sp_dc cookie</Text>
-          <TouchableOpacity onPress={handleOpenBottomSheet}>
-            <InstructionsIcon
-              height={20}
-              width={20}
-            />
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          onChange={handleChange}
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder="sp_dc"
-          value={text}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={handleSubmit}
-        style={styles.btn}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Animated.View
+        entering={FadeIn.duration(300)}
+        style={styles.container}
       >
-        <Text style={styles.btnText}>Submit</Text>
-      </TouchableOpacity>
-    </Animated.View>
+        <InstructionsBottomSheet
+          ref={bottomSheetRef}
+          setIsOpen={setIsOpen}
+        />
+        <LinesUp style={styles.linesUp} />
+        <LinesDown style={styles.linesDown} />
+        <KeyboardAvoidingView
+          style={styles.inner}
+          behavior={IS_ANDROID ? 'height' : 'padding'}
+          keyboardVerticalOffset={IS_ANDROID ? 20 : 0}
+          enabled={!IS_ANDROID}
+        >
+          <View style={styles.infoContainer}>
+            <Text style={styles.info}>You must set a sp_dc cookie</Text>
+            <TouchableOpacity onPress={handleOpenBottomSheet}>
+              <InstructionsIcon
+                height={20}
+                width={20}
+              />
+            </TouchableOpacity>
+          </View>
+          <TextInput
+            onChange={handleChange}
+            secureTextEntry={true}
+            style={styles.input}
+            placeholderTextColor="#2D2D2D"
+            placeholder="sp_dc"
+            value={text}
+          />
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={styles.btn}
+        >
+          <Text style={styles.btnText}>Submit</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 }

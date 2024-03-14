@@ -21,6 +21,7 @@ export function TopScreen() {
           backgroundColor: '#121212',
           marginHorizontal: 25,
           marginVertical: 20,
+          shadowColor: 'transparent',
         },
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Medium',

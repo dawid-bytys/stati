@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { Config } from 'react-native-config';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { URL } from 'react-native-url-polyfill';
@@ -51,13 +52,12 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
             setValue('spDcCookie', '');
             setValue('webAccessToken', { value: '', expiresAt: 0 });
             setNotification('sp_dc cookie has expired, get a new one.', true);
-            return;
+          } else {
+            setValue('webAccessToken', {
+              value: response.accessToken,
+              expiresAt: response.accessTokenExpirationTimestampMs,
+            });
           }
-
-          setValue('webAccessToken', {
-            value: response.accessToken,
-            expiresAt: response.accessTokenExpirationTimestampMs,
-          });
         }
       } catch (_err) {
         logout(true);
@@ -85,7 +85,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
       const { type, url } = (await InAppBrowser.openAuth(
         spotifyAuthUrl,
-        'spoti://callback',
+        Config.SPOTIFY_AUTH_CALLBACK_URL,
       )) as RedirectResult;
 
       if (type === 'success') {
