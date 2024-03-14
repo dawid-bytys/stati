@@ -5,7 +5,6 @@ import { LatestActivitySection } from '@/components/LatestActivitySection/Latest
 import { Loading } from '@/components/Loading/Loading';
 import { TopSection } from '@/components/TopSection/TopSection';
 import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify';
-import { useAuthContext } from '@/hooks/useAuthContext';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
 import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils';
@@ -20,7 +19,6 @@ interface TopData {
 }
 
 export function HomeScreen() {
-  const { logout } = useAuthContext();
   const { accessToken } = useAuthStore();
   const { setNotification } = useNotificationContext();
   const [data, setData] = useState<TopData | null>(null);
@@ -53,7 +51,7 @@ export function HomeScreen() {
     if (!data) {
       loadTopContent();
     }
-  }, [data, accessToken, logout]);
+  }, [data, accessToken]);
 
   if (!data) {
     return <Loading />;

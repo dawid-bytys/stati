@@ -60,8 +60,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
           });
         }
       } catch (_err) {
-        logout();
-        setNotification('Something went wrong, try reloading the app.', true);
+        logout(true);
       } finally {
         setIsAuthenticating(false);
       }
@@ -114,14 +113,16 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   }, [setValue, setNotification]);
 
   const logout = useCallback(
-    (withNotification: boolean = false) => {
+    (isError: boolean) => {
       setValue('accessToken', { value: '', createdAt: 0 });
       setValue('webAccessToken', { value: '', expiresAt: 0 });
       setValue('refreshToken', '');
       setValue('spDcCookie', '');
       setIsAuthenticated(false);
 
-      if (withNotification) {
+      if (isError) {
+        setNotification('Something went wrong, try to log in again.', true);
+      } else {
         setNotification('You have logged out successfully.', false);
       }
     },
