@@ -4,16 +4,12 @@ import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { URL } from 'react-native-url-polyfill';
 import { AuthContext } from '@/context/AuthContext';
-import {
-  generateSpotifyAuthURL,
-  fetchTokens,
-  refreshTokens,
-  fetchWebAccessToken,
-} from '@/domain/spotify';
+import { getAuthState } from '@/domain/auth';
+import { generateSpotifyAuthURL, fetchTokens } from '@/domain/spotify';
+import { CustomError } from '@/errors';
 import { useAuthHydration } from '@/hooks/useAuthHydration';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
-import { isTokenExpired, isWebAccessTokenExpired } from '@/utils';
 import type { PropsWithChildren } from 'react';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
 
@@ -26,43 +22,25 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     async function authenticate() {
-      setIsAuthenticating(true);
-
       try {
-        if (accessToken.value && refreshToken && !isTokenExpired(accessToken.createdAt)) {
-          setIsAuthenticated(true);
-        } else if (accessToken.value && refreshToken && isTokenExpired(accessToken.createdAt)) {
-          const { access_token, refresh_token } = await refreshTokens(refreshToken);
-          setValue('accessToken', {
-            value: access_token,
-            createdAt: Date.now(),
-          });
-          setValue('refreshToken', refresh_token);
-          setIsAuthenticated(true);
-        }
+        const authState = await getAuthState(accessToken, refreshToken, webAccessToken, spDcCookie);
 
-        if (
-          webAccessToken.value &&
-          spDcCookie &&
-          isWebAccessTokenExpired(webAccessToken.expiresAt)
-        ) {
-          const response = await fetchWebAccessToken(spDcCookie);
-
-          if (response.isAnonymous) {
-            setValue('spDcCookie', '');
-            setValue('webAccessToken', { value: '', expiresAt: 0 });
-            setNotification('sp_dc cookie has expired, get a new one.', true);
-          } else {
-            setValue('webAccessToken', {
-              value: response.accessToken,
-              expiresAt: response.accessTokenExpirationTimestampMs,
-            });
-          }
-        }
-      } catch (_err) {
-        logout(true);
-      } finally {
+        setValue('accessToken', authState.accessToken);
+        setValue('refreshToken', authState.refreshToken);
+        setValue('spDcCookie', authState.spDcCookie);
+        setValue('webAccessToken', authState.webAccessToken);
+        setIsAuthenticated(authState.isAuthenticated);
         setIsAuthenticating(false);
+
+        if (authState.notification) {
+          setNotification(authState.notification, 'warning');
+        }
+      } catch (err) {
+        if (err instanceof CustomError) {
+          setNotification(err.message, 'error');
+        } else {
+          setNotification('Something went wrong, try reloading the app.', 'error');
+        }
       }
     }
 
@@ -103,31 +81,27 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         });
         setValue('refreshToken', refresh_token);
         setIsAuthenticated(true);
-        setNotification('You have logged in successfully.', false);
+        setNotification('You have logged in successfully.', 'success');
       }
-    } catch (_err) {
-      setNotification('Something went wrong, try reloading the app.', true);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setNotification(err.message, 'error');
+      } else {
+        setNotification('Something went wrong, try reloading the app.', 'error');
+      }
     } finally {
       setIsAuthenticating(false);
     }
   }, [setValue, setNotification]);
 
-  const logout = useCallback(
-    (isError: boolean) => {
-      setValue('accessToken', { value: '', createdAt: 0 });
-      setValue('webAccessToken', { value: '', expiresAt: 0 });
-      setValue('refreshToken', '');
-      setValue('spDcCookie', '');
-      setIsAuthenticated(false);
-
-      if (isError) {
-        setNotification('Something went wrong, try to log in again.', true);
-      } else {
-        setNotification('You have logged out successfully.', false);
-      }
-    },
-    [setValue, setNotification],
-  );
+  const logout = useCallback(() => {
+    setValue('accessToken', { value: '', createdAt: 0 });
+    setValue('webAccessToken', { value: '', expiresAt: 0 });
+    setValue('refreshToken', '');
+    setValue('spDcCookie', '');
+    setIsAuthenticated(false);
+    setNotification('You have logged out successfully.', 'success');
+  }, [setValue, setNotification]);
 
   return (
     <AuthContext.Provider

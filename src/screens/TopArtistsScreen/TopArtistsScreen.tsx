@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import { ArtistTile } from '@/components/ArtistTile/ArtistTile';
 import { Loading } from '@/components/Loading/Loading';
 import { fetchTopItems } from '@/domain/spotify';
+import { CustomError } from '@/errors';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
 import { filterArtists } from '@/utils';
@@ -56,7 +57,7 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
 
   const handleLoadMore = useCallback(() => {
     if (data && data.length < 50 && !isLoading) {
-      loadData(offset);
+      handleTopArtists(offset);
     }
   }, [offset, isLoading]);
 
@@ -65,7 +66,7 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
     setData(null);
   }, []);
 
-  const loadData = useCallback(async (offset = 0) => {
+  const handleTopArtists = useCallback(async (offset = 0) => {
     setIsLoading(true);
 
     try {
@@ -88,7 +89,11 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
 
       setOffset((prevOffset) => prevOffset + 10);
     } catch (err) {
-      setNotification('Something went wrong.', true);
+      if (err instanceof CustomError) {
+        setNotification(err.message, 'error');
+      } else {
+        setNotification('Something went wrong, try reloading the app.', 'error');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +101,7 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
 
   useEffect(() => {
     if (!data) {
-      loadData();
+      handleTopArtists();
     }
   }, [data]);
 

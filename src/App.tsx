@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Router } from '@/navigation/Router';
 import { AuthContextProvider } from '@/providers/AuthContextProvider';
 import { NotificationContextProvider } from '@/providers/NotificationContextProvider';
+import { InternetConnectionProvider } from './providers/InternetConnectionProvider';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -20,15 +21,17 @@ export function App() {
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
-          <NavigationContainer theme={MyTheme}>
-            <NotificationContextProvider>
-              <AuthContextProvider>
-                <BottomSheetModalProvider>
-                  <Router />
-                </BottomSheetModalProvider>
-              </AuthContextProvider>
-            </NotificationContextProvider>
-          </NavigationContainer>
+          <InternetConnectionProvider>
+            <NavigationContainer theme={MyTheme}>
+              <NotificationContextProvider>
+                <AuthContextProvider>
+                  <BottomSheetModalProvider>
+                    <Router />
+                  </BottomSheetModalProvider>
+                </AuthContextProvider>
+              </NotificationContextProvider>
+            </NavigationContainer>
+          </InternetConnectionProvider>
         </SafeAreaView>
       </GestureHandlerRootView>
     </SafeAreaProvider>

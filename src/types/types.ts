@@ -16,6 +16,25 @@ export interface WebAccessTokenResponse {
   accessTokenExpirationTimestampMs: number;
 }
 
+export interface AccessToken {
+  value: string;
+  createdAt: number;
+}
+
+export interface WebAccessToken {
+  value: string;
+  expiresAt: number;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  accessToken: AccessToken;
+  refreshToken: string;
+  spDcCookie: string;
+  webAccessToken: WebAccessToken;
+  notification: string;
+}
+
 export interface FilteredFriendActivity {
   context: {
     type: string;

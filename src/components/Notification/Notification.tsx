@@ -1,20 +1,22 @@
 import { Text } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
+import { getNotificationColor } from '@/utils';
 import { styles } from './Notification.styles';
+import type { NotificationType } from '@/context/NotificationContext';
 
 interface NotificationProps {
   message: string;
-  isError: boolean;
+  type: NotificationType;
 }
 
-export function Notification({ message, isError }: NotificationProps) {
+export function Notification({ message, type }: NotificationProps) {
   return (
     <Animated.View
       entering={FadeInUp}
       exiting={FadeOutUp}
       style={{
         ...styles.container,
-        backgroundColor: isError ? '#FF4D4D' : '#1FDF64',
+        backgroundColor: getNotificationColor(type),
       }}
     >
       <Text style={styles.text}>{message}</Text>

@@ -5,6 +5,7 @@ import { LatestActivitySection } from '@/components/LatestActivitySection/Latest
 import { Loading } from '@/components/Loading/Loading';
 import { TopSection } from '@/components/TopSection/TopSection';
 import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify';
+import { CustomError } from '@/errors';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
 import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils';
@@ -24,7 +25,7 @@ export function HomeScreen() {
   const [data, setData] = useState<TopData | null>(null);
 
   useEffect(() => {
-    async function loadTopContent() {
+    async function handleTopContent() {
       try {
         const topArtists = await fetchTopItems<TopArtistsResponse>(
           accessToken.value,
@@ -43,14 +44,17 @@ export function HomeScreen() {
           topTracks: filterTracks(topTracks),
           recentlyPlayed: filterRecentlyPlayed(recentlyPlayed),
         });
-      } catch (_err) {
-        console.error(_err);
-        setNotification('Something went wrong, try reloading the app.', true);
+      } catch (err) {
+        if (err instanceof CustomError) {
+          setNotification(err.message, 'error');
+        } else {
+          setNotification('Something went wrong, try reloading the app.', 'error');
+        }
       }
     }
 
     if (!data) {
-      loadTopContent();
+      handleTopContent();
     }
   }, [data, accessToken]);
 

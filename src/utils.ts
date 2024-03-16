@@ -1,3 +1,5 @@
+import { InvalidSpDcCookieError, TooManyRequestsError } from './errors';
+import type { NotificationType } from './context/NotificationContext';
 import type {
   TopArtistsResponse,
   TopTracksResponse,
@@ -11,7 +13,7 @@ import type {
   FilteredTrack,
 } from './types/types';
 
-export function isTokenExpired(createdAt: number) {
+export function isAccessTokenExpired(createdAt: number) {
   const currentTime = Date.now();
   const tokenExpirationTime = createdAt + 3600;
   return currentTime > tokenExpirationTime;
@@ -131,4 +133,35 @@ export function mapContentToScreen(content: string) {
     default:
       return 'TopTracks';
   }
+}
+
+export function getNotificationColor(type: NotificationType) {
+  switch (type) {
+    case 'error':
+      return '#FF4D4D';
+    case 'success':
+      return '#1FDF64';
+    case 'warning':
+      return '#FFD700';
+    default:
+      return '#FF4D4D';
+  }
+}
+
+export async function fetchWithErrorHandling<T>(url: string, init?: RequestInit) {
+  const response = await fetch(url, init);
+
+  if (response.status === 401) {
+    throw new InvalidSpDcCookieError();
+  }
+
+  if (response.status === 429) {
+    throw new TooManyRequestsError();
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${url}`);
+  }
+
+  return response.json() as Promise<T>;
 }

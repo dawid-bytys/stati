@@ -1,35 +1,36 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Notification } from '@/components/Notification/Notification';
 import { NotificationContext } from '@/context/NotificationContext';
+import type { NotificationType } from '@/context/NotificationContext';
 import type { PropsWithChildren } from 'react';
 
 export function NotificationContextProvider({ children }: PropsWithChildren) {
-  const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [type, setType] = useState<NotificationType | null>(null);
 
   useEffect(() => {
     if (message) {
       setTimeout(() => {
-        setMessage('');
-        setIsError(false);
+        setMessage(null);
+        setType(null);
       }, 3000);
     }
-  }, [message, setMessage, setIsError]);
+  }, [message, setMessage, setType]);
 
   const setNotification = useCallback(
-    (message: string, isError: boolean) => {
+    (message: string, type: NotificationType) => {
       setMessage(message);
-      setIsError(isError);
+      setType(type);
     },
-    [setMessage, setIsError],
+    [setMessage, setType],
   );
 
   return (
-    <NotificationContext.Provider value={{ message, isError, setNotification }}>
-      {message && (
+    <NotificationContext.Provider value={{ setNotification }}>
+      {message && type && (
         <Notification
           message={message}
-          isError={isError}
+          type={type}
         />
       )}
       {children}

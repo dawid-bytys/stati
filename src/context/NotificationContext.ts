@@ -1,9 +1,9 @@
 import { createContext } from 'react';
 
+export type NotificationType = 'error' | 'success' | 'warning' | null;
+
 interface NotificationContext {
-  message: string;
-  isError: boolean;
-  setNotification: (message: string, isError: boolean) => void;
+  setNotification: (message: string, type: NotificationType) => void;
 }
 
 export const NotificationContext = createContext<NotificationContext | undefined>(undefined);

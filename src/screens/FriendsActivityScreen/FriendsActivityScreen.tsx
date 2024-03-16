@@ -4,6 +4,7 @@ import { FriendTile } from '@/components/FriendTile/FriendTile';
 import { Loading } from '@/components/Loading/Loading';
 import { SetCookieMain } from '@/components/SetCookieMain/SetCookieMain';
 import { fetchFriendsActivity, fetchWebAccessToken } from '@/domain/spotify';
+import { CustomError } from '@/errors';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
 import { filterFriendsActivity } from '@/utils';
@@ -17,43 +18,42 @@ export function FriendsActivityScreen() {
   const { setNotification } = useNotificationContext();
 
   useEffect(() => {
-    async function getWebAccessToken() {
+    async function handleWebAccessToken() {
       try {
         const response = await fetchWebAccessToken(spDcCookie);
-
-        if (response.isAnonymous) {
-          setValue('spDcCookie', '');
-          setNotification('Invalid sp_dc cookie, try logging in again.', true);
-          return;
-        }
 
         setValue('webAccessToken', {
           value: response.accessToken,
           expiresAt: response.accessTokenExpirationTimestampMs,
         });
-      } catch (_err) {
-        setNotification('Something went wrong, try reloading the app.', true);
+      } catch (err) {
+        if (err instanceof CustomError) {
+          setNotification(err.message, 'error');
+          setValue('spDcCookie', '');
+        } else {
+          setNotification('Something went wrong, try reloading the app.', 'error');
+        }
       }
     }
 
     if (spDcCookie && !webAccessToken.value) {
-      getWebAccessToken();
+      handleWebAccessToken();
     }
   }, [spDcCookie, webAccessToken]);
 
   useEffect(() => {
-    async function getFriendsActivity() {
+    async function handleFriendsActivity() {
       try {
         const friendsActivity = await fetchFriendsActivity(webAccessToken.value);
         const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
         setFriendsActivity(filteredFriendsActivity);
       } catch (_err) {
-        setNotification('Something went wrong, try reloading the app.', true);
+        setNotification('Something went wrong, try reloading the app.', 'error');
       }
     }
 
     if (spDcCookie && webAccessToken.value && !friendsActivity) {
-      getFriendsActivity();
+      handleFriendsActivity();
     }
   }, [spDcCookie, webAccessToken, friendsActivity]);
 

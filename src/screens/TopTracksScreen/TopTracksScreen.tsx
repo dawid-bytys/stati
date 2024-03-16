@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import { Loading } from '@/components/Loading/Loading';
 import { TrackTile } from '@/components/TrackTile/TrackTile';
 import { fetchTopItems } from '@/domain/spotify';
+import { CustomError } from '@/errors';
 import { useNotificationContext } from '@/hooks/useNotificationContext';
 import { useAuthStore } from '@/store/auth';
 import { filterTracks } from '@/utils';
@@ -56,7 +57,7 @@ export function TopTracksScreen({ route }: TopTracksScreenProps) {
 
   const handleLoadMore = useCallback(() => {
     if (data && data.length < 50 && !isLoading) {
-      loadData(offset);
+      handleTopTracks(offset);
     }
   }, [offset, isLoading]);
 
@@ -65,7 +66,7 @@ export function TopTracksScreen({ route }: TopTracksScreenProps) {
     setData(null);
   }, []);
 
-  const loadData = useCallback(async (offset = 0) => {
+  const handleTopTracks = useCallback(async (offset = 0) => {
     setIsLoading(true);
 
     try {
@@ -88,7 +89,11 @@ export function TopTracksScreen({ route }: TopTracksScreenProps) {
 
       setOffset((prevOffset) => prevOffset + 10);
     } catch (err) {
-      setNotification('Something went wrong.', true);
+      if (err instanceof CustomError) {
+        setNotification(err.message, 'error');
+      } else {
+        setNotification('Something went wrong, try reloading the app.', 'error');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +101,7 @@ export function TopTracksScreen({ route }: TopTracksScreenProps) {
 
   useEffect(() => {
     if (!data) {
-      loadData();
+      handleTopTracks();
     }
   }, [data]);
 
