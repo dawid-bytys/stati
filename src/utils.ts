@@ -1,4 +1,4 @@
-import { InvalidSpDcCookieError, TooManyRequestsError } from './errors';
+import { InvalidSpDcCookieError, ServiceUnavailableError, TooManyRequestsError } from './errors';
 import type { NotificationType } from './context/NotificationContext';
 import type {
   TopArtistsResponse,
@@ -15,7 +15,7 @@ import type {
 
 export function isAccessTokenExpired(createdAt: number) {
   const currentTime = Date.now();
-  const tokenExpirationTime = createdAt + 3600;
+  const tokenExpirationTime = createdAt + 3_600_000;
   return currentTime > tokenExpirationTime;
 }
 
@@ -157,6 +157,10 @@ export async function fetchWithErrorHandling<T>(url: string, init?: RequestInit)
 
   if (response.status === 429) {
     throw new TooManyRequestsError();
+  }
+
+  if (response.status === 503) {
+    throw new ServiceUnavailableError();
   }
 
   if (!response.ok) {

@@ -24,3 +24,12 @@ export class TooManyRequestsError extends CustomError {
     Object.setPrototypeOf(this, TooManyRequestsError.prototype);
   }
 }
+
+export class ServiceUnavailableError extends CustomError {
+  statusCode = 503;
+
+  constructor() {
+    super('Service is currently unavailable.');
+    Object.setPrototypeOf(this, ServiceUnavailableError.prototype);
+  }
+}
