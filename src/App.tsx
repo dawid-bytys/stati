@@ -21,17 +21,17 @@ export function App() {
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#121212' }}>
-          <InternetConnectionProvider>
-            <NavigationContainer theme={MyTheme}>
-              <NotificationContextProvider>
-                <AuthContextProvider>
-                  <BottomSheetModalProvider>
+          <NavigationContainer theme={MyTheme}>
+            <NotificationContextProvider>
+              <AuthContextProvider>
+                <BottomSheetModalProvider>
+                  <InternetConnectionProvider>
                     <Router />
-                  </BottomSheetModalProvider>
-                </AuthContextProvider>
-              </NotificationContextProvider>
-            </NavigationContainer>
-          </InternetConnectionProvider>
+                  </InternetConnectionProvider>
+                </BottomSheetModalProvider>
+              </AuthContextProvider>
+            </NotificationContextProvider>
+          </NavigationContainer>
         </SafeAreaView>
       </GestureHandlerRootView>
     </SafeAreaProvider>

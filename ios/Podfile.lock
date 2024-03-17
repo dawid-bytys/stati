@@ -966,7 +966,7 @@ PODS:
     - react-native-config/App (= 1.5.1)
   - react-native-config/App (1.5.1):
     - React-Core
-  - react-native-netinfo (11.3.1):
+  - react-native-netinfo (6.0.0):
     - React-Core
   - react-native-pager-view (6.2.3):
     - glog
@@ -1473,7 +1473,7 @@ SPEC CHECKSUMS:
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
-  react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
+  react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-pager-view: d5f3adb58a4e6e0d200055e9a4afdcda9b9022ce
   react-native-pkce-challenge: 8b62f07dd4e7dbf59fc7e520a99a24920f60657e
   react-native-safe-area-context: cd1169d797a2ef722a00bfc5af10748d5b6c94f9

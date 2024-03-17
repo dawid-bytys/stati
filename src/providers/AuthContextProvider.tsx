@@ -30,7 +30,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         setValue('spDcCookie', authState.spDcCookie);
         setValue('webAccessToken', authState.webAccessToken);
         setIsAuthenticated(authState.isAuthenticated);
-        setIsAuthenticating(false);
 
         if (authState.notification) {
           setNotification(authState.notification, 'warning');
@@ -41,6 +40,8 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         } else {
           setNotification('Something went wrong, try reloading the app.', 'error');
         }
+      } finally {
+        setIsAuthenticating(false);
       }
     }
 
