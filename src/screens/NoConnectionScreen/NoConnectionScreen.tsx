@@ -14,7 +14,7 @@ export function NoConnectionScreen() {
       <LinesUp style={styles.linesUp} />
       <View style={styles.inner}>
         <Text style={styles.heading}>lost internet connection. 😔</Text>
-        <Text style={styles.lowerText}>retrying...</Text>
+        <Text style={styles.lowerText}>retrying in 5 seconds...</Text>
       </View>
       <LinesDown style={styles.linesDown} />
     </Animated.View>
