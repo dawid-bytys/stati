@@ -47,8 +47,12 @@ export function FriendsActivityScreen() {
         const friendsActivity = await fetchFriendsActivity(webAccessToken.value);
         const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
         setFriendsActivity(filteredFriendsActivity);
-      } catch (_err) {
-        setNotification('Something went wrong, try reloading the app.', 'error');
+      } catch (err) {
+        if (err instanceof CustomError) {
+          setNotification(err.message, 'error');
+        } else {
+          setNotification('Something went wrong, try reloading the app.', 'error');
+        }
       }
     }
 
