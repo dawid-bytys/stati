@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-interface AuthStore {
+type AuthState = {
   accessToken: {
     value: string;
     createdAt: number;
@@ -13,8 +13,11 @@ interface AuthStore {
   };
   refreshToken: string;
   spDcCookie: string;
-  setValue: <T>(key: string, value: T) => void;
-}
+};
+
+type Actions = {
+  setValue: <T>(key: keyof AuthState, value: T) => void;
+};
 
 const initialState = {
   accessToken: {
@@ -29,15 +32,18 @@ const initialState = {
   spDcCookie: '',
 };
 
-export const useAuthStore = create<AuthStore>()(
+export const useAuthStore = create<AuthState & Actions>()(
   persist(
     (set) => ({
       ...initialState,
-      setValue: (key, value) => set((state) => ({ ...state, [key]: value })),
+      setValue: (key, value) =>
+        set({
+          [key]: value,
+        }),
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage<AuthStore>(() => AsyncStorage),
+      storage: createJSONStorage<AuthState & Actions>(() => AsyncStorage),
     },
   ),
 );

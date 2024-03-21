@@ -24,7 +24,7 @@ export function SetCookieMain() {
   const [isOpen, setIsOpen] = useState(false);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [text, setText] = useState('');
-  const { setValue } = useAuthStore();
+  const setValue = useAuthStore((state) => state.setValue);
 
   function handleChange(e: NativeSyntheticEvent<TextInputChangeEventData>) {
     setText(e.nativeEvent.text);

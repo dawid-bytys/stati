@@ -23,7 +23,7 @@ interface TopArtistsScreenProps {
 export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
   const { period } = route.params;
   const [data, setData] = useState<FilteredArtist[] | null>(null);
-  const { accessToken } = useAuthStore();
+  const accessToken = useAuthStore((state) => state.accessToken);
   const { setNotification } = useNotificationContext();
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, FlatList } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 import { FriendTile } from '@/components/FriendTile/FriendTile';
 import { Loading } from '@/components/Loading/Loading';
 import { SetCookieMain } from '@/components/SetCookieMain/SetCookieMain';
@@ -13,7 +14,13 @@ import type { FilteredFriendActivity } from '@/types/types';
 import type { ListRenderItemInfo } from 'react-native';
 
 export function FriendsActivityScreen() {
-  const { webAccessToken, spDcCookie, setValue } = useAuthStore();
+  const { spDcCookie, webAccessToken, setValue } = useAuthStore(
+    useShallow((state) => ({
+      spDcCookie: state.spDcCookie,
+      webAccessToken: state.webAccessToken,
+      setValue: state.setValue,
+    })),
+  );
   const [friendsActivity, setFriendsActivity] = useState<FilteredFriendActivity[] | null>(null);
   const { setNotification } = useNotificationContext();
 

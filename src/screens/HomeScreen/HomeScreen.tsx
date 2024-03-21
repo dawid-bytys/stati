@@ -20,7 +20,7 @@ interface TopData {
 }
 
 export function HomeScreen() {
-  const { accessToken } = useAuthStore();
+  const accessToken = useAuthStore((state) => state.accessToken);
   const { setNotification } = useNotificationContext();
   const [data, setData] = useState<TopData | null>(null);
 
@@ -56,7 +56,7 @@ export function HomeScreen() {
     if (!data) {
       handleTopContent();
     }
-  }, [data, accessToken]);
+  }, [data, accessToken, setNotification]);
 
   if (!data) {
     return <Loading />;
