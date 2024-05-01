@@ -1,12 +1,12 @@
-import { Image, View, Text } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import { styles } from './ArtistTile.styles';
+import { Image, View, Text } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
+import { styles } from './ArtistTile.styles'
 
 interface ArtistTileProps {
-  artist: string;
-  image: string;
-  delay: number;
-  rank: number;
+  artist: string
+  image: string
+  delay: number
+  rank: number
 }
 
 export function ArtistTile({ artist, image, delay, rank }: ArtistTileProps) {
@@ -34,5 +34,5 @@ export function ArtistTile({ artist, image, delay, rank }: ArtistTileProps) {
         >{`#${rank}`}</Text>
       </View>
     </Animated.View>
-  );
+  )
 }

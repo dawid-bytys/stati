@@ -1,16 +1,16 @@
-import { useCallback } from 'react';
-import { Image, View, Text } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import ClockIcon from '@/assets/svg/clock.svg';
-import { styles } from './ActivityTile.styles';
-import { AnimatedIcon } from '../AnimatedIcon';
+import { useCallback } from 'react'
+import { Image, View, Text } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
+import ClockIcon from '@/assets/svg/clock.svg'
+import { styles } from './ActivityTile.styles'
+import { AnimatedIcon } from '../AnimatedIcon'
 
 interface ActivityTileProps {
-  image: string;
-  artist: string;
-  track: string;
-  delay: number;
-  time: string;
+  image: string
+  artist: string
+  track: string
+  delay: number
+  time: string
 }
 
 export function ActivityTile({ image, artist, track, delay, time }: ActivityTileProps) {
@@ -23,11 +23,11 @@ export function ActivityTile({ image, artist, track, delay, time }: ActivityTile
           duration={1400}
           source={require('@/assets/lottie/chart-animation.json')}
         />
-      );
+      )
     }
 
-    return <ClockIcon fill="#6A6A6A" />;
-  }, [time]);
+    return <ClockIcon fill="#6A6A6A" />
+  }, [time])
 
   return (
     <Animated.View
@@ -59,5 +59,5 @@ export function ActivityTile({ image, artist, track, delay, time }: ActivityTile
         {renderIcon()}
       </View>
     </Animated.View>
-  );
+  )
 }

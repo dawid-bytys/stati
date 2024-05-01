@@ -1,33 +1,33 @@
-import { useNavigation } from '@react-navigation/native';
-import { useCallback } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
-import { styles } from './TopSection.styles';
-import { TopTile } from '../TopTile/TopTile';
-import type { FilteredArtist, FilteredTrack } from '@/types/types';
-import type { NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
+import { useCallback } from 'react'
+import { TouchableOpacity, View, Text } from 'react-native'
+import { styles } from './TopSection.styles'
+import { TopTile } from '../TopTile/TopTile'
+import type { FilteredArtist, FilteredTrack } from '@/types/types'
+import type { NavigationProp } from '@react-navigation/native'
 
 interface TopProps {
-  title: string;
-  tracks?: FilteredTrack[];
-  artists?: FilteredArtist[];
+  title: string
+  tracks?: FilteredTrack[]
+  artists?: FilteredArtist[]
 }
 
 type NavigationTabsParamList = {
   Top: {
-    screen: 'artists' | 'tracks';
-  };
-};
+    screen: 'artists' | 'tracks'
+  }
+}
 
 export function TopSection({ title, tracks, artists }: TopProps) {
-  const navigation = useNavigation<NavigationProp<NavigationTabsParamList>>();
+  const navigation = useNavigation<NavigationProp<NavigationTabsParamList>>()
 
   const handleNavigation = useCallback(() => {
     if (tracks) {
-      navigation.navigate('Top', { screen: 'tracks' });
+      navigation.navigate('Top', { screen: 'tracks' })
     } else if (artists) {
-      navigation.navigate('Top', { screen: 'artists' });
+      navigation.navigate('Top', { screen: 'artists' })
     }
-  }, [navigation, tracks, artists]);
+  }, [navigation, tracks, artists])
 
   const renderTiles = useCallback(
     (tracks?: FilteredTrack[], artists?: FilteredArtist[]) => {
@@ -39,7 +39,7 @@ export function TopSection({ title, tracks, artists }: TopProps) {
             key={item.image + idx}
             delay={idx * 100}
           />
-        ));
+        ))
       }
 
       if (artists) {
@@ -50,13 +50,13 @@ export function TopSection({ title, tracks, artists }: TopProps) {
             key={item.image + idx}
             delay={idx * 100}
           />
-        ));
+        ))
       }
 
-      return null;
+      return null
     },
     [tracks, artists],
-  );
+  )
 
   return (
     <View style={styles.container}>
@@ -71,5 +71,5 @@ export function TopSection({ title, tracks, artists }: TopProps) {
       </View>
       <View style={styles.innerLower}>{renderTiles(tracks, artists)}</View>
     </View>
-  );
+  )
 }

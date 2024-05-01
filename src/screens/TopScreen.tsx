@@ -1,12 +1,12 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { TopScreenPeriod } from './TopScreenPeriod';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { TopScreenPeriod } from './TopScreenPeriod'
 
 type ContentTabsParamList = {
-  artists: { content: 'artists' };
-  tracks: { content: 'tracks' };
-};
+  artists: { content: 'artists' }
+  tracks: { content: 'tracks' }
+}
 
-const ContentTabs = createMaterialTopTabNavigator<ContentTabsParamList>();
+const ContentTabs = createMaterialTopTabNavigator<ContentTabsParamList>()
 
 export function TopScreen() {
   return (
@@ -51,5 +51,5 @@ export function TopScreen() {
         initialParams={{ content: 'tracks' }}
       />
     </ContentTabs.Navigator>
-  );
+  )
 }

@@ -1,19 +1,20 @@
-export type { RecentlyPlayedResponse } from './responses/recentlyPlayedResponse';
-export type { TopArtistsResponse } from './responses/topArtistsResponse';
-export type { TopTracksResponse } from './responses/topTracksResponse';
-export type { FriendsActivityResponse } from './responses/friendsActivityResponse';
+export type { RecentlyPlayedResponse } from './responses/recentlyPlayedResponse'
+export type { TopArtistsResponse } from './responses/topArtistsResponse'
+export type { TopTracksResponse } from './responses/topTracksResponse'
+export type { FriendsActivityResponse } from './responses/friendsActivityResponse'
+export type { ProfileResponse } from './responses/profileResponse'
 
 export interface WebAccessTokenResponse {
-  clientId: string;
-  accessToken: string;
-  isAnonymous: boolean;
-  accessTokenExpirationTimestampMs: number;
+  clientId: string
+  accessToken: string
+  isAnonymous: boolean
+  accessTokenExpirationTimestampMs: number
 }
 
 export interface AccessTokenResponse {
-  access_token: string;
-  token_type: string;
-  scope: string;
-  expires_in: number;
-  refresh_token: string;
+  access_token: string
+  token_type: string
+  scope: string
+  expires_in: number
+  refresh_token: string
 }

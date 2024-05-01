@@ -1,23 +1,27 @@
-import { Config } from 'react-native-config';
-import { fetchWithErrorHandling } from '@/utils';
-import type {
-  AccessTokenResponse,
-  WebAccessTokenResponse,
-  RecentlyPlayedResponse,
-  FriendsActivityResponse,
-} from '@/types/responses';
+import { Config } from 'react-native-config'
+import {
+  type AccessTokenResponse,
+  type WebAccessTokenResponse,
+  type RecentlyPlayedResponse,
+  type FriendsActivityResponse,
+  type ProfileResponse,
+} from '@/types/responses'
+import { fetchWithErrorHandling } from '@/utils'
 
 export function generateSpotifyAuthURL(codeChallenge: string) {
-  const url = new URL('https://accounts.spotify.com/authorize');
+  const url = new URL('https://accounts.spotify.com/authorize')
 
-  url.searchParams.append('client_id', Config.SPOTIFY_CLIENT_ID);
-  url.searchParams.append('response_type', 'code');
-  url.searchParams.append('redirect_uri', Config.SPOTIFY_AUTH_CALLBACK_URL);
-  url.searchParams.append('code_challenge_method', 'S256');
-  url.searchParams.append('code_challenge', codeChallenge);
-  url.searchParams.append('scope', 'user-read-recently-played user-top-read');
+  url.searchParams.append('client_id', Config.SPOTIFY_CLIENT_ID)
+  url.searchParams.append('response_type', 'code')
+  url.searchParams.append('redirect_uri', Config.SPOTIFY_AUTH_CALLBACK_URL)
+  url.searchParams.append('code_challenge_method', 'S256')
+  url.searchParams.append('code_challenge', codeChallenge)
+  url.searchParams.append(
+    'scope',
+    'user-read-recently-played user-top-read user-read-private, user-read-email',
+  )
 
-  return url.toString();
+  return url.toString()
 }
 
 export async function fetchTokens(code: string, codeVerifier: string) {
@@ -36,9 +40,9 @@ export async function fetchTokens(code: string, codeVerifier: string) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     },
-  );
+  )
 
-  return data;
+  return data
 }
 
 export async function refreshTokens(refreshToken: string): Promise<AccessTokenResponse> {
@@ -55,9 +59,20 @@ export async function refreshTokens(refreshToken: string): Promise<AccessTokenRe
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     },
-  );
+  )
 
-  return data;
+  return data
+}
+
+export async function fetchProfile(accessToken: string) {
+  const data = await fetchWithErrorHandling<ProfileResponse>('https://api.spotify.com/v1/me', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+
+  return data
 }
 
 export async function fetchTopItems<T>(
@@ -75,9 +90,9 @@ export async function fetchTopItems<T>(
         Authorization: `Bearer ${accessToken}`,
       },
     },
-  );
+  )
 
-  return data;
+  return data
 }
 
 export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
@@ -89,24 +104,24 @@ export async function fetchRecentlyPlayed(accessToken: string, count = 5) {
         Authorization: `Bearer ${accessToken}`,
       },
     },
-  );
+  )
 
-  return data;
+  return data
 }
 
-export async function fetchWebAccessToken(spDcCookie: string) {
+export async function fetchWebAccessToken(spdcCookie: string) {
   const data = await fetchWithErrorHandling<WebAccessTokenResponse>(
     'https://open.spotify.com/get_access_token',
     {
       method: 'GET',
       credentials: 'omit',
       headers: {
-        Cookie: `sp_dc=${spDcCookie}`,
+        Cookie: `sp_dc=${spdcCookie}`,
       },
     },
-  );
+  )
 
-  return data;
+  return data
 }
 
 export async function fetchFriendsActivity(webAccessToken: string) {
@@ -118,7 +133,7 @@ export async function fetchFriendsActivity(webAccessToken: string) {
         Authorization: `Bearer ${webAccessToken}`,
       },
     },
-  );
+  )
 
-  return data;
+  return data
 }

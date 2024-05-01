@@ -1,15 +1,15 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet, View } from 'react-native';
-import ChartIcon from '@/assets/svg/chart.svg';
-import FriendIcon from '@/assets/svg/friends.svg';
-import HomeIcon from '@/assets/svg/home.svg';
-import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen/FriendsActivityScreen';
-import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
-import { TopScreen } from '@/screens/TopScreen';
-import type { TabNavigatorParamList } from '@/types/types';
-import type { PropsWithChildren } from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { StyleSheet, View } from 'react-native'
+import ChartIcon from '@/assets/svg/chart.svg'
+import FriendIcon from '@/assets/svg/friends.svg'
+import HomeIcon from '@/assets/svg/home.svg'
+import { FriendsActivityScreen } from '@/screens/FriendsActivityScreen/FriendsActivityScreen'
+import { HomeScreen } from '@/screens/HomeScreen/HomeScreen'
+import { TopScreen } from '@/screens/TopScreen'
+import type { TabNavigatorParamList } from '@/types/types'
+import type { PropsWithChildren } from 'react'
 
-const Tab = createMaterialTopTabNavigator<TabNavigatorParamList>();
+const Tab = createMaterialTopTabNavigator<TabNavigatorParamList>()
 
 export function Tabs() {
   return (
@@ -75,11 +75,11 @@ export function Tabs() {
         name="Friends' activity"
       />
     </Tab.Navigator>
-  );
+  )
 }
 
 function IconContainer({ children }: PropsWithChildren) {
-  return <View style={styles.iconContainer}>{children}</View>;
+  return <View style={styles.iconContainer}>{children}</View>
 }
 
 const styles = StyleSheet.create({
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})

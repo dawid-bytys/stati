@@ -1,9 +1,9 @@
-import { createContext } from 'react';
+import { createContext } from 'react'
 
-export type NotificationType = 'error' | 'success' | 'warning' | null;
+export type NotificationType = 'error' | 'success' | 'warning' | null
 
 interface NotificationContext {
-  setNotification: (message: string, type: NotificationType) => void;
+  setNotification: (message: string, type: NotificationType) => void
 }
 
-export const NotificationContext = createContext<NotificationContext | undefined>(undefined);
+export const NotificationContext = createContext<NotificationContext | undefined>(undefined)

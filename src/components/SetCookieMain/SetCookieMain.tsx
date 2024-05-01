@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   TouchableOpacity,
   TextInput,
@@ -8,52 +8,52 @@ import {
   Keyboard,
   BackHandler,
   KeyboardAvoidingView,
-} from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import InstructionsIcon from '@/assets/svg/instructions.svg';
-import LinesDown from '@/assets/svg/lines-down.svg';
-import LinesUp from '@/assets/svg/lines-up.svg';
-import { IS_ANDROID } from '@/config';
-import { useAuthStore } from '@/store/auth';
-import { styles } from './SetCookieMain.styles';
-import { InstructionsBottomSheet } from '../InstructionsBottomSheet/InstructionsBottomSheet';
-import type { BottomSheetModal } from '@gorhom/bottom-sheet';
-import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+} from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated'
+import InstructionsIcon from '@/assets/svg/instructions.svg'
+import LinesDown from '@/assets/svg/lines-down.svg'
+import LinesUp from '@/assets/svg/lines-up.svg'
+import { IS_ANDROID } from '@/config'
+import { useBoundStore } from '@/store/boundStore'
+import { styles } from './SetCookieMain.styles'
+import { InstructionsBottomSheet } from '../InstructionsBottomSheet/InstructionsBottomSheet'
+import type { BottomSheetModal } from '@gorhom/bottom-sheet'
+import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 
 export function SetCookieMain() {
-  const [isOpen, setIsOpen] = useState(false);
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const [text, setText] = useState('');
-  const setValue = useAuthStore((state) => state.setValue);
+  const [isOpen, setIsOpen] = useState(false)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const [text, setText] = useState('')
+  const setAuthValue = useBoundStore((state) => state.setAuthValue)
 
   function handleChange(e: NativeSyntheticEvent<TextInputChangeEventData>) {
-    setText(e.nativeEvent.text);
+    setText(e.nativeEvent.text)
   }
 
   function handleSubmit() {
-    setValue('spDcCookie', text.trim());
-    Keyboard.dismiss();
+    setAuthValue('spdcCookie', text.trim())
+    Keyboard.dismiss()
   }
 
   const handleOpenBottomSheet = useCallback(() => {
-    bottomSheetRef.current?.present();
-    setIsOpen(true);
-  }, []);
+    bottomSheetRef.current?.present()
+    setIsOpen(true)
+  }, [])
 
   useEffect(() => {
     const backHandlerListener = BackHandler.addEventListener('hardwareBackPress', () => {
       if (isOpen) {
-        bottomSheetRef.current?.dismiss();
-        return true;
+        bottomSheetRef.current?.dismiss()
+        return true
       }
 
-      return false;
-    });
+      return false
+    })
 
     return () => {
-      backHandlerListener.remove();
-    };
-  }, [isOpen]);
+      backHandlerListener.remove()
+    }
+  }, [isOpen])
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -99,5 +99,5 @@ export function SetCookieMain() {
         </TouchableOpacity>
       </Animated.View>
     </TouchableWithoutFeedback>
-  );
+  )
 }

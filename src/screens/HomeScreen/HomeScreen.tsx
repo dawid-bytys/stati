@@ -1,65 +1,67 @@
-import { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView } from 'react-native';
-import { GreetingSection } from '@/components/GreetingSection/GreetingSection';
-import { LatestActivitySection } from '@/components/LatestActivitySection/LatestActivitySection';
-import { Loading } from '@/components/Loading/Loading';
-import { TopSection } from '@/components/TopSection/TopSection';
-import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify';
-import { CustomError } from '@/errors';
-import { useNotificationContext } from '@/hooks/useNotificationContext';
-import { useAuthStore } from '@/store/auth';
-import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils';
-import { styles } from './HomeScreen.styles';
-import type { TopArtistsResponse, TopTracksResponse } from '@/types/responses';
-import type { FilteredRecentlyPlayed, FilteredArtist, FilteredTrack } from '@/types/types';
+import { useEffect, useState } from 'react'
+import { RefreshControl, ScrollView } from 'react-native'
+import { GreetingSection } from '@/components/GreetingSection/GreetingSection'
+import { LatestActivitySection } from '@/components/LatestActivitySection/LatestActivitySection'
+import { TopSection } from '@/components/TopSection/TopSection'
+import { fetchRecentlyPlayed, fetchTopItems } from '@/domain/spotify'
+import { CustomError } from '@/errors'
+import { useLoadingContext } from '@/hooks/useLoadingContext'
+import { useNotificationContext } from '@/hooks/useNotificationContext'
+import { useBoundStore } from '@/store/boundStore'
+import { filterRecentlyPlayed, filterArtists, filterTracks } from '@/utils'
+import { styles } from './HomeScreen.styles'
+import type { TopArtistsResponse, TopTracksResponse } from '@/types/responses'
+import type { FilteredRecentlyPlayed, FilteredArtist, FilteredTrack } from '@/types/types'
 
 interface TopData {
-  recentlyPlayed: FilteredRecentlyPlayed[];
-  topArtists: FilteredArtist[];
-  topTracks: FilteredTrack[];
+  recentlyPlayed: FilteredRecentlyPlayed[]
+  topArtists: FilteredArtist[]
+  topTracks: FilteredTrack[]
 }
 
 export function HomeScreen() {
-  const accessToken = useAuthStore((state) => state.accessToken);
-  const { setNotification } = useNotificationContext();
-  const [data, setData] = useState<TopData | null>(null);
+  const accessToken = useBoundStore((state) => state.accessToken.value)
+  const { setNotification } = useNotificationContext()
+  const { setIsLoading } = useLoadingContext()
+  const [data, setData] = useState<TopData | null>(null)
 
   useEffect(() => {
     async function handleTopContent() {
       try {
         const topArtists = await fetchTopItems<TopArtistsResponse>(
-          accessToken.value,
+          accessToken,
           'artists',
           'short_term',
-        );
+        )
         const topTracks = await fetchTopItems<TopTracksResponse>(
-          accessToken.value,
+          accessToken,
           'tracks',
           'short_term',
-        );
-        const recentlyPlayed = await fetchRecentlyPlayed(accessToken.value);
+        )
+        const recentlyPlayed = await fetchRecentlyPlayed(accessToken)
 
         setData({
           topArtists: filterArtists(topArtists),
           topTracks: filterTracks(topTracks),
           recentlyPlayed: filterRecentlyPlayed(recentlyPlayed),
-        });
+        })
+        setIsLoading(false)
       } catch (err) {
         if (err instanceof CustomError) {
-          setNotification(err.message, 'error');
+          setNotification(err.message, 'error')
         } else {
-          setNotification('Something went wrong, try reloading the app.', 'error');
+          setNotification('Something went wrong, try reloading the app.', 'error')
         }
       }
     }
 
     if (!data) {
-      handleTopContent();
+      handleTopContent()
     }
-  }, [data, accessToken, setNotification]);
+  }, [data, accessToken, setNotification])
 
   if (!data) {
-    return <Loading />;
+    return null
   }
 
   return (
@@ -84,5 +86,5 @@ export function HomeScreen() {
       />
       <LatestActivitySection data={data.recentlyPlayed} />
     </ScrollView>
-  );
+  )
 }

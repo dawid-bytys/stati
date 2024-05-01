@@ -1,6 +1,6 @@
-import Animated, { FadeOut } from 'react-native-reanimated';
-import { styles } from './Loading.styles';
-import { AnimatedIcon } from '../AnimatedIcon';
+import Animated, { FadeOut } from 'react-native-reanimated'
+import { styles } from './Loading.styles'
+import { AnimatedIcon } from '../AnimatedIcon'
 
 export function Loading() {
   return (
@@ -15,5 +15,5 @@ export function Loading() {
         source={require('@/assets/lottie/logo-animation.json')}
       />
     </Animated.View>
-  );
+  )
 }

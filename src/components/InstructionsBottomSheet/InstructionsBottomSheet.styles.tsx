@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { IS_ANDROID } from '@/config';
+import { StyleSheet } from 'react-native'
+import { IS_ANDROID } from '@/config'
 
 export const styles = StyleSheet.create({
   container: {
@@ -37,4 +37,4 @@ export const styles = StyleSheet.create({
   link: {
     color: '#1DB954',
   },
-});
+})

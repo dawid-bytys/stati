@@ -1,13 +1,13 @@
-import { Image, View, Text } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import { styles } from './TrackTile.styles';
+import { Image, View, Text } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
+import { styles } from './TrackTile.styles'
 
 interface TrackTileProps {
-  artist: string;
-  track: string;
-  image: string;
-  delay: number;
-  rank: number;
+  artist: string
+  track: string
+  image: string
+  delay: number
+  rank: number
 }
 
 export function TrackTile({ artist, track, image, delay, rank }: TrackTileProps) {
@@ -46,5 +46,5 @@ export function TrackTile({ artist, track, image, delay, rank }: TrackTileProps)
         >{`#${rank}`}</Text>
       </View>
     </Animated.View>
-  );
+  )
 }

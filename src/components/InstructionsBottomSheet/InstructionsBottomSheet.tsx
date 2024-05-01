@@ -1,15 +1,11 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetSectionList,
-} from '@gorhom/bottom-sheet';
-import { forwardRef, useCallback, useMemo } from 'react';
-import { Text, Dimensions } from 'react-native';
-import { Hyperlink } from 'react-native-hyperlink';
-import { styles } from './InstructionsBottomSheet.styles';
-import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
-import type { Dispatch, SetStateAction } from 'react';
-import type { SectionListData, SectionListRenderItemInfo } from 'react-native';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetSectionList } from '@gorhom/bottom-sheet'
+import { forwardRef, useCallback, useMemo } from 'react'
+import { Text, Dimensions } from 'react-native'
+import { Hyperlink } from 'react-native-hyperlink'
+import { styles } from './InstructionsBottomSheet.styles'
+import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import type { Dispatch, SetStateAction } from 'react'
+import type { SectionListData, SectionListRenderItemInfo } from 'react-native'
 
 const instructions = [
   {
@@ -45,28 +41,28 @@ const instructions = [
       '6. Ensure to close the window without logging out to keep the cookie valid.',
     ],
   },
-];
+]
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_HEIGHT = Dimensions.get('window').height
 
-type Item = string;
+type Item = string
 
 interface Section {
-  title: string;
-  data: Item[];
+  title: string
+  data: Item[]
 }
 
 interface SectionHeader {
-  section: SectionListData<Item, Section>;
+  section: SectionListData<Item, Section>
 }
 
 interface InstructionsBottomSheetProps {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const InstructionsBottomSheet = forwardRef<BottomSheetModal, InstructionsBottomSheetProps>(
   ({ setIsOpen }, ref) => {
-    const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], []);
+    const snapPoints = useMemo(() => [SCREEN_HEIGHT * 0.8], [])
 
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
       return (
@@ -76,8 +72,8 @@ export const InstructionsBottomSheet = forwardRef<BottomSheetModal, Instructions
           disappearsOnIndex={-1}
           opacity={0.7}
         />
-      );
-    }, []);
+      )
+    }, [])
 
     const renderSectionItem = useCallback(({ item }: SectionListRenderItemInfo<Item>) => {
       return (
@@ -87,12 +83,12 @@ export const InstructionsBottomSheet = forwardRef<BottomSheetModal, Instructions
         >
           <Text style={styles.sectionItem}>{item}</Text>
         </Hyperlink>
-      );
-    }, []);
+      )
+    }, [])
 
     const renderSectionHeader = useCallback(({ section: { title } }: SectionHeader) => {
-      return <Text style={styles.sectionHeader}>{title}</Text>;
-    }, []);
+      return <Text style={styles.sectionHeader}>{title}</Text>
+    }, [])
 
     return (
       <BottomSheetModal
@@ -115,6 +111,6 @@ export const InstructionsBottomSheet = forwardRef<BottomSheetModal, Instructions
           stickySectionHeadersEnabled={false}
         />
       </BottomSheetModal>
-    );
+    )
   },
-);
+)

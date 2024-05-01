@@ -1,89 +1,116 @@
-import { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, FlatList } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
-import { FriendTile } from '@/components/FriendTile/FriendTile';
-import { Loading } from '@/components/Loading/Loading';
-import { SetCookieMain } from '@/components/SetCookieMain/SetCookieMain';
-import { fetchFriendsActivity, fetchWebAccessToken } from '@/domain/spotify';
-import { CustomError } from '@/errors';
-import { useNotificationContext } from '@/hooks/useNotificationContext';
-import { useAuthStore } from '@/store/auth';
-import { filterFriendsActivity } from '@/utils';
-import { styles } from './FriendsActivityScreen.styles';
-import type { FilteredFriendActivity } from '@/types/types';
-import type { ListRenderItemInfo } from 'react-native';
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { useCallback, useEffect, useState } from 'react'
+import { RefreshControl, FlatList } from 'react-native'
+import { useShallow } from 'zustand/react/shallow'
+import { FriendTile } from '@/components/FriendTile/FriendTile'
+import { Loading } from '@/components/Loading/Loading'
+import { SetCookieMain } from '@/components/SetCookieMain/SetCookieMain'
+import { fetchFriendsActivity, fetchWebAccessToken } from '@/domain/spotify'
+import { CustomError } from '@/errors'
+import { UPSERT_SPOTIFY_AUTH_MUTATION } from '@/graphql/mutations/upsertSpotifyAuth'
+import { GET_ACTIVITIES_QUERY } from '@/graphql/queries/getActivities'
+import { useNotificationContext } from '@/hooks/useNotificationContext'
+import { useBoundStore } from '@/store/boundStore'
+import { filterFriendsActivity } from '@/utils'
+import { styles } from './FriendsActivityScreen.styles'
+import type { GetActivitiesQuery, UpsertNotificationTokenMutation } from '@/graphql-types/graphql'
+import type { FilteredFriendActivity } from '@/types/types'
+import type { ListRenderItemInfo } from 'react-native'
 
 export function FriendsActivityScreen() {
-  const { spDcCookie, webAccessToken, setValue } = useAuthStore(
+  const { spdcCookie, webAccessToken, setAuthValue } = useBoundStore(
     useShallow((state) => ({
-      spDcCookie: state.spDcCookie,
-      webAccessToken: state.webAccessToken,
-      setValue: state.setValue,
+      spdcCookie: state.spdcCookie,
+      webAccessToken: state.webAccessToken.value,
+      setAuthValue: state.setAuthValue,
     })),
-  );
-  const [friendsActivity, setFriendsActivity] = useState<FilteredFriendActivity[] | null>(null);
-  const { setNotification } = useNotificationContext();
+  )
+  const [friendsActivity, setFriendsActivity] = useState<FilteredFriendActivity[] | null>(null)
+  const { setNotification } = useNotificationContext()
+  const [upsertSpotifyAuth] = useMutation<UpsertNotificationTokenMutation>(
+    UPSERT_SPOTIFY_AUTH_MUTATION,
+  )
+  const [getActivities, { data: trackedActivities }] =
+    useLazyQuery<GetActivitiesQuery>(GET_ACTIVITIES_QUERY)
 
   useEffect(() => {
     async function handleWebAccessToken() {
       try {
-        const response = await fetchWebAccessToken(spDcCookie);
+        const { accessToken, accessTokenExpirationTimestampMs } =
+          await fetchWebAccessToken(spdcCookie)
 
-        setValue('webAccessToken', {
-          value: response.accessToken,
-          expiresAt: response.accessTokenExpirationTimestampMs,
-        });
+        await upsertSpotifyAuth({
+          variables: {
+            spdcCookie,
+            accessToken,
+            accessTokenExpirationTimestampMs,
+          },
+        })
+        await getActivities()
+
+        setAuthValue('webAccessToken', {
+          value: accessToken,
+          expiresAt: accessTokenExpirationTimestampMs,
+        })
       } catch (err) {
         if (err instanceof CustomError) {
-          setNotification(err.message, 'error');
-          setValue('spDcCookie', '');
+          setNotification(err.message, 'error')
+          setAuthValue('spdcCookie', '')
         } else {
-          setNotification('Something went wrong, try reloading the app.', 'error');
+          setNotification('Something went wrong, try reloading the app.', 'error')
         }
       }
     }
 
-    if (spDcCookie && !webAccessToken.value) {
-      handleWebAccessToken();
+    if (spdcCookie && !webAccessToken) {
+      handleWebAccessToken()
     }
-  }, [spDcCookie, webAccessToken]);
+  }, [spdcCookie, webAccessToken])
 
   useEffect(() => {
     async function handleFriendsActivity() {
       try {
-        const friendsActivity = await fetchFriendsActivity(webAccessToken.value);
-        const filteredFriendsActivity = filterFriendsActivity(friendsActivity);
-        setFriendsActivity(filteredFriendsActivity);
+        const friendsActivity = await fetchFriendsActivity(webAccessToken)
+        await getActivities()
+        const filteredFriendsActivity = filterFriendsActivity(friendsActivity)
+        setFriendsActivity(filteredFriendsActivity)
       } catch (err) {
         if (err instanceof CustomError) {
-          setNotification(err.message, 'error');
+          setNotification(err.message, 'error')
         } else {
-          setNotification('Something went wrong, try reloading the app.', 'error');
+          setNotification('Something went wrong, try reloading the app.', 'error')
         }
       }
     }
 
-    if (spDcCookie && webAccessToken.value && !friendsActivity) {
-      handleFriendsActivity();
+    if (spdcCookie && webAccessToken && !friendsActivity) {
+      handleFriendsActivity()
     }
-  }, [spDcCookie, webAccessToken, friendsActivity]);
+  }, [spdcCookie, webAccessToken, friendsActivity])
 
   const renderItem = useCallback(
-    ({ item, index }: ListRenderItemInfo<FilteredFriendActivity>) => (
-      <FriendTile
-        {...item}
-        delay={index * 100}
-      />
-    ),
-    [],
-  );
+    (activities: { friendUri: string }[]) => {
+      return ({ item, index }: ListRenderItemInfo<FilteredFriendActivity>) => {
+        const isTracking = activities.some(({ friendUri }) => friendUri === item.friendUri)
 
-  if (!spDcCookie && !webAccessToken.value) {
-    return <SetCookieMain />;
+        return (
+          <FriendTile
+            {...item}
+            delay={index * 100}
+            isTracking={isTracking}
+          />
+        )
+      }
+    },
+    [trackedActivities],
+  )
+
+  if (!spdcCookie) {
+    return <SetCookieMain />
   }
 
-  if (!friendsActivity) {
-    return <Loading />;
+  if (!friendsActivity || trackedActivities === undefined) {
+    return <Loading />
   }
 
   return (
@@ -98,7 +125,7 @@ export function FriendsActivityScreen() {
           onRefresh={() => setFriendsActivity(null)}
         />
       }
-      renderItem={renderItem}
+      renderItem={renderItem(trackedActivities.getActivities)}
     />
-  );
+  )
 }

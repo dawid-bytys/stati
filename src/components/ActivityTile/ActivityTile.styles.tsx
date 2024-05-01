@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   time: {
@@ -43,4 +43,4 @@ export const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
-});
+})

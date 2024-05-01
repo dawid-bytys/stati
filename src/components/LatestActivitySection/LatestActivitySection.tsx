@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
-import { styles } from './LatestActivitySection.styles';
-import { ActivityTile } from '../ActivityTile/ActivityTile';
-import type { FilteredRecentlyPlayed } from '@/types/types';
+import { View, Text } from 'react-native'
+import { styles } from './LatestActivitySection.styles'
+import { ActivityTile } from '../ActivityTile/ActivityTile'
+import type { FilteredRecentlyPlayed } from '@/types/types'
 
 interface LatestActivityProps {
-  data: FilteredRecentlyPlayed[];
+  data: FilteredRecentlyPlayed[]
 }
 
 export function LatestActivitySection({ data }: LatestActivityProps) {
@@ -23,5 +23,5 @@ export function LatestActivitySection({ data }: LatestActivityProps) {
         ))}
       </View>
     </View>
-  );
+  )
 }

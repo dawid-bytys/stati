@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
 
@@ -8,13 +8,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
+  
   self.moduleName = @"stati";
   self.initialProps = @{};
   
-  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  BOOL didFinish = [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
   
-  return YES;
+  return didFinish;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

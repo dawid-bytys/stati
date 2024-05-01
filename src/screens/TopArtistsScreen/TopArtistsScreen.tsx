@@ -1,32 +1,32 @@
-import { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { ArtistTile } from '@/components/ArtistTile/ArtistTile';
-import { Loading } from '@/components/Loading/Loading';
-import { fetchTopItems } from '@/domain/spotify';
-import { CustomError } from '@/errors';
-import { useNotificationContext } from '@/hooks/useNotificationContext';
-import { useAuthStore } from '@/store/auth';
-import { filterArtists } from '@/utils';
-import { styles } from './TopArtistsScreen.styles';
-import type { TopArtistsResponse } from '@/types/responses';
-import type { FilteredArtist } from '@/types/types';
-import type { ListRenderItemInfo } from 'react-native';
+import { useCallback, useEffect, useState } from 'react'
+import { FlatList, RefreshControl, ActivityIndicator } from 'react-native'
+import { ArtistTile } from '@/components/ArtistTile/ArtistTile'
+import { Loading } from '@/components/Loading/Loading'
+import { fetchTopItems } from '@/domain/spotify'
+import { CustomError } from '@/errors'
+import { useNotificationContext } from '@/hooks/useNotificationContext'
+import { useBoundStore } from '@/store/boundStore'
+import { filterArtists } from '@/utils'
+import { styles } from './TopArtistsScreen.styles'
+import type { TopArtistsResponse } from '@/types/responses'
+import type { FilteredArtist } from '@/types/types'
+import type { ListRenderItemInfo } from 'react-native'
 
 interface TopArtistsScreenProps {
   route: {
     params: {
-      period: 'short_term' | 'medium_term' | 'long_term';
-    };
-  };
+      period: 'short_term' | 'medium_term' | 'long_term'
+    }
+  }
 }
 
 export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
-  const { period } = route.params;
-  const [data, setData] = useState<FilteredArtist[] | null>(null);
-  const accessToken = useAuthStore((state) => state.accessToken);
-  const { setNotification } = useNotificationContext();
-  const [offset, setOffset] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const { period } = route.params
+  const [data, setData] = useState<FilteredArtist[] | null>(null)
+  const accessToken = useBoundStore((state) => state.accessToken.value)
+  const { setNotification } = useNotificationContext()
+  const [offset, setOffset] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   const renderListFooter = useCallback(() => {
     if (isLoading) {
@@ -35,11 +35,11 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
           size="small"
           style={{ marginVertical: 20 }}
         />
-      );
+      )
     }
 
-    return null;
-  }, [isLoading]);
+    return null
+  }, [isLoading])
 
   const renderArtistTile = useCallback(
     ({ item, index }: ListRenderItemInfo<FilteredArtist>) => {
@@ -50,63 +50,63 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
           rank={index + 1}
           delay={(index - offset) * 100}
         />
-      );
+      )
     },
     [offset],
-  );
+  )
 
   const handleLoadMore = useCallback(() => {
     if (data && data.length < 50 && !isLoading) {
-      handleTopArtists(offset);
+      handleTopArtists(offset)
     }
-  }, [offset, isLoading]);
+  }, [offset, isLoading])
 
   const handleRefresh = useCallback(() => {
-    setOffset(0);
-    setData(null);
-  }, []);
+    setOffset(0)
+    setData(null)
+  }, [])
 
   const handleTopArtists = useCallback(async (offset = 0) => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
       const topArtists = await fetchTopItems<TopArtistsResponse>(
-        accessToken.value,
+        accessToken,
         'artists',
         period,
         offset,
         10,
-      );
-      const filteredArtists = filterArtists(topArtists);
+      )
+      const filteredArtists = filterArtists(topArtists)
 
       setData((prevData) => {
         if (prevData) {
-          return [...prevData, ...filteredArtists];
+          return [...prevData, ...filteredArtists]
         }
 
-        return filteredArtists;
-      });
+        return filteredArtists
+      })
 
-      setOffset((prevOffset) => prevOffset + 10);
+      setOffset((prevOffset) => prevOffset + 10)
     } catch (err) {
       if (err instanceof CustomError) {
-        setNotification(err.message, 'error');
+        setNotification(err.message, 'error')
       } else {
-        setNotification('Something went wrong, try reloading the app.', 'error');
+        setNotification('Something went wrong, try reloading the app.', 'error')
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (!data) {
-      handleTopArtists();
+      handleTopArtists()
     }
-  }, [data]);
+  }, [data])
 
   if (!data) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
@@ -128,5 +128,5 @@ export function TopArtistsScreen({ route }: TopArtistsScreenProps) {
       }}
       renderItem={renderArtistTile}
     />
-  );
+  )
 }

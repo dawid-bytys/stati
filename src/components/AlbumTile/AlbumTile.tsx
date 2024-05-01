@@ -1,14 +1,14 @@
-import { Image, View, Text } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import { styles } from './AlbumTile.styles';
+import { Image, View, Text } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
+import { styles } from './AlbumTile.styles'
 
 interface AlbumTileProps {
-  artist: string;
-  album: string;
-  image: string;
-  plays: number;
-  delay: number;
-  rank: number;
+  artist: string
+  album: string
+  image: string
+  plays: number
+  delay: number
+  rank: number
 }
 
 export function AlbumTile({ artist, album, image, plays, delay, rank }: AlbumTileProps) {
@@ -46,5 +46,5 @@ export function AlbumTile({ artist, album, image, plays, delay, rank }: AlbumTil
         </View>
       </View>
     </Animated.View>
-  );
+  )
 }

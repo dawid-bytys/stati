@@ -1,29 +1,92 @@
-import { Image, View, Text } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import AlbumIcon from '@/assets/svg/album.svg';
-import DotIcon from '@/assets/svg/dot.svg';
-import PlaylistIcon from '@/assets/svg/playlist.svg';
-import { styles } from './FriendTile.styles';
-import { AnimatedIcon } from '../AnimatedIcon';
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import { Image, View, Text, ActionSheetIOS, TouchableOpacity } from 'react-native'
+import AlbumIcon from '@/assets/svg/album.svg'
+import DotIcon from '@/assets/svg/dot.svg'
+import PlaylistIcon from '@/assets/svg/playlist.svg'
+import { IS_ANDROID } from '@/config'
+import { DELETE_ACTIVITY_MUTATION } from '@/graphql/mutations/deleteActivity'
+import { INSERT_ACTIVITY_MUTATION } from '@/graphql/mutations/insertActivity'
+import { useNotificationContext } from '@/hooks/useNotificationContext'
+import { styles } from './FriendTile.styles'
+import { AnimatedIcon } from '../AnimatedIcon'
+import type { InsertActivityMutation, DeleteActivityMutation } from '@/graphql-types/graphql'
 
 interface FriendTileProps {
   context: {
-    type: string;
-    name: string;
-  };
-  artist: string;
-  image: string;
-  track: string;
-  delay: number;
-  name: string;
-  time: string;
+    type: string
+    name: string
+  }
+  artist: string
+  image: string
+  track: string
+  delay: number
+  name: string
+  time: string
+  timestampMs: number
+  friendUri: string
+  isTracking: boolean
 }
 
-export function FriendTile({ context, artist, image, track, delay, name, time }: FriendTileProps) {
+export function FriendTile({
+  context,
+  artist,
+  image,
+  track,
+  name,
+  time,
+  timestampMs,
+  friendUri,
+  isTracking,
+}: FriendTileProps) {
+  const [isAlreadyTracking, setIsAlreadyTracking] = useState(isTracking)
+  const { setNotification } = useNotificationContext()
+  const [insertActivity] = useMutation<InsertActivityMutation>(INSERT_ACTIVITY_MUTATION, {
+    onError() {
+      setNotification('Something went wrong, try again!', 'error')
+    },
+    onCompleted() {
+      setNotification(`Started tracking ${name}!`, 'success')
+    },
+  })
+  const [deleteActivity] = useMutation<DeleteActivityMutation>(DELETE_ACTIVITY_MUTATION, {
+    onError() {
+      setNotification('Something went wrong, try again!', 'error')
+    },
+    onCompleted() {
+      setNotification(`Stopped tracking ${name}!`, 'success')
+    },
+  })
+
+  const handlePressIOS = useCallback(() => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', isAlreadyTracking ? 'Stop tracking' : 'Start tracking'],
+        cancelButtonIndex: 0,
+      },
+      async (buttonIndex) => {
+        if (buttonIndex === 1) {
+          if (isAlreadyTracking) {
+            await deleteActivity({ variables: { friendUri } })
+            setIsAlreadyTracking(false)
+          } else {
+            await insertActivity({
+              variables: {
+                friendUri,
+                timestampMs,
+              },
+            })
+            setIsAlreadyTracking(true)
+          }
+        }
+      },
+    )
+  }, [isAlreadyTracking])
+
   return (
-    <Animated.View
-      entering={FadeInUp.delay(delay)}
+    <TouchableOpacity
       style={styles.container}
+      onPress={() => (IS_ANDROID ? console.log('Start/stop tracking') : handlePressIOS())}
     >
       <View style={styles.innerLeft}>
         <Image
@@ -91,6 +154,6 @@ export function FriendTile({ context, artist, image, track, delay, name, time }:
           </Text>
         </View>
       </View>
-    </Animated.View>
-  );
+    </TouchableOpacity>
+  )
 }

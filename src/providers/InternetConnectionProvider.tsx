@@ -1,21 +1,21 @@
-import { useNetInfo } from '@react-native-community/netinfo';
-import React, { useEffect } from 'react';
-import SplashScreen from 'react-native-splash-screen';
-import { NoConnectionScreen } from '@/screens/NoConnectionScreen/NoConnectionScreen';
-import type { PropsWithChildren } from 'react';
+import { useNetInfo } from '@react-native-community/netinfo'
+import React, { useEffect } from 'react'
+import SplashScreen from 'react-native-splash-screen'
+import { NoConnectionScreen } from '@/screens/NoConnectionScreen/NoConnectionScreen'
+import type { PropsWithChildren } from 'react'
 
 export function InternetConnectionProvider({ children }: PropsWithChildren) {
-  const { isConnected } = useNetInfo();
+  const { isConnected } = useNetInfo()
 
   useEffect(() => {
     if (isConnected === false) {
-      SplashScreen.hide();
+      SplashScreen.hide()
     }
-  }, [isConnected]);
+  }, [isConnected])
 
   if (isConnected === false) {
-    return <NoConnectionScreen />;
+    return <NoConnectionScreen />
   }
 
-  return children;
+  return children
 }

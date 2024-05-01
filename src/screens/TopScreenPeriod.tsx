@@ -1,25 +1,25 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { TopArtistsScreen } from './TopArtistsScreen/TopArtistsScreen';
-import { TopTracksScreen } from './TopTracksScreen/TopTracksScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { TopArtistsScreen } from './TopArtistsScreen/TopArtistsScreen'
+import { TopTracksScreen } from './TopTracksScreen/TopTracksScreen'
 
 type TabNavigatorParamList = {
-  '4 weeks': { period: 'short_term' };
-  '6 months': { period: 'medium_term' };
-  'all time': { period: 'long_term' };
-};
+  '4 weeks': { period: 'short_term' }
+  '6 months': { period: 'medium_term' }
+  'all time': { period: 'long_term' }
+}
 
-const ContentTabs = createMaterialTopTabNavigator<TabNavigatorParamList>();
+const ContentTabs = createMaterialTopTabNavigator<TabNavigatorParamList>()
 
 interface TopScreenPeriodProps {
   route: {
     params: {
-      content: 'artists' | 'tracks';
-    };
-  };
+      content: 'artists' | 'tracks'
+    }
+  }
 }
 
 export function TopScreenPeriod({ route }: TopScreenPeriodProps) {
-  const { content } = route.params;
+  const { content } = route.params
 
   return (
     <ContentTabs.Navigator
@@ -67,5 +67,5 @@ export function TopScreenPeriod({ route }: TopScreenPeriodProps) {
         initialParams={{ period: 'long_term' }}
       />
     </ContentTabs.Navigator>
-  );
+  )
 }

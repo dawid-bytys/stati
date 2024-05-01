@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import Animated, { FadeInLeft } from 'react-native-reanimated';
-import { styles } from './TopTile.styles';
+import { View, Text } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import Animated, { FadeInLeft } from 'react-native-reanimated'
+import { styles } from './TopTile.styles'
 
 interface TopTileProps {
-  image: string;
-  title: string;
-  delay: number;
+  image: string
+  title: string
+  delay: number
 }
 
 export function TopTile({ image, title, delay }: TopTileProps) {
@@ -25,5 +25,5 @@ export function TopTile({ image, title, delay }: TopTileProps) {
         </Text>
       </View>
     </Animated.View>
-  );
+  )
 }

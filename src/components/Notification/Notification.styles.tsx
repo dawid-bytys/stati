@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { hasNotch } from 'react-native-device-info';
-import { IS_ANDROID } from '@/config';
+import { StyleSheet } from 'react-native'
+import { hasNotch } from 'react-native-device-info'
+import { IS_ANDROID } from '@/config'
 
 export const styles = StyleSheet.create({
   container: {
@@ -21,4 +21,4 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: hasNotch() ? 27 : 0,
   },
-});
+})
