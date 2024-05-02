@@ -13,7 +13,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 import InstructionsIcon from '@/assets/svg/instructions.svg'
 import LinesDown from '@/assets/svg/lines-down.svg'
 import LinesUp from '@/assets/svg/lines-up.svg'
-import { IS_ANDROID } from '@/config'
+import { IS_ANDROID, platformStyle } from '@/platform'
 import { useBoundStore } from '@/store/boundStore'
 import { styles } from './SetCookieMain.styles'
 import { InstructionsBottomSheet } from '../InstructionsBottomSheet/InstructionsBottomSheet'
@@ -69,8 +69,8 @@ export function SetCookieMain() {
         <LinesDown style={styles.linesDown} />
         <KeyboardAvoidingView
           style={styles.inner}
-          behavior={IS_ANDROID ? 'height' : 'padding'}
-          keyboardVerticalOffset={IS_ANDROID ? 20 : 0}
+          behavior={platformStyle({ android: 'height', ios: 'padding' })}
+          keyboardVerticalOffset={platformStyle({ android: 20, ios: 0 })}
           enabled={!IS_ANDROID}
         >
           <View style={styles.infoContainer}>

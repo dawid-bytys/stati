@@ -11,11 +11,11 @@ import {
 import Animated, { FadeIn } from 'react-native-reanimated'
 import LinesDown from '@/assets/svg/lines-down.svg'
 import LinesUp from '@/assets/svg/lines-up.svg'
-import { IS_ANDROID } from '@/config'
 import { REGISTER_MUTATION } from '@/graphql/mutations/register'
 import { useAuthContext } from '@/hooks/useAuthContext'
 import { useLoadingContext } from '@/hooks/useLoadingContext'
 import { useNotificationContext } from '@/hooks/useNotificationContext'
+import { IS_ANDROID, platformStyle } from '@/platform'
 import { useBoundStore } from '@/store/boundStore'
 import { styles } from './RegisterScreen.styles'
 import type { RegisterMutation } from '@/graphql-types/graphql'
@@ -72,8 +72,8 @@ export function RegisterScreen({ route }: RegisterScreenProps) {
         <LinesDown style={styles.linesDown} />
         <KeyboardAvoidingView
           style={styles.inner}
-          behavior={IS_ANDROID ? 'height' : 'padding'}
-          keyboardVerticalOffset={IS_ANDROID ? 20 : 0}
+          behavior={platformStyle({ android: 'height', ios: 'padding' })}
+          keyboardVerticalOffset={platformStyle({ android: 20, ios: 0 })}
           enabled={!IS_ANDROID}
         >
           <Text style={styles.info}>Provide a secure password</Text>

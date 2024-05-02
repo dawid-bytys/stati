@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { IS_ANDROID } from '@/config'
+import { platformStyle } from '@/platform'
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   sectionList: {
     paddingHorizontal: 25,
-    paddingBottom: IS_ANDROID ? 15 : 25,
+    paddingBottom: platformStyle({ android: 15, ios: 25 }),
     gap: 5,
   },
   sectionHeader: {

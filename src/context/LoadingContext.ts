@@ -1,7 +1,6 @@
 import { createContext } from 'react'
 
 interface LoadingContext {
-  isLoading: boolean
   setIsLoading: (isLoading: boolean) => void
 }
 

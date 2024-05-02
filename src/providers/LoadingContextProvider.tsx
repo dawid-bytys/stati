@@ -7,7 +7,7 @@ export function LoadingContextProvider({ children }: PropsWithChildren) {
   const [isLoading, setIsLoading] = useState(true)
 
   return (
-    <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
+    <LoadingContext.Provider value={{ setIsLoading }}>
       {isLoading && <Loading />}
       {children}
     </LoadingContext.Provider>
