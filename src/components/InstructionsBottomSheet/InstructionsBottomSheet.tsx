@@ -7,7 +7,7 @@ import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import type { Dispatch, SetStateAction } from 'react'
 import type { SectionListData, SectionListRenderItemInfo } from 'react-native'
 
-const instructions = [
+const INSTRUCTIONS = [
   {
     title: 'Safari',
     data: [
@@ -105,7 +105,7 @@ export const InstructionsBottomSheet = forwardRef<BottomSheetModal, Instructions
         <BottomSheetSectionList
           contentContainerStyle={styles.sectionList}
           keyExtractor={(item, index) => item + index}
-          sections={instructions}
+          sections={INSTRUCTIONS}
           renderItem={renderSectionItem}
           renderSectionHeader={renderSectionHeader}
           stickySectionHeadersEnabled={false}

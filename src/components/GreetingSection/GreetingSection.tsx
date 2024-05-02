@@ -1,8 +1,6 @@
 import { Text } from 'react-native'
 import Animated, { FadeInLeft } from 'react-native-reanimated'
-
 import { getGreetingMessages } from '@/utils'
-
 import { styles } from './GreetingSection.styles'
 
 export function GreetingSection() {

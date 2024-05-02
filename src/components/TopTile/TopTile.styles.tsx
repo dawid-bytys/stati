@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
   titleContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
   },
   image: {
     borderRadius: 10,

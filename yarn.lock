@@ -7402,6 +7402,11 @@ react-native-tab-view@^3.5.2:
   dependencies:
     use-latest-callback "^0.1.5"
 
+react-native-text-ticker@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-text-ticker/-/react-native-text-ticker-1.14.0.tgz#dc537d2c587efc18ef19db9a85dc678a28aa8c57"
+  integrity sha512-8TNGTcW43dfnCqIuXVA7F1Ny8SKGrw0pIrNS5nM7eda+6AsuPTZh3JQ2CwmSRYfsrlnS4QFrpyo5ykpI8nvtCw==
+
 react-native-url-polyfill@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-url-polyfill/-/react-native-url-polyfill-2.0.0.tgz#db714520a2985cff1d50ab2e66279b9f91ffd589"
