@@ -14,8 +14,8 @@
 		1761F713640546AB860873D4 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAE3BC560A154E3EA5877390 /* Poppins-Medium.ttf */; };
 		1DDAC2C8C175DF943BD3C43C /* libPods-stati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5E3E5183838FB1133B46F3 /* libPods-stati.a */; };
 		7941E4A3AA014D418C4F5E30 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E92B1D70E6CB4EFD9ECFB283 /* Poppins-SemiBold.ttf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A961866B2BDF036E00D38626 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A961866A2BDF036E00D38626 /* GoogleService-Info.plist */; };
+		B6C2440F0EFC45C3B3948ECD /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35A30ED1F366438FB85F6545 /* BootSplash.storyboard */; };
 		CECEA5099ED8447A8D66194E /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554FD51BD53746E3A09A0A89 /* Poppins-Bold.ttf */; };
 		D6D1E97A6A894BFB57795897 /* libPods-stati-statiTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3E9578DEB5E4F41E53F1EA /* libPods-stati-statiTests.a */; };
 /* End PBXBuildFile section */
@@ -41,11 +41,11 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = stati/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = stati/main.m; sourceTree = "<group>"; };
 		1FCC3627B781C77734D81942 /* Pods-stati-statiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stati-statiTests.release.xcconfig"; path = "Target Support Files/Pods-stati-statiTests/Pods-stati-statiTests.release.xcconfig"; sourceTree = "<group>"; };
+		35A30ED1F366438FB85F6545 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = stati/BootSplash.storyboard; sourceTree = "<group>"; };
 		3CA98DB11B3664639196A8CB /* Pods-stati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stati.release.xcconfig"; path = "Target Support Files/Pods-stati/Pods-stati.release.xcconfig"; sourceTree = "<group>"; };
 		4FCD28C99D6B1E9060DBB372 /* Pods-stati-statiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stati-statiTests.debug.xcconfig"; path = "Target Support Files/Pods-stati-statiTests/Pods-stati-statiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		554FD51BD53746E3A09A0A89 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		6C3E9578DEB5E4F41E53F1EA /* libPods-stati-statiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-stati-statiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = stati/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A5E3E5183838FB1133B46F3 /* libPods-stati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-stati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9416A2A2BA12C5E007A2403 /* statiRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = statiRelease.entitlements; path = stati/statiRelease.entitlements; sourceTree = "<group>"; };
 		A96186692BDF019800D38626 /* stati.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = stati.entitlements; path = stati/stati.entitlements; sourceTree = "<group>"; };
@@ -102,8 +102,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				35A30ED1F366438FB85F6545 /* BootSplash.storyboard */,
 			);
 			name = stati;
 			sourceTree = "<group>";
@@ -266,12 +266,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				CECEA5099ED8447A8D66194E /* Poppins-Bold.ttf in Resources */,
 				1761F713640546AB860873D4 /* Poppins-Medium.ttf in Resources */,
 				7941E4A3AA014D418C4F5E30 /* Poppins-SemiBold.ttf in Resources */,
 				A961866B2BDF036E00D38626 /* GoogleService-Info.plist in Resources */,
+				B6C2440F0EFC45C3B3948ECD /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "360024162921",
+    "project_id": "stati-8b488",
+    "storage_bucket": "stati-8b488.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360024162921:android:1ac211dd73e1744b3a58f8",
+        "android_client_info": {
+          "package_name": "com.stati"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaHiqH-LU_OIAoFHWRrarflDB6TIPXAnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

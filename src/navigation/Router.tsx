@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import SplashScreen from 'react-native-splash-screen'
+import { hide } from 'react-native-bootsplash'
 import { useAuthContext } from '@/hooks/useAuthContext'
 import { AuthStack } from './AuthStack'
 import { Tabs } from './Tabs'
@@ -9,7 +9,7 @@ export function Router() {
 
   useEffect(() => {
     if (!isAuthenticating) {
-      SplashScreen.hide()
+      hide({ fade: true })
     }
   }, [isAuthenticating])
 
