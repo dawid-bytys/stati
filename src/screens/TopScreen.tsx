@@ -28,9 +28,10 @@ export function TopScreen() {
           textTransform: 'none',
         },
         tabBarIndicatorStyle: {
-          borderRadius: 100,
+          borderRadius: 50,
           backgroundColor: '#2D2D2D',
           height: '100%',
+          width: '50%',
         },
         tabBarItemStyle: {
           alignContent: 'center',

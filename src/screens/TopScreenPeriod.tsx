@@ -39,9 +39,10 @@ export function TopScreenPeriod({ route }: TopScreenPeriodProps) {
           textTransform: 'none',
         },
         tabBarIndicatorStyle: {
-          borderRadius: 100,
+          borderRadius: 50,
           backgroundColor: '#2D2D2D',
           height: '100%',
+          width: '33.3%',
         },
         tabBarItemStyle: {
           alignContent: 'center',

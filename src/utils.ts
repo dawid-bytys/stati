@@ -17,16 +17,16 @@ import type {
 export function isAccessTokenExpired(createdAt: number) {
   const currentTime = Date.now()
   const tokenExpirationTime = createdAt + 3_600_000
-  return currentTime > tokenExpirationTime
+  return currentTime >= tokenExpirationTime
 }
 
 export function isWebAccessTokenExpired(expiresAt: number) {
-  return expiresAt < Date.now()
+  return expiresAt <= Date.now()
 }
 
 export function isJwtExpired(token: string) {
   const decodedToken = JSON.parse(decode(token.split('.')[1]))
-  return decodedToken.exp < Date.now() / 1000
+  return decodedToken.exp <= Date.now() / 1000
 }
 
 export function getGreetingMessages() {

@@ -44,7 +44,7 @@ export const useBoundStore = create<AuthSlice>()(
       ...createAuthSlice(...args),
     }),
     {
-      name: 'auth-storage',
+      name: 'bound-storage',
       storage: createJSONStorage<AuthSlice>(() => AsyncStorage),
     },
   ),

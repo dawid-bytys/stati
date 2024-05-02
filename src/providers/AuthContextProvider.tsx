@@ -15,7 +15,7 @@ import { useLoadingContext } from '@/hooks/useLoadingContext'
 import { useNotificationContext } from '@/hooks/useNotificationContext'
 import { useBoundStore } from '@/store/boundStore'
 import type { DoesUserExistQuery } from '@/graphql-types/graphql'
-import type { AuthStackParamList } from '@/types/types'
+import type { AuthStackParamList, Notification } from '@/types/types'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { PropsWithChildren } from 'react'
 import type { RedirectResult } from 'react-native-inappbrowser-reborn'
@@ -41,7 +41,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       webAccessToken: state.webAccessToken,
       gqlAccessToken: state.gqlAccessToken,
       gqlRefreshToken: state.gqlRefreshToken,
-
       setAuthValue: state.setAuthValue,
     })),
   )
@@ -76,6 +75,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
           setNotification(authState.notification, 'warning')
         }
       } catch (err) {
+        console.error(err)
         if (err instanceof CustomError) {
           setNotification(err.message, 'error')
         } else {
@@ -148,16 +148,22 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     [setAuthValue, setNotification],
   )
 
-  const logout = useCallback(() => {
-    setAuthValue('accessToken', { value: '', createdAt: 0 })
-    setAuthValue('webAccessToken', { value: '', expiresAt: 0 })
-    setAuthValue('refreshToken', '')
-    setAuthValue('spdcCookie', '')
-    setAuthValue('gqlAccessToken', '')
-    setAuthValue('gqlRefreshToken', '')
-    setIsAuthenticated(false)
-    setNotification('You have logged out successfully.', 'success')
-  }, [setAuthValue, setNotification])
+  const logout = useCallback(
+    (notification?: Notification) => {
+      setAuthValue('accessToken', { value: '', createdAt: 0 })
+      setAuthValue('webAccessToken', { value: '', expiresAt: 0 })
+      setAuthValue('refreshToken', '')
+      setAuthValue('spdcCookie', '')
+      setAuthValue('gqlAccessToken', '')
+      setAuthValue('gqlRefreshToken', '')
+      setIsAuthenticated(false)
+
+      if (notification) {
+        setNotification(notification.message, notification.type)
+      }
+    },
+    [setAuthValue, setNotification],
+  )
 
   return (
     <AuthContext.Provider

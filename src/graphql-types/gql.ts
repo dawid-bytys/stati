@@ -21,6 +21,7 @@ const documents = {
     "\n  mutation UpsertSpotifyAuth(\n    $spdcCookie: String!\n    $accessToken: String!\n    $accessTokenExpirationTimestampMs: Float!\n  ) {\n    upsertSpotifyAuth(\n      spdcCookie: $spdcCookie\n      accessToken: $accessToken\n      accessTokenExpirationTimestampMs: $accessTokenExpirationTimestampMs\n    )\n  }\n": types.UpsertSpotifyAuthDocument,
     "\n  query DoesUserExist($email: String!) {\n    doesUserExist(email: $email)\n  }\n": types.DoesUserExistDocument,
     "\n  query GetActivities {\n    getActivities {\n      friendUri\n    }\n  }\n": types.GetActivitiesDocument,
+    "\n  query RefreshAccessToken($refreshToken: String!) {\n    refreshAccessToken(refreshToken: $refreshToken) {\n      accessToken\n    }\n  }\n": types.RefreshAccessTokenDocument,
 };
 
 /**
@@ -69,6 +70,10 @@ export function graphql(source: "\n  query DoesUserExist($email: String!) {\n   
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetActivities {\n    getActivities {\n      friendUri\n    }\n  }\n"): (typeof documents)["\n  query GetActivities {\n    getActivities {\n      friendUri\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query RefreshAccessToken($refreshToken: String!) {\n    refreshAccessToken(refreshToken: $refreshToken) {\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  query RefreshAccessToken($refreshToken: String!) {\n    refreshAccessToken(refreshToken: $refreshToken) {\n      accessToken\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

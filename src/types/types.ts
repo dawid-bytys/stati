@@ -80,3 +80,8 @@ export interface FilteredRecentlyPlayed {
   image: string
   time: string
 }
+
+export interface Notification {
+  message: string
+  type: 'success' | 'warning' | 'error'
+}

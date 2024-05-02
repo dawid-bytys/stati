@@ -2,7 +2,7 @@ import { REFRESH_ACCESS_TOKEN_QUERY } from '@/graphql/queries/refreshAccessToken
 import { isAccessTokenExpired, isJwtExpired, isWebAccessTokenExpired } from '@/utils'
 import { refreshTokens, fetchWebAccessToken } from './spotify'
 import { client } from '../apollo'
-import type { RefreshAccessToken } from '@/graphql-types/graphql'
+import type { RefreshAccessTokenQuery } from '@/graphql-types/graphql'
 import type { AccessToken, WebAccessToken, AuthState } from '@/types/types'
 
 export async function getAuthState(
@@ -19,9 +19,9 @@ export async function getAuthState(
     refreshToken,
     webAccessToken,
     spdcCookie,
-    notification: '',
     gqlAccessToken,
     gqlRefreshToken,
+    notification: '',
   }
 
   const areTokensAvailable = accessToken.value && refreshToken && gqlAccessToken && gqlRefreshToken
@@ -34,16 +34,16 @@ export async function getAuthState(
         createdAt: Date.now(),
       }
       authState.refreshToken = refresh_token
-      authState.isAuthenticated = true
     }
 
     if (isJwtExpired(gqlAccessToken)) {
-      const { data } = await client.query<RefreshAccessToken>({
+      const { data } = await client.query<RefreshAccessTokenQuery>({
         query: REFRESH_ACCESS_TOKEN_QUERY,
         variables: { refreshToken: gqlRefreshToken },
       })
 
-      authState.gqlAccessToken = data.accessToken
+      authState.gqlAccessToken = data.refreshAccessToken.accessToken
+      authState.isAuthenticated = true
     }
 
     if (webAccessToken.value && spdcCookie && isWebAccessTokenExpired(webAccessToken.expiresAt)) {
