@@ -36,7 +36,6 @@ export const useRefreshTokenMutation = () => {
     mutationFn: () => SpotifyService.refreshToken(),
     gcTime: ONE_HOUR,
     onSuccess: (data) => {
-      console.log('Refreshed token:', data);
       _useStore.getState().setAuth({ accessToken: data.access_token, refreshToken: data.refresh_token });
       _useStore.getState().setAuthenticated(true);
     },

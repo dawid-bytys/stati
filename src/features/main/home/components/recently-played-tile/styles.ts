@@ -1,3 +1,4 @@
+import { SCREEN_WIDTH } from '@/common/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -12,26 +13,26 @@ export const styles = StyleSheet.create({
   wrapper: {
     borderColor: '#2D2D2D',
     flexDirection: 'row',
-    borderRadius: 12,
+    borderRadius: 15,
     borderWidth: 1,
     padding: 10,
-    height: 50,
+    alignItems: 'center',
   },
   timeText: {
     fontFamily: 'Poppins-Medium',
     color: '#6A6A6A',
     marginRight: 10,
-    fontSize: 12,
+    fontSize: SCREEN_WIDTH / 33,
   },
   artistText: {
     fontFamily: 'Poppins-Medium',
     color: '#6A6A6A',
-    fontSize: 10,
+    fontSize: SCREEN_WIDTH / 39,
   },
   trackText: {
     fontFamily: 'Poppins-Medium',
     color: '#fff',
-    fontSize: 12,
+    fontSize: SCREEN_WIDTH / 33,
   },
   innerWrapper: {
     flexDirection: 'column',
@@ -39,8 +40,8 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    borderRadius: 5,
-    height: 30,
-    width: 30,
+    borderRadius: 7,
+    width: SCREEN_WIDTH / 12,
+    height: SCREEN_WIDTH / 12,
   },
 });

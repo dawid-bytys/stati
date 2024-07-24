@@ -1,4 +1,5 @@
 import { PRIMARY_COLOR } from '@/common/colors';
+import { SCREEN_WIDTH } from '@/common/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'Poppins-SemiBold',
     color: '#fff',
-    fontSize: 16,
+    fontSize: SCREEN_WIDTH / 24.5,
   },
   redirectBtn: {
     justifyContent: 'center',
@@ -26,6 +27,10 @@ export const styles = StyleSheet.create({
   redirectBtnText: {
     fontFamily: 'Poppins-SemiBold',
     color: PRIMARY_COLOR,
-    fontSize: 10,
+    fontSize: SCREEN_WIDTH / 39,
+  },
+  listContentWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
   },
 });

@@ -1,4 +1,5 @@
 import { BACKGROUND_COLOR, BORDER_COLOR } from '@/common/colors';
+import { SCREEN_WIDTH } from '@/common/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -17,12 +18,13 @@ export const styles = StyleSheet.create({
   message: {
     fontFamily: 'Poppins-SemiBold',
     color: '#666363',
-    fontSize: 16,
+    fontSize: SCREEN_WIDTH / 24,
   },
   greeting: {
     fontFamily: 'Poppins-Bold',
     color: '#fff',
-    fontSize: 30,
+    //fontSize: 30,
+    fontSize: SCREEN_WIDTH / 13,
   },
   greetingsWrapperUpper: {
     flexDirection: 'row',

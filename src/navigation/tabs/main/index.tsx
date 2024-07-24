@@ -29,8 +29,8 @@ export function MainTabs() {
           fontSize: 12,
         },
         tabBarIconStyle: {
-          marginBottom: 4,
-          marginTop: 6,
+          marginTop: 5,
+          marginBottom: 2,
         },
         tabBarInactiveTintColor: '#2A2A2A',
         tabBarActiveTintColor: '#8B8888',

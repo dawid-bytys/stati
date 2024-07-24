@@ -1,14 +1,15 @@
+import { SCREEN_WIDTH } from '@/common/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    width: 70,
+    width: SCREEN_WIDTH / 5.6,
   },
   title: {
     fontFamily: 'Poppins-SemiBold',
     textAlign: 'center',
     color: '#fff',
-    fontSize: 10,
+    fontSize: SCREEN_WIDTH / 39,
   },
   titleContainer: {
     marginTop: 10,
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 10,
-    height: 70,
-    width: 70,
+    width: SCREEN_WIDTH / 5.6,
+    height: SCREEN_WIDTH / 5.6,
   },
 });

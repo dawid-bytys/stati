@@ -7,7 +7,7 @@ import { InternetConnectionProvider } from '@/providers/internet-connection';
 import { LoadingOverlayProvider } from '@/providers/loading-overlay';
 import { ModalProvider } from '@/providers/modal';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import React from 'react';
 import { LogBox } from 'react-native';
@@ -17,9 +17,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 LogBox.ignoreAllLogs();
 
 const theme = {
-  ...DefaultTheme,
+  ...DarkTheme,
   colors: {
-    ...DefaultTheme.colors,
+    ...DarkTheme.colors,
     background: BACKGROUND_COLOR,
   },
 };
@@ -36,7 +36,7 @@ export function App() {
       }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
-          <SafeAreaProvider>
+          <SafeAreaProvider style={{ backgroundColor: BACKGROUND_COLOR }}>
             <NavigationContainer theme={theme}>
               <LoadingOverlayProvider>
                 <InternetConnectionProvider>
