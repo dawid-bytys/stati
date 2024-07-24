@@ -4,7 +4,7 @@ export function greetingMessages() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
 
-  if (currentHour >= 5 && currentHour < 12) {
+  if (currentHour >= 6 && currentHour < 12) {
     return ['Good morning.', 'Ready for the sunshine vibes?'];
   }
 
@@ -12,7 +12,11 @@ export function greetingMessages() {
     return ['Good afternoon.', "Let's chill a bit..."];
   }
 
-  return ['Good evening.', 'How was your day?'];
+  if (currentHour >= 18 && currentHour <= 23) {
+    return ['Good evening.', 'How was your day?'];
+  }
+
+  return ['Good night.', 'Have a nice sleep!'];
 }
 
 export function mapArtistsData(data: TopArtistsResponse) {

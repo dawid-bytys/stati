@@ -51,6 +51,6 @@ export const createAuthSlice: StateCreator<
   clearWebAuth: () => set({ webAccessToken: null, spdcCookie: null }),
   logout: () => {
     set({ ...initialState, isAuthenticating: false });
-    queryClient.removeQueries();
+    queryClient.clear();
   },
 });

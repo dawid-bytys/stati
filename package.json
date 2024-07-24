@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
     "start": "react-native start",
+    "ios:dev": "react-native run-ios",
+    "ios:release": "react-native run-ios --configuration Release",
+    "android:dev": "react-native run-android",
+    "android:release": "react-native run-android --variant Release",
+    "lint": "eslint .",
     "prettier": "prettier --write .",
     "bump:patch": "./scripts/bump_version.sh patch",
     "bump:minor": "./scripts/bump_version.sh minor",

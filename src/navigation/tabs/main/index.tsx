@@ -1,5 +1,5 @@
 import { getIcon } from '@/common/icons';
-import { FriendsActivityScreen } from '@/features/main/friends-activity/screen';
+// import { FriendsActivityScreen } from '@/features/main/friends-activity/screen';
 import { TopScreen } from '@/features/main/top/screen';
 import { HomeDrawer } from '@/navigation/drawers/home';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -49,13 +49,13 @@ export function MainTabs() {
           tabBarIcon: ({ color }) => getIcon('chart', color),
         }}
       />
-      <Tab.Screen
+      {/*<Tab.Screen
         name={BottomTabsScreens.FriendsActivity}
         component={FriendsActivityScreen}
         options={{
           tabBarIcon: ({ color }) => getIcon('friends', color),
         }}
-      />
+      />*/}
     </Tab.Navigator>
   );
 }

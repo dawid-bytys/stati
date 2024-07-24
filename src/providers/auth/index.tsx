@@ -36,7 +36,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
 
     if (store.isAuthenticating && store.isAuthenticated && webAccessTokenData) {
-      console.log('webAccessTokenData', webAccessTokenData);
       store.setWebAccessToken(webAccessTokenData.accessToken);
       store.setAuthenticating(false);
     }

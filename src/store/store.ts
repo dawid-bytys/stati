@@ -34,7 +34,6 @@ export const _useStore = create<
         refreshToken: state.refreshToken,
         webAccessToken: state.webAccessToken,
         spdcCookie: state.spdcCookie,
-        user: state.user,
       }),
     },
   ),
