@@ -68,6 +68,7 @@ export function TopItems({ type, period }: TopItemsProps) {
 
   return (
     <Animated.FlatList
+      indicatorStyle="white"
       ref={listRef}
       data={flattenedData}
       keyExtractor={(item) => item.id}

@@ -36,6 +36,7 @@ export function TopSection({ type, title, data }: TopSectionProps) {
           <NotFound iconWidth={100} iconHeight={100} />
         ) : (
           <Animated.FlatList
+            indicatorStyle="white"
             data={data}
             renderItem={renderItem}
             keyExtractor={({ id }) => id}

@@ -49,6 +49,7 @@ export function FriendsActivityScreen() {
   return (
     <View style={[styles.wrapper, { paddingTop: insets.top }]}>
       <Animated.FlatList
+        indicatorStyle="white"
         contentContainerStyle={styles.listContentWrapper}
         data={mapFriendsActivityData(friendsActivityData)}
         renderItem={renderFriendActivityRow}
