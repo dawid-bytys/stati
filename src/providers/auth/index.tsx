@@ -36,7 +36,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
 
     if (store.isAuthenticating && store.isAuthenticated && webAccessTokenData) {
-      store.setWebAccessToken(webAccessTokenData.accessToken);
+      store.setWebAccessToken({
+        value: webAccessTokenData.accessToken,
+        expiresAt: Math.floor(webAccessTokenData.accessTokenExpirationTimestampMs / 1000),
+      });
       store.setAuthenticating(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
