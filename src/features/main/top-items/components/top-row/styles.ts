@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     borderColor: '#2D2D2D',
     flexDirection: 'row',
-    borderRadius: 15,
+    // borderRadius: 15,
     borderWidth: 1,
     padding: 10,
     height: 60,
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   image: {
-    borderRadius: 7,
+    // borderRadius: 7,
     height: '100%',
     width: '100%',
   },

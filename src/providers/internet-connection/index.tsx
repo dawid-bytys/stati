@@ -12,7 +12,11 @@ export function InternetConnectionProvider({ children }: PropsWithChildren) {
     }
   }, [isConnected]);
 
-  if (isConnected === null || isConnected === false) {
+  if (isConnected === null) {
+    return null;
+  }
+
+  if (isConnected === false) {
     return <InternetConnection />;
   }
 

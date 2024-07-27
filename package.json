@@ -1,6 +1,6 @@
 {
   "name": "stati",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -25,7 +25,9 @@
     "@tanstack/query-sync-storage-persister": "^5.51.9",
     "@tanstack/react-query": "^5.51.4",
     "@tanstack/react-query-persist-client": "^5.51.11",
+    "axios": "^1.7.2",
     "lottie-react-native": "^6.7.2",
+    "query-string": "^9.1.0",
     "react": "^18.3.1",
     "react-native": "0.74.3",
     "react-native-bootsplash": "^5.5.3",
@@ -37,6 +39,7 @@
     "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-mmkv": "^2.12.2",
+    "react-native-outside-press": "^1.2.2",
     "react-native-pager-view": "^6.3.3",
     "react-native-paper": "^5.12.3",
     "react-native-pkce-challenge": "^5.3.2",

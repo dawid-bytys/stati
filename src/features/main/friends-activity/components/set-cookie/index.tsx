@@ -99,7 +99,10 @@ export function SetCookie() {
         type: 'success',
         message: 'sp_dc cookie set successfully! 🎉',
       });
-      store.setWebAccessToken(webAccessTokenData.accessToken);
+      store.setWebAccessToken({
+        value: webAccessTokenData.accessToken,
+        expiresAt: Math.floor(webAccessTokenData.accessTokenExpirationTimestampMs / 1000),
+      });
     }
 
     if (webAccessTokenError) {

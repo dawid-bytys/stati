@@ -1,16 +1,14 @@
 import { AnimatedIcon } from '@/common/animated-icon';
 import { getIcon } from '@/common/icons';
+import { memo } from 'react';
 import { Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Animated, { LinearTransition } from 'react-native-reanimated';
 import { styles } from './styles';
 import type { FriendActivityRowProps } from './types';
 
-const layoutTransition = LinearTransition.springify();
-
-export function FriendActivityRow({ data }: FriendActivityRowProps) {
+export const FriendActivityRow = memo(({ data }: FriendActivityRowProps) => {
   return (
-    <Animated.View style={styles.wrapper} layout={layoutTransition}>
+    <View style={styles.wrapper}>
       <View style={styles.innerLeftWrapper}>
         <FastImage source={{ uri: data.image }} style={styles.image} />
         {data.time === 'now' && <View style={styles.activityDot}>{getIcon('dot', '#0076CB', 12, 12)}</View>}
@@ -34,12 +32,16 @@ export function FriendActivityRow({ data }: FriendActivityRowProps) {
           </Text>
         </View>
         <View style={styles.innerRightLowerWrapper}>
-          {data.context.type === 'album' ? getIcon('album') : getIcon('playlist')}
+          {data.context.type === 'album'
+            ? getIcon('album')
+            : data.context.type === 'playlist'
+            ? getIcon('playlist')
+            : getIcon('artist')}
           <Text style={styles.context} numberOfLines={1}>
             {data.context.name}
           </Text>
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
-}
+});

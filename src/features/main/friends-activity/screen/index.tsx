@@ -2,17 +2,16 @@ import { Loading } from '@/common/loading';
 import { NotFound } from '@/common/not-found';
 import { useFriendsActivityQuery } from '@/network/queries/spotify';
 import { useStore } from '@/store/store';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, { enableLayoutAnimations, LinearTransition } from 'react-native-reanimated';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FriendActivityRow } from '../components/friend-activity-row';
 import { SetCookie } from '../components/set-cookie';
 import { styles } from './styles';
 import { mapFriendsActivityData } from './utils';
-
-enableLayoutAnimations(true);
-const transition = LinearTransition.springify().duration(500);
+import type { FriendActivityRowProps } from '../components/friend-activity-row/types';
+import type { ListRenderItemInfo } from 'react-native';
 
 export function FriendsActivityScreen() {
   const store = useStore();
@@ -22,9 +21,12 @@ export function FriendsActivityScreen() {
     store.webAccessToken !== null,
   );
 
+  const renderFriendActivityRow = useCallback(({ item }: ListRenderItemInfo<FriendActivityRowProps['data']>) => {
+    return <FriendActivityRow data={item} />;
+  }, []);
+
   useEffect(() => {
     if (friendsActivityError) {
-      console.error(friendsActivityError);
       store.setNotification({
         type: 'error',
         message: 'Failed to fetch friends activity, try restarting the app',
@@ -49,8 +51,9 @@ export function FriendsActivityScreen() {
       <Animated.FlatList
         contentContainerStyle={styles.listContentWrapper}
         data={mapFriendsActivityData(friendsActivityData)}
-        renderItem={({ item }) => <FriendActivityRow data={item} />}
-        itemLayoutAnimation={transition}
+        renderItem={renderFriendActivityRow}
+        itemLayoutAnimation={LinearTransition}
+        keyExtractor={(item) => item.friendUri}
       />
     </View>
   );

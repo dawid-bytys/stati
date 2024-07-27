@@ -5,5 +5,6 @@ export interface TopSectionProps {
     id: string;
     name: string;
     image: string;
+    link: string;
   }[];
 }

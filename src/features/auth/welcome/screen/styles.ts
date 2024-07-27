@@ -1,4 +1,5 @@
 import { BACKGROUND_COLOR } from '@/common/colors';
+import { aspectRatio } from '@/common/utils';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 20,
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   innerWrapper: {
     marginTop: 30,
@@ -22,6 +23,13 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#fff',
   },
+  wrapperInnerUpper: {
+    alignItems: 'center',
+  },
+  wrapperInnerLower: {
+    alignItems: 'center',
+    gap: 20,
+  },
   subtitle: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
@@ -30,5 +38,14 @@ export const styles = StyleSheet.create({
   loginBtn: {
     marginTop: 40,
     paddingVertical: 20,
+  },
+  powered: {
+    fontSize: 12,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#fff',
+  },
+  spotifyLogo: {
+    width: 150,
+    aspectRatio: aspectRatio(2362, 708),
   },
 });

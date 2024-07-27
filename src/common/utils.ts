@@ -1,7 +1,6 @@
-export function formatDateString(dateString: string, forFriends = false) {
+export function formatDate(timestampMs: number, forFriends = false) {
   const currentDate = new Date();
-  const scrappingDate = new Date(dateString);
-  const differenceInSeconds = Math.floor((currentDate.getTime() - scrappingDate.getTime()) / 1000);
+  const differenceInSeconds = Math.floor((currentDate.getTime() - timestampMs) / 1000);
 
   if (forFriends && differenceInSeconds < 900) {
     return 'now';
@@ -36,4 +35,8 @@ export function rankColor(rank: number) {
     default:
       return '#6A6A6A';
   }
+}
+
+export function aspectRatio(width: number, height: number) {
+  return width / height;
 }

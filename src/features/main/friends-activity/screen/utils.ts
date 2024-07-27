@@ -1,4 +1,4 @@
-import { formatDateString } from '@/common/utils';
+import { formatDate } from '@/common/utils';
 import type { FriendsActivityResponse } from '@/network/responses';
 
 export function mapFriendsActivityData(data: FriendsActivityResponse) {
@@ -10,7 +10,7 @@ export function mapFriendsActivityData(data: FriendsActivityResponse) {
     track: friend.track.name,
     artist: friend.track.artist.name,
     image: friend.user.imageUrl,
-    time: formatDateString(new Date(friend.timestamp).toISOString(), true),
+    time: formatDate(friend.timestamp, true),
     context: {
       type: friend.track.context.uri.split(':')[1],
       name: friend.track.context.name,

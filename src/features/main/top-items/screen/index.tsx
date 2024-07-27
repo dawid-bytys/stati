@@ -3,13 +3,14 @@ import { NotFound } from '@/common/not-found';
 import { useTopItemsInfiniteQuery } from '@/network/queries/spotify';
 import { useStore } from '@/store/store';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { TopRow } from '../components/top-row';
 import { styles } from './styles';
 import type { TopItemsProps } from './types';
 import type { ArtistItem } from '@/network/responses/artists';
 import type { TrackItem } from '@/network/responses/tracks';
-import type { ListRenderItemInfo } from 'react-native';
+import type { ListRenderItemInfo, FlatList } from 'react-native';
 
 export function TopItems({ type, period }: TopItemsProps) {
   const store = useStore();
@@ -31,11 +32,17 @@ export function TopItems({ type, period }: TopItemsProps) {
   const renderItem = useCallback(({ item, index }: ListRenderItemInfo<TrackItem | ArtistItem>) => {
     if ('track_number' in item) {
       return (
-        <TopRow track={item.name} artist={item.artists[0].name} image={item.album.images[0].url} rank={index + 1} />
+        <TopRow
+          track={item.name}
+          artist={item.artists[0].name}
+          image={item.album.images[0].url}
+          rank={index + 1}
+          link={item.external_urls.spotify}
+        />
       );
     }
 
-    return <TopRow track={item.name} image={item.images[0].url} rank={index + 1} />;
+    return <TopRow track={item.name} image={item.images[0].url} rank={index + 1} link={item.external_urls.spotify} />;
   }, []);
 
   useEffect(() => {
@@ -60,11 +67,12 @@ export function TopItems({ type, period }: TopItemsProps) {
   }
 
   return (
-    <FlatList
+    <Animated.FlatList
       ref={listRef}
       data={flattenedData}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
+      itemLayoutAnimation={LinearTransition}
       contentContainerStyle={styles.listContainer}
       onEndReachedThreshold={0.3}
       onEndReached={() => {

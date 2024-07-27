@@ -2,6 +2,7 @@ import React from 'zustand';
 import {
   AlbumIcon,
   ArrowRightIcon,
+  ArtistIcon,
   ChartIcon,
   ClockIcon,
   CloseIcon,
@@ -55,6 +56,8 @@ export function getIcon(iconName: string, color?: string, width?: number, height
       return <CloseIcon />;
     case 'notFound':
       return <NotFoundIcon width={width} height={height} />;
+    case 'artist':
+      return <ArtistIcon />;
     default:
       throw new Error('Invalid icon name');
   }
