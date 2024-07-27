@@ -13,7 +13,7 @@ spotifyClient.interceptors.request.use(async (req) => {
 
   const currentTimestamp = Math.floor(Date.now() / 1000);
 
-  if (currentAccessToken.expiresAt - currentTimestamp > 60) {
+  if (currentTimestamp < currentAccessToken.expiresAt) {
     req.headers.Authorization = `Bearer ${currentAccessToken.value}`;
     return req;
   }

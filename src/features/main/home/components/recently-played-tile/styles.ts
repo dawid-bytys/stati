@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   wrapper: {
     borderColor: '#2D2D2D',
     flexDirection: 'row',
-    borderRadius: 15,
+    // borderRadius: 15,
     borderWidth: 1,
     padding: 10,
     alignItems: 'center',
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    borderRadius: 7,
+    // borderRadius: 7,
     width: SCREEN_WIDTH / 12,
     height: SCREEN_WIDTH / 12,
   },

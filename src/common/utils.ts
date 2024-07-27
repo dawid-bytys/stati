@@ -36,3 +36,7 @@ export function rankColor(rank: number) {
       return '#6A6A6A';
   }
 }
+
+export function aspectRatio(width: number, height: number) {
+  return width / height;
+}

@@ -11,8 +11,15 @@ export function RecentlyPlayedSection({ data }: RecentlyPlayedSectionProps) {
       return <NotFound iconWidth={100} iconHeight={100} />;
     }
 
-    return data.map(({ track, artist, image, timestampMs }) => (
-      <RecentlyPlayedTile key={timestampMs} track={track} artist={artist} image={image} timestampMs={timestampMs} />
+    return data.map(({ track, artist, image, link, timestampMs }) => (
+      <RecentlyPlayedTile
+        key={timestampMs}
+        track={track}
+        artist={artist}
+        image={image}
+        timestampMs={timestampMs}
+        link={link}
+      />
     ));
   }, [data]);
 

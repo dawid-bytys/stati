@@ -19,8 +19,8 @@ export function TopSection({ type, title, data }: TopSectionProps) {
     navigation.navigate(BottomTabsScreens.Top);
   }, [navigation, store, type]);
 
-  const renderItem = useCallback(({ item }: ListRenderItemInfo<{ id: string; name: string; image: string }>) => {
-    return <TopSectionTile key={item.id} name={item.name} image={item.image} />;
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<TopSectionProps['data'][0]>) => {
+    return <TopSectionTile key={item.id} name={item.name} image={item.image} link={item.link} />;
   }, []);
 
   return (

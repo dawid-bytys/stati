@@ -4,6 +4,7 @@ import { useAuthMutation } from '@/network/mutations/spotify';
 import { SpotifyService } from '@/network/services/spotify';
 import { SafeAreaView, Text, View } from 'react-native';
 import { Config } from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import pkceChallenge from 'react-native-pkce-challenge';
 import { styles } from './styles';
@@ -38,11 +39,17 @@ export function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.wrapper}>
-        <WelcomeIcon />
-        <View style={styles.innerWrapper}>
-          <Text style={styles.title}>Hello. 😊</Text>
-          <Text style={styles.subtitle}>Explore your music taste in one place</Text>
-          <Button title="Login with Spotify" onPress={handleLogin} style={styles.loginBtn} />
+        <View style={styles.wrapperInnerUpper}>
+          <WelcomeIcon />
+          <View style={styles.innerWrapper}>
+            <Text style={styles.title}>Hello. 😊</Text>
+            <Text style={styles.subtitle}>Explore your music taste in one place</Text>
+            <Button title="Login with Spotify" onPress={handleLogin} style={styles.loginBtn} />
+          </View>
+        </View>
+        <View style={styles.wrapperInnerLower}>
+          <Text style={styles.powered}>powered by</Text>
+          <FastImage source={require('@/assets/images/spotify-logo.png')} style={styles.spotifyLogo} />
         </View>
       </View>
     </SafeAreaView>

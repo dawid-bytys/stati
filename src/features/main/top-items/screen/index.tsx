@@ -32,11 +32,17 @@ export function TopItems({ type, period }: TopItemsProps) {
   const renderItem = useCallback(({ item, index }: ListRenderItemInfo<TrackItem | ArtistItem>) => {
     if ('track_number' in item) {
       return (
-        <TopRow track={item.name} artist={item.artists[0].name} image={item.album.images[0].url} rank={index + 1} />
+        <TopRow
+          track={item.name}
+          artist={item.artists[0].name}
+          image={item.album.images[0].url}
+          rank={index + 1}
+          link={item.external_urls.spotify}
+        />
       );
     }
 
-    return <TopRow track={item.name} image={item.images[0].url} rank={index + 1} />;
+    return <TopRow track={item.name} image={item.images[0].url} rank={index + 1} link={item.external_urls.spotify} />;
   }, []);
 
   useEffect(() => {

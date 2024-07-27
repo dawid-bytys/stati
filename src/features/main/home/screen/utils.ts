@@ -24,6 +24,7 @@ export function mapArtistsData(data: TopArtistsResponse) {
     id: item.id,
     name: item.name,
     image: item.images.length ? item.images[0].url : '',
+    link: item.external_urls.spotify,
   }));
 }
 
@@ -32,6 +33,7 @@ export function mapTracksData(data: TopTracksResponse) {
     id: item.id,
     name: `${item.artists[0].name} - ${item.name}`,
     image: item.album.images.length ? item.album.images[0].url : '',
+    link: item.external_urls.spotify,
   }));
 }
 
@@ -40,6 +42,7 @@ export function mapRecentlyPlayedData(data: RecentlyPlayedResponse) {
     track: item.track.name,
     artist: item.track.artists[0].name,
     image: item.track.album.images.length ? item.track.album.images[0].url : '',
+    link: item.track.external_urls.spotify,
     timestampMs: new Date(item.played_at).getTime(),
   }));
 }

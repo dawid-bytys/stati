@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Easing } from 'react-native';
+import { View, Easing, TouchableOpacity, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import TextTicker from 'react-native-text-ticker';
 import { styles } from './styles';
 import type { TopSectionTileProps } from './types';
 
-export function TopSectionTile({ name, image }: TopSectionTileProps) {
+export function TopSectionTile({ name, image, link }: TopSectionTileProps) {
   return (
-    <View style={styles.wrapper}>
+    <TouchableOpacity style={styles.wrapper} onPress={() => Linking.openURL(link)}>
       <FastImage source={{ uri: image, priority: FastImage.priority.high }} style={styles.image} />
       <View style={styles.titleContainer}>
         <TextTicker
@@ -22,6 +22,6 @@ export function TopSectionTile({ name, image }: TopSectionTileProps) {
           {name}
         </TextTicker>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

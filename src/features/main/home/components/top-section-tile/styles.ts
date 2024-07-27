@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    borderRadius: 10,
+    // borderRadius: 10,
     width: SCREEN_WIDTH / 5.6,
     height: SCREEN_WIDTH / 5.6,
   },
