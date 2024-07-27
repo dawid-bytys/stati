@@ -1,10 +1,13 @@
 import { type AccessTokenResponse, type WebAccessTokenResponse } from '@/network/responses';
 import { _useStore } from '@/store/store';
+import axios from 'axios';
+import queryString from 'query-string';
 import { Config } from 'react-native-config';
-import { fetchWithErrorHandling } from './utils';
+import { privateSpotifyClient } from '../axios-clients/private-spotify';
+import { spotifyClient } from '../axios-clients/spotify';
 import type { FetchTokensParams, TopItemsParams } from '../params';
 import type { RecentlyPlayedResponse } from '../responses/recently-played';
-import type { FriendsActivityResponse, ProfileResponse } from '@/network/responses';
+import type { FriendsActivityResponse } from '@/network/responses';
 
 export const SpotifyService = {
   generateAuthUrl: (codeChallenge: string) => {
@@ -20,100 +23,78 @@ export const SpotifyService = {
     return url.toString();
   },
 
-  fetchTokens: ({ code, codeVerifier }: FetchTokensParams) => {
-    return fetchWithErrorHandling<AccessTokenResponse>('https://accounts.spotify.com/api/token', {
+  fetchTokens: async ({ code, codeVerifier }: FetchTokensParams) => {
+    const response = await axios<AccessTokenResponse>('https://accounts.spotify.com/api/token', {
       method: 'POST',
-      body: new URLSearchParams({
+      data: queryString.stringify({
         client_id: Config.SPOTIFY_CLIENT_ID,
         redirect_uri: Config.SPOTIFY_AUTH_CALLBACK_URL,
         grant_type: 'authorization_code',
         code_verifier: codeVerifier,
         code,
-      }).toString(),
+      }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
+
+    return response.data;
   },
 
-  refreshToken: () => {
+  refreshToken: async () => {
     const refreshToken = _useStore.getState().refreshToken;
 
-    return fetchWithErrorHandling<AccessTokenResponse>('https://accounts.spotify.com/api/token', {
+    const response = await axios<AccessTokenResponse>('https://accounts.spotify.com/api/token', {
       method: 'POST',
-      body: new URLSearchParams({
+      data: queryString.stringify({
         client_id: Config.SPOTIFY_CLIENT_ID,
-        refresh_token: refreshToken as string,
+        refresh_token: refreshToken,
         grant_type: 'refresh_token',
-      }).toString(),
+      }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
+
+    return response.data;
   },
 
-  fetchTopItems: <T>({ type, period = 'short_term', limit = 4, offset = 0 }: TopItemsParams) => {
-    const accessToken = _useStore.getState().accessToken;
-
-    return fetchWithErrorHandling<T>(
+  fetchTopItems: async <T>({ type, period = 'short_term', limit = 4, offset = 0 }: TopItemsParams) => {
+    const response = await spotifyClient.get<T>(
       `https://api.spotify.com/v1/me/top/${type}?limit=${limit}&time_range=${period}&offset=${offset}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
     );
+
+    return response.data;
   },
 
-  fetchRecentlyPlayed: () => {
-    const accessToken = _useStore.getState().accessToken;
-
-    return fetchWithErrorHandling<RecentlyPlayedResponse>(
+  fetchRecentlyPlayed: async () => {
+    const response = await spotifyClient.get<RecentlyPlayedResponse>(
       'https://api.spotify.com/v1/me/player/recently-played?limit=5',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
     );
+
+    return response.data;
   },
 
-  fetchProfile: () => {
-    const accessToken = _useStore.getState().accessToken;
-
-    return fetchWithErrorHandling<ProfileResponse>('https://api.spotify.com/v1/me', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  },
-
-  fetchWebAccessToken: () => {
+  fetchWebAccessToken: async (): Promise<WebAccessTokenResponse> => {
     const spdcCookie = _useStore.getState().spdcCookie;
 
-    return fetchWithErrorHandling<WebAccessTokenResponse>('https://open.spotify.com/get_access_token', {
+    // using fetch here because axios' 'withCredentials' option doesn't work well with Spotify's cookies
+    const response = await fetch('https://open.spotify.com/get_access_token', {
       method: 'GET',
       credentials: 'omit',
       headers: {
         Cookie: `sp_dc=${spdcCookie}`,
       },
     });
+
+    return response.json();
   },
 
-  fetchFriendsActivity: () => {
-    const webAccessToken = _useStore.getState().webAccessToken;
-
-    return fetchWithErrorHandling<FriendsActivityResponse>(
+  fetchFriendsActivity: async () => {
+    const response = await privateSpotifyClient.get<FriendsActivityResponse>(
       'https://spclient.wg.spotify.com/presence-view/v1/buddylist',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${webAccessToken}`,
-        },
-      },
     );
+
+    return response.data;
   },
 };

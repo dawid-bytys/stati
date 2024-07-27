@@ -3684,12 +3684,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asynckit@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "asynckit@npm:0.4.0"
+  checksum: 7b78c451df768adba04e2d02e63e2d0bf3b07adcd6e42b4cf665cb7ce899bedd344c69a1dcbce355b5f972d597b25aaa1c1742b52cffd9caccb22f348114f6be
+  languageName: node
+  linkType: hard
+
 "available-typed-arrays@npm:^1.0.7":
   version: 1.0.7
   resolution: "available-typed-arrays@npm:1.0.7"
   dependencies:
     possible-typed-array-names: ^1.0.0
   checksum: 1aa3ffbfe6578276996de660848b6e95669d9a95ad149e3dd0c0cda77db6ee1dbd9d1dd723b65b6d277b882dd0c4b91a654ae9d3cf9e1254b7e93e4908d78fd3
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "axios@npm:1.7.2"
+  dependencies:
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: e457e2b0ab748504621f6fa6609074ac08c824bf0881592209dfa15098ece7e88495300e02cd22ba50b3468fd712fe687e629dcb03d6a3f6a51989727405aedf
   languageName: node
   linkType: hard
 
@@ -4334,6 +4352,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"combined-stream@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "combined-stream@npm:1.0.8"
+  dependencies:
+    delayed-stream: ~1.0.0
+  checksum: 49fa4aeb4916567e33ea81d088f6584749fc90c7abec76fd516bf1c5aa5c79f3584b5ba3de6b86d26ddd64bae5329c4c7479343250cfe71c75bb366eae53bb7c
+  languageName: node
+  linkType: hard
+
 "command-exists@npm:^1.2.8":
   version: 1.2.9
   resolution: "command-exists@npm:1.2.9"
@@ -4580,6 +4607,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"decode-uri-component@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "decode-uri-component@npm:0.4.1"
+  checksum: 0473924860986fb6ca19ee65a2af13e08801b4f3660475b058500ea8479ed715c919884a026b6bf4296dbb640d3cea74fadf45490b2439152fc548271d0201ec
+  languageName: node
+  linkType: hard
+
 "decompress-response@npm:^6.0.0":
   version: 6.0.0
   resolution: "decompress-response@npm:6.0.0"
@@ -4657,6 +4691,13 @@ __metadata:
     has-property-descriptors: ^1.0.0
     object-keys: ^1.1.1
   checksum: b4ccd00597dd46cb2d4a379398f5b19fca84a16f3374e2249201992f36b30f6835949a9429669ee6b41b6e837205a163eadd745e472069e70dfc10f03e5fcc12
+  languageName: node
+  linkType: hard
+
+"delayed-stream@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "delayed-stream@npm:1.0.0"
+  checksum: 46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
   languageName: node
   linkType: hard
 
@@ -5525,6 +5566,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"filter-obj@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "filter-obj@npm:5.1.0"
+  checksum: ba7c24d9b2c0552ee87d268e07eca74483af61fb740545ffa809f7e9e5294de38cf163ecc55af0e8a40020af9a49512c32f4022de2a858b110420fc8bffa7c9c
+  languageName: node
+  linkType: hard
+
 "finalhandler@npm:1.1.2":
   version: 1.1.2
   resolution: "finalhandler@npm:1.1.2"
@@ -5622,6 +5670,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.6
+  resolution: "follow-redirects@npm:1.15.6"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: a62c378dfc8c00f60b9c80cab158ba54e99ba0239a5dd7c81245e5a5b39d10f0c35e249c3379eae719ff0285fff88c365dd446fab19dee771f1d76252df1bbf5
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -5638,6 +5696,17 @@ __metadata:
     cross-spawn: ^7.0.0
     signal-exit: ^4.0.1
   checksum: 3e2e844d6003c96d70affe8ae98d7eaaba269a868c14d997620c088340a8775cd5d2d9043e6ceebae1928d8d9a874911c4d664b9a267e8995945df20337aebc0
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "form-data@npm:4.0.0"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
 
@@ -7851,7 +7920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.27, mime-types@npm:~2.1.34":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.27, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -8819,6 +8888,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -8852,6 +8928,17 @@ __metadata:
     split-on-first: ^1.0.0
     strict-uri-encode: ^2.0.0
   checksum: 91af02dcd9cc9227a052841d5c2eecb80a0d6489d05625df506a097ef1c59037cfb5e907f39b84643cbfd535c955abec3e553d0130a7b510120c37d06e0f4346
+  languageName: node
+  linkType: hard
+
+"query-string@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "query-string@npm:9.1.0"
+  dependencies:
+    decode-uri-component: ^0.4.1
+    filter-obj: ^5.1.0
+    split-on-first: ^3.0.0
+  checksum: b5c808d702d3e5c8b5abbbad8d5f8d8bbb2c88ef1939d0a5426271636b12813211f56e13f0ddb45a135c95cb192a01c5887ecbc7526ce793e1e3ee9100a468fd
   languageName: node
   linkType: hard
 
@@ -9078,6 +9165,16 @@ __metadata:
     react: "*"
     react-native: ">=0.71.0"
   checksum: 8c79504a89fefd7f9c290a4a6bb24f1f9ef9e2a69d20d0f7d882b89f3943556e9c919c9d46583e44ab698f25213489277fccb6d4c856cce310267c5f907388f1
+  languageName: node
+  linkType: hard
+
+"react-native-outside-press@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "react-native-outside-press@npm:1.2.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 834cb861800b77dffa2653318f23e9b5a1bbdf22a23c2f8f9830295ddfa768095921e6f5b8ea29befb2500e15dabb9a3293144ca20d40a14adfc1fa57581992e
   languageName: node
   linkType: hard
 
@@ -10055,6 +10152,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"split-on-first@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "split-on-first@npm:3.0.0"
+  checksum: 75dc27ecbac65cfbeab9a3b90cf046307220192d3d7a30e46aa0f19571cc9b4802aac813f3de2cc9b16f2e46aae72f275659b5d2614bb5369c77724d739e5f73
+  languageName: node
+  linkType: hard
+
 "sprintf-js@npm:^1.1.3":
   version: 1.1.3
   resolution: "sprintf-js@npm:1.1.3"
@@ -10126,6 +10230,7 @@ __metadata:
     "@tanstack/react-query-persist-client": ^5.51.11
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
+    axios: ^1.7.2
     babel-jest: ^29.6.3
     babel-plugin-module-resolver: ^5.0.2
     eslint: ^8.19.0
@@ -10133,6 +10238,7 @@ __metadata:
     jest: ^29.6.3
     lottie-react-native: ^6.7.2
     prettier: 2.8.8
+    query-string: ^9.1.0
     react: ^18.3.1
     react-native: 0.74.3
     react-native-bootsplash: ^5.5.3
@@ -10144,6 +10250,7 @@ __metadata:
     react-native-inappbrowser-reborn: ^3.7.0
     react-native-linear-gradient: ^2.8.3
     react-native-mmkv: ^2.12.2
+    react-native-outside-press: ^1.2.2
     react-native-pager-view: ^6.3.3
     react-native-paper: ^5.12.3
     react-native-pkce-challenge: ^5.3.2

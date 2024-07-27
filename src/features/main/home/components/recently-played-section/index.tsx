@@ -8,11 +8,11 @@ import type { RecentlyPlayedSectionProps } from './types';
 export function RecentlyPlayedSection({ data }: RecentlyPlayedSectionProps) {
   const renderData = useCallback(() => {
     if (data.length === 0) {
-      return <NotFound animated={false} iconWidth={100} iconHeight={100} />;
+      return <NotFound iconWidth={100} iconHeight={100} />;
     }
 
-    return data.map(({ track, artist, image, date }) => (
-      <RecentlyPlayedTile key={date} track={track} artist={artist} image={image} date={date} />
+    return data.map(({ track, artist, image, timestampMs }) => (
+      <RecentlyPlayedTile key={timestampMs} track={track} artist={artist} image={image} timestampMs={timestampMs} />
     ));
   }, [data]);
 

@@ -40,6 +40,6 @@ export function mapRecentlyPlayedData(data: RecentlyPlayedResponse) {
     track: item.track.name,
     artist: item.track.artists[0].name,
     image: item.track.album.images.length ? item.track.album.images[0].url : '',
-    date: item.played_at,
+    timestampMs: new Date(item.played_at).getTime(),
   }));
 }

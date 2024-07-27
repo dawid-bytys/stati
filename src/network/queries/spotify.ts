@@ -1,4 +1,4 @@
-import { FIFTEEN_SECONDS, THIRTY_MINUTES, THREE_HOURS } from '@/common/constants';
+import { FIFTEEN_SECONDS, THREE_HOURS } from '@/common/constants';
 import { useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query';
 import { SpotifyService } from '../services/spotify';
 import type { TopItemsParams } from '../params';
@@ -47,15 +47,6 @@ export function useRecentlyPlayedQuery() {
     queryKey: ['recentlyPlayed'],
     queryFn: () => SpotifyService.fetchRecentlyPlayed(),
     refetchInterval: FIFTEEN_SECONDS,
-  });
-}
-
-export function useProfileQuery(enabled: boolean) {
-  return useQuery({
-    queryKey: ['profile'],
-    queryFn: () => SpotifyService.fetchProfile(),
-    staleTime: THIRTY_MINUTES,
-    enabled,
   });
 }
 

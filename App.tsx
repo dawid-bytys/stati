@@ -1,6 +1,6 @@
 import { BACKGROUND_COLOR } from '@/common/colors';
 import { Navigation } from '@/navigation';
-import { clientPersister, queryClient } from '@/network/client';
+import { clientPersister, queryClient } from '@/network/react-query-client';
 import { AuthProvider } from '@/providers/auth';
 import { InAppNotificationProvider } from '@/providers/in-app-notification';
 import { InternetConnectionProvider } from '@/providers/internet-connection';
@@ -12,6 +12,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import React from 'react';
 import { LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { EventProvider } from 'react-native-outside-press';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 LogBox.ignoreAllLogs();
@@ -34,25 +35,27 @@ export function App() {
           shouldDehydrateQuery: (query) => !query.queryKey.includes('webAccessToken'),
         },
       }}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
-          <SafeAreaProvider style={{ backgroundColor: BACKGROUND_COLOR }}>
-            <NavigationContainer theme={theme}>
-              <LoadingOverlayProvider>
-                <InternetConnectionProvider>
-                  <InAppNotificationProvider>
-                    <AuthProvider>
-                      <ModalProvider>
-                        <Navigation />
-                      </ModalProvider>
-                    </AuthProvider>
-                  </InAppNotificationProvider>
-                </InternetConnectionProvider>
-              </LoadingOverlayProvider>
-            </NavigationContainer>
-          </SafeAreaProvider>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
+      <EventProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <SafeAreaProvider style={{ backgroundColor: BACKGROUND_COLOR }}>
+              <NavigationContainer theme={theme}>
+                <LoadingOverlayProvider>
+                  <InternetConnectionProvider>
+                    <InAppNotificationProvider>
+                      <AuthProvider>
+                        <ModalProvider>
+                          <Navigation />
+                        </ModalProvider>
+                      </AuthProvider>
+                    </InAppNotificationProvider>
+                  </InternetConnectionProvider>
+                </LoadingOverlayProvider>
+              </NavigationContainer>
+            </SafeAreaProvider>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </EventProvider>
     </PersistQueryClientProvider>
   );
 }

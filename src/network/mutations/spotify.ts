@@ -10,8 +10,16 @@ export const useAuthMutation = () => {
     onMutate: () => {
       _useStore.getState().setLoading(true);
     },
-    onSuccess: (data) => {
-      _useStore.getState().setAuth({ accessToken: data.access_token, refreshToken: data.refresh_token });
+    onSuccess: ({ access_token, refresh_token, expires_in }) => {
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+
+      _useStore.getState().setAuth({
+        accessToken: {
+          value: access_token,
+          expiresAt: currentTimestamp + expires_in,
+        },
+        refreshToken: refresh_token,
+      });
       _useStore.getState().setAuthenticated(true);
       _useStore.getState().setNotification({
         type: 'success',
@@ -35,8 +43,16 @@ export const useRefreshTokenMutation = () => {
   return useMutation({
     mutationFn: () => SpotifyService.refreshToken(),
     gcTime: ONE_HOUR,
-    onSuccess: (data) => {
-      _useStore.getState().setAuth({ accessToken: data.access_token, refreshToken: data.refresh_token });
+    onSuccess: ({ access_token, refresh_token, expires_in }) => {
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+
+      _useStore.getState().setAuth({
+        accessToken: {
+          value: access_token,
+          expiresAt: currentTimestamp + expires_in,
+        },
+        refreshToken: refresh_token,
+      });
       _useStore.getState().setAuthenticated(true);
     },
     onError: () => {

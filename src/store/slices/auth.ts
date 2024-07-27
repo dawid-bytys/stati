@@ -1,4 +1,4 @@
-import { queryClient } from '@/network/client';
+import { queryClient } from '@/network/react-query-client';
 import type { LoadingSlice } from './loading';
 import type { ModalSlice } from './modal';
 import type { NotificationSlice } from './notification';
@@ -15,20 +15,25 @@ const initialState = {
   spdcCookie: null,
 };
 
+interface AccessToken {
+  value: string;
+  expiresAt: number;
+}
+
 interface Auth {
-  accessToken: string;
+  accessToken: AccessToken;
   refreshToken: string;
 }
 
 export type AuthSlice = {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
-  accessToken: string | null;
+  accessToken: AccessToken | null;
   refreshToken: string | null;
-  webAccessToken: string | null;
+  webAccessToken: AccessToken | null;
   spdcCookie: string | null;
   setAuth: (auth: Auth) => void;
-  setWebAccessToken: (webAccessToken: string) => void;
+  setWebAccessToken: (webAccessToken: AccessToken) => void;
   setSpdcCookie: (spdcCookie: string | null) => void;
   setAuthenticated: (isAuthenticated: boolean) => void;
   setAuthenticating: (isAuthenticating: boolean) => void;

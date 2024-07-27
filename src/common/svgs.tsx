@@ -104,19 +104,24 @@ export function DotIcon({ color, width, height }: { color?: string; width?: numb
 }
 
 export function PlaylistIcon() {
-  const xml = `<svg width="24" height="24" viewBox="0 0 24 24" fill="#6A6A6A" xmlns="http://www.w3.org/2000/svg">
-  <path d="M21 3V15.5C21 16.4283 20.6313 17.3185 19.9749 17.9749C19.3185 18.6313 18.4283 19 17.5 19C16.5717 19 15.6815 18.6313 15.0251 17.9749C14.3687 17.3185 14 16.4283 14 15.5C14 14.5717 14.3687 13.6815 15.0251 13.0251C15.6815 12.3687 16.5717 12 17.5 12C18.04 12 18.55 12.12 19 12.34V6.47L9 8.6V17.5C9 18.4283 8.63125 19.3185 7.97487 19.9749C7.3185 20.6313 6.42826 21 5.5 21C4.57174 21 3.6815 20.6313 3.02513 19.9749C2.36875 19.3185 2 18.4283 2 17.5C2 16.5717 2.36875 15.6815 3.02513 15.0251C3.6815 14.3687 4.57174 14 5.5 14C6.04 14 6.55 14.12 7 14.34V6L21 3Z" />
-  </svg>`;
+  const xml =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-music"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>';
 
-  return <SvgXml xml={xml} width={14} height={14} />;
+  return <SvgXml xml={xml} width={16} height={16} />;
 }
 
 export function AlbumIcon() {
-  const xml = `<svg width="11" height="11" viewBox="0 0 11 11" fill="#6A6A6A" xmlns="http://www.w3.org/2000/svg">
-  <path d="M5.25 0C2.35498 0 0 2.35498 0 5.25C0 8.14502 2.35498 10.5 5.25 10.5C8.14502 10.5 10.5 8.14502 10.5 5.25C10.5 2.35498 8.14502 0 5.25 0ZM5.25 0.875C7.67163 0.875 9.625 2.82837 9.625 5.25C9.625 7.67163 7.67163 9.625 5.25 9.625C2.82837 9.625 0.875 7.67163 0.875 5.25C0.875 2.82837 2.82837 0.875 5.25 0.875ZM7.66992 2.21484L6.83594 3.03516L7.46484 3.66406L8.28516 2.83008L7.66992 2.21484ZM5.25 3.0625C4.04688 3.0625 3.0625 4.04688 3.0625 5.25C3.0625 6.45312 4.04688 7.4375 5.25 7.4375C6.45312 7.4375 7.4375 6.45312 7.4375 5.25C7.4375 4.04688 6.45312 3.0625 5.25 3.0625ZM5.25 3.9375C5.97974 3.9375 6.5625 4.52026 6.5625 5.25C6.5625 5.97974 5.97974 6.5625 5.25 6.5625C4.52026 6.5625 3.9375 5.97974 3.9375 5.25C3.9375 4.52026 4.52026 3.9375 5.25 3.9375ZM5.25 4.8125C5.00903 4.8125 4.8125 5.00903 4.8125 5.25C4.8125 5.49097 5.00903 5.6875 5.25 5.6875C5.49097 5.6875 5.6875 5.49097 5.6875 5.25C5.6875 5.00903 5.49097 4.8125 5.25 4.8125ZM3.03516 6.83594L2.21484 7.66992L2.83008 8.28516L3.66406 7.46484L3.03516 6.83594Z" fill="#6A6A6A"/>
-  </svg>`;
+  const xml =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-disc-3"><circle cx="12" cy="12" r="10"/><path d="M6 12c0-1.7.7-3.2 1.8-4.2"/><circle cx="12" cy="12" r="2"/><path d="M18 12c0 1.7-.7 3.2-1.8 4.2"/></svg>';
 
-  return <SvgXml xml={xml} width={14} height={14} />;
+  return <SvgXml xml={xml} width={16} height={16} />;
+}
+
+export function ArtistIcon() {
+  const xml =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+
+  return <SvgXml xml={xml} width={16} height={16} />;
 }
 
 export function QuitIcon() {

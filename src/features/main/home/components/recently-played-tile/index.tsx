@@ -1,13 +1,13 @@
 import { AnimatedIcon } from '@/common/animated-icon';
 import { ClockIcon } from '@/common/svgs';
-import { formatDateString } from '@/common/utils';
+import { formatDate } from '@/common/utils';
 import { Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { styles } from './styles';
 import type { RecentlyPlayedTileProps } from './types';
 
-export function RecentlyPlayedTile({ track, artist, image, date }: RecentlyPlayedTileProps) {
-  const listeningText = formatDateString(date);
+export function RecentlyPlayedTile({ track, artist, image, timestampMs }: RecentlyPlayedTileProps) {
+  const listeningText = formatDate(timestampMs);
 
   const renderListeningIndicator = () => {
     if (listeningText === 'now') {

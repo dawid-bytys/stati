@@ -3,6 +3,6 @@ export interface RecentlyPlayedSectionProps {
     track: string;
     artist: string;
     image: string;
-    date: string;
+    timestampMs: number;
   }[];
 }

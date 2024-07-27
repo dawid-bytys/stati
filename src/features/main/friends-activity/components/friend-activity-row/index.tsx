@@ -32,7 +32,11 @@ export const FriendActivityRow = memo(({ data }: FriendActivityRowProps) => {
           </Text>
         </View>
         <View style={styles.innerRightLowerWrapper}>
-          {data.context.type === 'album' ? getIcon('album') : getIcon('playlist')}
+          {data.context.type === 'album'
+            ? getIcon('album')
+            : data.context.type === 'playlist'
+            ? getIcon('playlist')
+            : getIcon('artist')}
           <Text style={styles.context} numberOfLines={1}>
             {data.context.name}
           </Text>
