@@ -22,7 +22,7 @@ privateSpotifyClient.interceptors.request.use(async (req) => {
 
   _useStore.getState().setWebAccessToken({
     value: accessToken,
-    expiresAt: accessTokenExpirationTimestampMs / 1000,
+    expiresAt: Math.floor(accessTokenExpirationTimestampMs / 1000),
   });
 
   req.headers.Authorization = `Bearer ${accessToken}`;
