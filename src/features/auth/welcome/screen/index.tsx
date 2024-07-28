@@ -18,8 +18,6 @@ export function WelcomeScreen() {
     const authUrl = SpotifyService.generateAuthUrl(codeChallenge);
     const { type, url } = (await InAppBrowser.openAuth(authUrl, Config.SPOTIFY_AUTH_CALLBACK_URL)) as RedirectResult;
 
-    console.log(type, url);
-
     if (type !== 'success') {
       return;
     }

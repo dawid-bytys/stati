@@ -1,12 +1,12 @@
 import { rankColor } from '@/common/utils';
-import { Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, Pressable, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { styles } from './styles';
 import type { TopRowProps } from './types';
 
 export function TopRow({ image, track, link, artist, rank }: TopRowProps) {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => Linking.openURL(link)}>
+    <Pressable style={styles.container} onPress={() => Linking.openURL(link)}>
       <View style={styles.innerLeft}>
         <FastImage source={{ uri: image || '' }} style={styles.image} />
       </View>
@@ -23,6 +23,6 @@ export function TopRow({ image, track, link, artist, rank }: TopRowProps) {
       <View style={styles.innerRight}>
         <Text style={[styles.rank, { color: rankColor(rank) }]}>#{rank}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
