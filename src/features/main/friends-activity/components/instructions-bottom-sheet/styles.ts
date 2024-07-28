@@ -32,7 +32,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     marginVertical: 5,
     color: '#f0f0f0',
-    textAlign: 'justify',
   },
   link: {
     color: '#1DB954',

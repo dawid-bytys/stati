@@ -94,6 +94,15 @@ export function SetCookie() {
   }, [isOpen]);
 
   useEffect(() => {
+    if (webAccessTokenError) {
+      store.setNotification({
+        type: 'error',
+        message: webAccessTokenError.message,
+      });
+      store.setSpdcCookie(null);
+      return;
+    }
+
     if (webAccessTokenData) {
       store.setNotification({
         type: 'success',
@@ -103,14 +112,6 @@ export function SetCookie() {
         value: webAccessTokenData.accessToken,
         expiresAt: Math.floor(webAccessTokenData.accessTokenExpirationTimestampMs / 1000),
       });
-    }
-
-    if (webAccessTokenError) {
-      store.setNotification({
-        type: 'error',
-        message: 'Invalid sp_dc cookie',
-      });
-      store.setSpdcCookie(null);
     }
   }, [webAccessTokenData, webAccessTokenError, store]);
 

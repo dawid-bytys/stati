@@ -87,6 +87,18 @@ export const SpotifyService = {
       },
     });
 
+    if (response.status === 429) {
+      throw new Error('Hey, slow down...');
+    }
+
+    if (response.status === 401) {
+      throw new Error('Invalid sp_dc cookie.');
+    }
+
+    if (!response.ok) {
+      throw new Error('Something went wrong, try again.');
+    }
+
     return response.json();
   },
 
