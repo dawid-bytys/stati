@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   greeting: {
     fontFamily: 'Poppins-Bold',
     color: '#fff',
-    //fontSize: 30,
+    fontSize: 30,
     fontSize: SCREEN_WIDTH / 13,
   },
   greetingsWrapperUpper: {

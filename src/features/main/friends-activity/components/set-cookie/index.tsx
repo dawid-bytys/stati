@@ -100,7 +100,6 @@ export function SetCookie() {
         message: webAccessTokenError.message,
       });
       store.setSpdcCookie(null);
-      return;
     }
 
     if (webAccessTokenData) {

@@ -1,7 +1,8 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import { useEffect, type PropsWithChildren } from 'react';
+import { useEffect } from 'react';
 import BootSplash from 'react-native-bootsplash';
 import { InternetConnection } from './components/internet-connection';
+import type { PropsWithChildren } from 'react';
 
 export function InternetConnectionProvider({ children }: PropsWithChildren) {
   const { isConnected } = useNetInfo();
@@ -16,7 +17,7 @@ export function InternetConnectionProvider({ children }: PropsWithChildren) {
     return null;
   }
 
-  if (isConnected === false) {
+  if (!isConnected) {
     return <InternetConnection />;
   }
 

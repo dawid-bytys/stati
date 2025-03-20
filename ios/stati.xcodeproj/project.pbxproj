@@ -337,11 +337,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = UCJ4TYQRNV;
+				DEVELOPMENT_TEAM = UCJ4TYQRNV;
 				INFOPLIST_FILE = stati/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = stati;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
@@ -358,7 +356,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.they.stati;
 				PRODUCT_NAME = stati;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Stati Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

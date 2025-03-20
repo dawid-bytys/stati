@@ -4,8 +4,6 @@ import type { BottomTabsParamList } from './tabs/main/types';
 
 type AllStacksParamList = AuthStackParamList & BottomTabsParamList & HomeDrawerParamList;
 
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends AllStacksParamList {}
-  }
+declare module '@react-navigation/native' {
+  export type RootStackParamList = AllStacksParamList;
 }
