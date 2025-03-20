@@ -5,21 +5,21 @@ import { InternetConnection } from './components/internet-connection';
 import type { PropsWithChildren } from 'react';
 
 export function InternetConnectionProvider({ children }: PropsWithChildren) {
-  const { isConnected } = useNetInfo();
+    const { isConnected } = useNetInfo();
 
-  useEffect(() => {
-    if (isConnected === false) {
-      BootSplash.hide({ fade: true });
+    useEffect(() => {
+        if (isConnected === false) {
+            BootSplash.hide({ fade: true });
+        }
+    }, [isConnected]);
+
+    if (isConnected === null) {
+        return null;
     }
-  }, [isConnected]);
 
-  if (isConnected === null) {
-    return null;
-  }
+    if (!isConnected) {
+        return <InternetConnection />;
+    }
 
-  if (!isConnected) {
-    return <InternetConnection />;
-  }
-
-  return <>{children}</>;
+    return <>{children}</>;
 }

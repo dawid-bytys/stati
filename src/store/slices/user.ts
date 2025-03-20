@@ -6,23 +6,23 @@ import type { TopItemsParamsSlice } from './top-items';
 import type { StateCreator } from 'zustand';
 
 interface User {
-  displayName: string | null;
-  image: string | null;
+    displayName: string | null;
+    image: string | null;
 }
 
 export type UserSlice = {
-  user: User | null;
-  setUser: (user: User) => void;
-  clearUser: () => void;
+    user: User | null;
+    setUser: (user: User) => void;
+    clearUser: () => void;
 };
 
 export const createUserSlice: StateCreator<
-  AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice,
-  [],
-  [],
-  UserSlice
+    AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice,
+    [],
+    [],
+    UserSlice
 > = (set) => ({
-  user: null,
-  setUser: (user) => set(() => ({ user })),
-  clearUser: () => set(() => ({ user: null })),
+    user: null,
+    setUser: (user) => set(() => ({ user })),
+    clearUser: () => set(() => ({ user: null })),
 });

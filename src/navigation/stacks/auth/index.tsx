@@ -6,9 +6,13 @@ import type { AuthStackParamList } from './types';
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export function AuthStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={AuthStackScreens.Welcome} component={WelcomeScreen} options={{ animation: 'fade' }} />
-    </Stack.Navigator>
-  );
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+                name={AuthStackScreens.Welcome}
+                component={WelcomeScreen}
+                options={{ animation: 'fade' }}
+            />
+        </Stack.Navigator>
+    );
 }

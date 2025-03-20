@@ -18,44 +18,44 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 LogBox.ignoreAllLogs();
 
 const theme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: BACKGROUND_COLOR,
-  },
+    ...DarkTheme,
+    colors: {
+        ...DarkTheme.colors,
+        background: BACKGROUND_COLOR,
+    },
 };
 
 export function App() {
-  return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{
-        persister: clientPersister,
-        dehydrateOptions: {
-          shouldDehydrateQuery: (query) => !query.queryKey.includes('webAccessToken'),
-        },
-      }}>
-      <EventProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <SafeAreaProvider style={{ backgroundColor: BACKGROUND_COLOR }}>
-              <NavigationContainer theme={theme}>
-                <LoadingOverlayProvider>
-                  <InternetConnectionProvider>
-                    <InAppNotificationProvider>
-                      <AuthProvider>
-                        <ModalProvider>
-                          <Navigation />
-                        </ModalProvider>
-                      </AuthProvider>
-                    </InAppNotificationProvider>
-                  </InternetConnectionProvider>
-                </LoadingOverlayProvider>
-              </NavigationContainer>
-            </SafeAreaProvider>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </EventProvider>
-    </PersistQueryClientProvider>
-  );
+    return (
+        <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+                persister: clientPersister,
+                dehydrateOptions: {
+                    shouldDehydrateQuery: (query) => !query.queryKey.includes('webAccessToken'),
+                },
+            }}>
+            <EventProvider>
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                    <BottomSheetModalProvider>
+                        <SafeAreaProvider style={{ backgroundColor: BACKGROUND_COLOR }}>
+                            <NavigationContainer theme={theme}>
+                                <LoadingOverlayProvider>
+                                    <InternetConnectionProvider>
+                                        <InAppNotificationProvider>
+                                            <AuthProvider>
+                                                <ModalProvider>
+                                                    <Navigation />
+                                                </ModalProvider>
+                                            </AuthProvider>
+                                        </InAppNotificationProvider>
+                                    </InternetConnectionProvider>
+                                </LoadingOverlayProvider>
+                            </NavigationContainer>
+                        </SafeAreaProvider>
+                    </BottomSheetModalProvider>
+                </GestureHandlerRootView>
+            </EventProvider>
+        </PersistQueryClientProvider>
+    );
 }

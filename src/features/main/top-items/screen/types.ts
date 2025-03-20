@@ -1,4 +1,4 @@
 export interface TopItemsProps {
-  type: string;
-  period: string;
+    type: string;
+    period: string;
 }

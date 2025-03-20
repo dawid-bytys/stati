@@ -1,3 +1,3 @@
 export interface LinesWrapperProps {
-  absolute?: boolean;
+    absolute?: boolean;
 }

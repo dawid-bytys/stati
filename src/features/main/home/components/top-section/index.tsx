@@ -11,43 +11,45 @@ import type { TopSectionProps } from './types';
 import type { ListRenderItemInfo } from 'react-native';
 
 export function TopSection({ type, title, data }: TopSectionProps) {
-  const navigation = useNavigation();
-  const store = useStore();
+    const navigation = useNavigation();
+    const store = useStore();
 
-  const handleNavigation = useCallback(() => {
-    store.setTopItemsParams({ type, period: '4 weeks' });
-    navigation.navigate(BottomTabsScreens.Top);
-  }, [navigation, store, type]);
+    const handleNavigation = useCallback(() => {
+        store.setTopItemsParams({ type, period: '4 weeks' });
+        navigation.navigate(BottomTabsScreens.Top);
+    }, [navigation, store, type]);
 
-  const renderItem = useCallback(({ item }: ListRenderItemInfo<TopSectionProps['data'][0]>) => {
-    return <TopSectionTile key={item.id} name={item.name} image={item.image} link={item.link} />;
-  }, []);
+    const renderItem = useCallback(({ item }: ListRenderItemInfo<TopSectionProps['data'][0]>) => {
+        return (
+            <TopSectionTile key={item.id} name={item.name} image={item.image} link={item.link} />
+        );
+    }, []);
 
-  return (
-    <View style={styles.wrapper}>
-      <View style={styles.innerUpper}>
-        <Text style={styles.sectionTitle}>{title}</Text>
-        <TouchableOpacity style={styles.redirectBtn} onPress={handleNavigation}>
-          <Text style={styles.redirectBtnText}>see more</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.innerLower}>
-        {data.length === 0 ? (
-          <NotFound iconWidth={100} iconHeight={100} />
-        ) : (
-          <Animated.FlatList
-            indicatorStyle="white"
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={({ id }) => id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={false}
-            contentContainerStyle={styles.listContentWrapper}
-            itemLayoutAnimation={LinearTransition}
-          />
-        )}
-      </View>
-    </View>
-  );
+    return (
+        <View style={styles.wrapper}>
+            <View style={styles.innerUpper}>
+                <Text style={styles.sectionTitle}>{title}</Text>
+                <TouchableOpacity style={styles.redirectBtn} onPress={handleNavigation}>
+                    <Text style={styles.redirectBtnText}>see more</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.innerLower}>
+                {data.length === 0 ? (
+                    <NotFound iconWidth={100} iconHeight={100} />
+                ) : (
+                    <Animated.FlatList
+                        indicatorStyle="white"
+                        data={data}
+                        renderItem={renderItem}
+                        keyExtractor={({ id }) => id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.listContentWrapper}
+                        itemLayoutAnimation={LinearTransition}
+                    />
+                )}
+            </View>
+        </View>
+    );
 }

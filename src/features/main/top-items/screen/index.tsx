@@ -13,75 +13,88 @@ import type { TrackItem } from '@/network/responses/tracks';
 import type { ListRenderItemInfo, FlatList } from 'react-native';
 
 export function TopItems({ type, period }: TopItemsProps) {
-  const store = useStore();
-  const listRef = useRef<FlatList<TrackItem | ArtistItem> | null>(null);
+    const store = useStore();
+    const listRef = useRef<FlatList<TrackItem | ArtistItem> | null>(null);
 
-  const { data, error, hasNextPage, isFetchingNextPage, fetchNextPage } = useTopItemsInfiniteQuery({
-    type,
-    period,
-  });
+    const { data, error, hasNextPage, isFetchingNextPage, fetchNextPage } =
+        useTopItemsInfiniteQuery({
+            type,
+            period,
+        });
 
-  const flattenedData = useMemo(() => {
-    if (!data) {
-      return undefined;
-    }
-
-    return data.pages.map((page) => page.items).flat();
-  }, [data]);
-
-  const renderItem = useCallback(({ item, index }: ListRenderItemInfo<TrackItem | ArtistItem>) => {
-    if ('track_number' in item) {
-      return (
-        <TopRow
-          track={item.name}
-          artist={item.artists[0].name}
-          image={item.album.images[0].url}
-          rank={index + 1}
-          link={item.external_urls.spotify}
-        />
-      );
-    }
-
-    return <TopRow track={item.name} image={item.images[0].url} rank={index + 1} link={item.external_urls.spotify} />;
-  }, []);
-
-  useEffect(() => {
-    listRef.current?.scrollToIndex({ index: 0 });
-  }, [type, period]);
-
-  useEffect(() => {
-    if (error) {
-      store.setNotification({
-        type: 'error',
-        message: 'Failed to load data, try restarting the app.',
-      });
-    }
-  }, [error, store]);
-
-  if (!flattenedData) {
-    return <Loading withPaddingTop={false} />;
-  }
-
-  if (flattenedData.length === 0) {
-    return <NotFound iconWidth={200} iconHeight={200} />;
-  }
-
-  return (
-    <Animated.FlatList
-      indicatorStyle="white"
-      ref={listRef}
-      data={flattenedData}
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-      itemLayoutAnimation={LinearTransition}
-      contentContainerStyle={styles.listContainer}
-      onEndReachedThreshold={0.3}
-      onEndReached={() => {
-        if (hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+    const flattenedData = useMemo(() => {
+        if (!data) {
+            return undefined;
         }
-      }}
-      ListFooterComponent={isFetchingNextPage ? <ActivityIndicator size="small" color="#fff" /> : null}
-    />
-  );
+
+        return data.pages.map((page) => page.items).flat();
+    }, [data]);
+
+    const renderItem = useCallback(
+        ({ item, index }: ListRenderItemInfo<TrackItem | ArtistItem>) => {
+            if ('track_number' in item) {
+                return (
+                    <TopRow
+                        track={item.name}
+                        artist={item.artists[0].name}
+                        image={item.album.images[0].url}
+                        rank={index + 1}
+                        link={item.external_urls.spotify}
+                    />
+                );
+            }
+
+            return (
+                <TopRow
+                    track={item.name}
+                    image={item.images[0].url}
+                    rank={index + 1}
+                    link={item.external_urls.spotify}
+                />
+            );
+        },
+        [],
+    );
+
+    useEffect(() => {
+        listRef.current?.scrollToIndex({ index: 0 });
+    }, [type, period]);
+
+    useEffect(() => {
+        if (error) {
+            store.setNotification({
+                type: 'error',
+                message: 'Failed to load data, try restarting the app.',
+            });
+        }
+    }, [error, store]);
+
+    if (!flattenedData) {
+        return <Loading withPaddingTop={false} />;
+    }
+
+    if (flattenedData.length === 0) {
+        return <NotFound iconWidth={200} iconHeight={200} />;
+    }
+
+    return (
+        <Animated.FlatList
+            indicatorStyle="white"
+            ref={listRef}
+            data={flattenedData}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            itemLayoutAnimation={LinearTransition}
+            contentContainerStyle={styles.listContainer}
+            onEndReachedThreshold={0.3}
+            onEndReached={() => {
+                if (hasNextPage && !isFetchingNextPage) {
+                    fetchNextPage();
+                }
+            }}
+            ListFooterComponent={
+                isFetchingNextPage ? <ActivityIndicator size="small" color="#fff" /> : null
+            }
+        />
+    );
 }

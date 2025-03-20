@@ -5,17 +5,22 @@ import { styles } from './styles';
 import type { LoadingProps } from './types';
 
 export function Loading({ absolute = false, withPaddingTop = true }: LoadingProps) {
-  const insets = useSafeAreaInsets();
+    const insets = useSafeAreaInsets();
 
-  return (
-    <Animated.View
-      style={[
-        absolute ? styles.absoluteWrapper : styles.flexWrapper,
-        { paddingTop: absolute || !withPaddingTop ? 0 : insets.top },
-      ]}
-      entering={FadeIn}
-      exiting={FadeOut}>
-      <AnimatedIcon source={require('@/assets/lottie/loading.json')} width={64} height={64} duration={800} />
-    </Animated.View>
-  );
+    return (
+        <Animated.View
+            style={[
+                absolute ? styles.absoluteWrapper : styles.flexWrapper,
+                { paddingTop: absolute || !withPaddingTop ? 0 : insets.top },
+            ]}
+            entering={FadeIn}
+            exiting={FadeOut}>
+            <AnimatedIcon
+                source={require('@/assets/lottie/loading.json')}
+                width={64}
+                height={64}
+                duration={800}
+            />
+        </Animated.View>
+    );
 }

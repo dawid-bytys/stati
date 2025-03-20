@@ -1,7 +1,7 @@
 export enum HomeDrawerScreens {
-  Home = 'HomeDrawer',
+    Home = 'HomeDrawer',
 }
 
 export type HomeDrawerParamList = {
-  [HomeDrawerScreens.Home]: undefined;
+    [HomeDrawerScreens.Home]: undefined;
 };

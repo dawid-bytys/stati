@@ -7,16 +7,19 @@ import type { LinesWrapperProps } from './types';
 import type { PropsWithChildren } from 'react';
 
 export function LinesWrapper({ children, absolute = false }: PropsWithChildren<LinesWrapperProps>) {
-  const insets = useSafeAreaInsets();
+    const insets = useSafeAreaInsets();
 
-  return (
-    <Animated.View
-      style={[absolute ? styles.absoluteWrapper : styles.flexWrapper, { paddingTop: absolute ? 0 : insets.top }]}
-      entering={FadeIn}
-      exiting={FadeOut}>
-      <View style={styles.linesUp}>{getIcon('linesUp')}</View>
-      <View style={styles.linesDown}>{getIcon('linesDown')}</View>
-      {children}
-    </Animated.View>
-  );
+    return (
+        <Animated.View
+            style={[
+                absolute ? styles.absoluteWrapper : styles.flexWrapper,
+                { paddingTop: absolute ? 0 : insets.top },
+            ]}
+            entering={FadeIn}
+            exiting={FadeOut}>
+            <View style={styles.linesUp}>{getIcon('linesUp')}</View>
+            <View style={styles.linesDown}>{getIcon('linesDown')}</View>
+            {children}
+        </Animated.View>
+    );
 }

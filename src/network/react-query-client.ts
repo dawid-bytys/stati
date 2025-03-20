@@ -3,11 +3,11 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: Infinity,
+    defaultOptions: {
+        queries: {
+            gcTime: Infinity,
+        },
     },
-  },
 });
 
 export const clientPersister = createSyncStoragePersister({ storage });

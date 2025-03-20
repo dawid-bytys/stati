@@ -16,28 +16,28 @@ import type { TopItemsParamsSlice } from './slices/top-items';
 import type { UserSlice } from './slices/user';
 
 export const _useStore = create<
-  AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice
+    AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice
 >()(
-  persist(
-    (...args) => ({
-      ...createAuthSlice(...args),
-      ...createUserSlice(...args),
-      ...createNotificationSlice(...args),
-      ...createLoadingSlice(...args),
-      ...createModalSlice(...args),
-      ...createTopItemsParamsSlice(...args),
-    }),
-    {
-      name: 'storage',
-      storage: createJSONStorage(() => storage),
-      partialize: (state) => ({
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
-        webAccessToken: state.webAccessToken,
-        spdcCookie: state.spdcCookie,
-      }),
-    },
-  ),
+    persist(
+        (...args) => ({
+            ...createAuthSlice(...args),
+            ...createUserSlice(...args),
+            ...createNotificationSlice(...args),
+            ...createLoadingSlice(...args),
+            ...createModalSlice(...args),
+            ...createTopItemsParamsSlice(...args),
+        }),
+        {
+            name: 'storage',
+            storage: createJSONStorage(() => storage),
+            partialize: (state) => ({
+                accessToken: state.accessToken,
+                refreshToken: state.refreshToken,
+                webAccessToken: state.webAccessToken,
+                spdcCookie: state.spdcCookie,
+            }),
+        },
+    ),
 );
 
 export const useStore = createTrackedSelector(_useStore);

@@ -6,27 +6,27 @@ import type { UserSlice } from './user';
 import type { StateCreator } from 'zustand';
 
 interface Notification {
-  type: 'success' | 'error' | 'warning';
-  message: string;
+    type: 'success' | 'error' | 'warning';
+    message: string;
 }
 
 export type NotificationSlice = {
-  notification: Notification | null;
-  setNotification: (notification: Notification | null) => void;
+    notification: Notification | null;
+    setNotification: (notification: Notification | null) => void;
 };
 
 export const createNotificationSlice: StateCreator<
-  AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice,
-  [],
-  [],
-  NotificationSlice
+    AuthSlice & UserSlice & NotificationSlice & LoadingSlice & ModalSlice & TopItemsParamsSlice,
+    [],
+    [],
+    NotificationSlice
 > = (set) => ({
-  notification: null,
-  setNotification: (notification) => {
-    set(() => ({ notification }));
+    notification: null,
+    setNotification: (notification) => {
+        set(() => ({ notification }));
 
-    setTimeout(() => {
-      set(() => ({ notification: null }));
-    }, 3000);
-  },
+        setTimeout(() => {
+            set(() => ({ notification: null }));
+        }, 3000);
+    },
 });

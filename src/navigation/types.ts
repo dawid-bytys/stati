@@ -5,5 +5,5 @@ import type { BottomTabsParamList } from './tabs/main/types';
 type AllStacksParamList = AuthStackParamList & BottomTabsParamList & HomeDrawerParamList;
 
 declare module '@react-navigation/native' {
-  export type RootStackParamList = AllStacksParamList;
+    export type RootStackParamList = AllStacksParamList;
 }

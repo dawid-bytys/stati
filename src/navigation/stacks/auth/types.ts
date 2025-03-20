@@ -1,7 +1,7 @@
 export enum AuthStackScreens {
-  Welcome = 'Welcome',
+    Welcome = 'Welcome',
 }
 
 export type AuthStackParamList = {
-  [AuthStackScreens.Welcome]: undefined;
+    [AuthStackScreens.Welcome]: undefined;
 };

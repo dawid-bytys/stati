@@ -1,4 +1,4 @@
 export interface LoadingProps {
-  absolute?: boolean;
-  withPaddingTop?: boolean;
+    absolute?: boolean;
+    withPaddingTop?: boolean;
 }

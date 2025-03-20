@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
 
 if (__DEV__) {
-  require('./reactotron.config');
+    require('./reactotron.config');
 }
 
 AppRegistry.registerComponent(appName, () => App);

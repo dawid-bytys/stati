@@ -6,21 +6,21 @@ import { AuthStack } from './stacks/auth';
 import { MainTabs } from './tabs/main';
 
 export function Navigation() {
-  const store = useStore();
+    const store = useStore();
 
-  useEffect(() => {
-    if (!store.isAuthenticating) {
-      BootSplash.hide({ fade: true });
+    useEffect(() => {
+        if (!store.isAuthenticating) {
+            BootSplash.hide({ fade: true });
+        }
+    }, [store.isAuthenticating]);
+
+    if (!store.isAuthenticated) {
+        return (
+            <Animated.View entering={FadeIn} style={{ flex: 1 }}>
+                <AuthStack />
+            </Animated.View>
+        );
     }
-  }, [store.isAuthenticating]);
 
-  if (!store.isAuthenticated) {
-    return (
-      <Animated.View entering={FadeIn} style={{ flex: 1 }}>
-        <AuthStack />
-      </Animated.View>
-    );
-  }
-
-  return <MainTabs />;
+    return <MainTabs />;
 }

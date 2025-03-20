@@ -11,45 +11,55 @@ import { styles } from './styles';
 import type { RedirectResult } from 'react-native-inappbrowser-reborn';
 
 export function WelcomeScreen() {
-  const { mutate: fetchTokens } = useAuthMutation();
+    const { mutate: fetchTokens } = useAuthMutation();
 
-  async function handleLogin() {
-    const { codeChallenge, codeVerifier } = pkceChallenge();
-    const authUrl = SpotifyService.generateAuthUrl(codeChallenge);
-    const { type, url } = (await InAppBrowser.openAuth(authUrl, Config.SPOTIFY_AUTH_CALLBACK_URL)) as RedirectResult;
+    async function handleLogin() {
+        const { codeChallenge, codeVerifier } = pkceChallenge();
+        const authUrl = SpotifyService.generateAuthUrl(codeChallenge);
+        const { type, url } = (await InAppBrowser.openAuth(
+            authUrl,
+            Config.SPOTIFY_AUTH_CALLBACK_URL,
+        )) as RedirectResult;
 
-    if (type !== 'success') {
-      return;
+        if (type !== 'success') {
+            return;
+        }
+
+        const code = new URL(url).searchParams.get('code');
+
+        if (!code) {
+            return;
+        }
+
+        fetchTokens({
+            code,
+            codeVerifier,
+        });
     }
 
-    const code = new URL(url).searchParams.get('code');
-
-    if (!code) {
-      return;
-    }
-
-    fetchTokens({
-      code,
-      codeVerifier,
-    });
-  }
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.wrapper}>
-        <View style={styles.wrapperInnerUpper}>
-          <WelcomeIcon />
-          <View style={styles.innerWrapper}>
-            <Text style={styles.title}>Hello. 😊</Text>
-            <Text style={styles.subtitle}>Explore your music taste in one place</Text>
-            <Button title="Login with Spotify" onPress={handleLogin} style={styles.loginBtn} />
-          </View>
-        </View>
-        <View style={styles.wrapperInnerLower}>
-          <Text style={styles.powered}>powered by</Text>
-          <FastImage source={require('@/assets/images/spotify-logo.png')} style={styles.spotifyLogo} />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.wrapper}>
+                <View style={styles.wrapperInnerUpper}>
+                    <WelcomeIcon />
+                    <View style={styles.innerWrapper}>
+                        <Text style={styles.title}>Hello. 😊</Text>
+                        <Text style={styles.subtitle}>Explore your music taste in one place</Text>
+                        <Button
+                            title="Login with Spotify"
+                            onPress={handleLogin}
+                            style={styles.loginBtn}
+                        />
+                    </View>
+                </View>
+                <View style={styles.wrapperInnerLower}>
+                    <Text style={styles.powered}>powered by</Text>
+                    <FastImage
+                        source={require('@/assets/images/spotify-logo.png')}
+                        style={styles.spotifyLogo}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
+    );
 }
